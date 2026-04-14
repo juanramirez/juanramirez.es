@@ -1,0 +1,46 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  project: CollectionEntry<"portfolio">;
+}
+
+const { project } = Astro.props;
+---
+
+<li class="flex h-full flex-col gap-3 rounded-md border border-ink/15 bg-white/40 p-6">
+  {project.data.image && (
+    <img
+      src={project.data.image}
+      alt={`${project.data.name} logo`}
+      class="h-12 w-auto object-contain"
+      loading="lazy"
+    />
+  )}
+  <div class="flex items-start justify-between gap-2">
+    <h3 class="font-serif text-2xl leading-tight">
+      <a href={`/portfolio/${project.slug}/`}>{project.data.name}</a>
+    </h3>
+    <span class="rounded-full border border-ink/20 px-3 py-1 text-xs uppercase tracking-wide text-muted">
+      {project.data.status === "in-development" ? "In development" : "Published"}
+    </span>
+  </div>
+  <p class="text-muted">{project.data.description}</p>
+  {project.data.stack.length > 0 && (
+    <ul class="flex flex-wrap gap-2 pt-1 text-sm text-muted">
+      {project.data.stack.map((item) => (
+        <li class="rounded-full border border-ink/20 px-3 py-1">{item}</li>
+      ))}
+    </ul>
+  )}
+  <p class="pt-1 text-sm">
+    <a href={`/portfolio/${project.slug}/`}>Read details</a>
+  </p>
+  {project.data.url && (
+    <p class="text-sm">
+      <a href={project.data.url} rel="noreferrer" target="_blank">
+        Visit project
+      </a>
+    </p>
+  )}
+</li>

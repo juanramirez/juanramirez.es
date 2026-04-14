@@ -2,6 +2,7 @@
 name: "On-duty organizer (DoctorPlan)"
 description: "An open-source scheduler for hospital on-duty planning, using evolutionary algorithms to balance constraints and preferences."
 status: "published"
+category: "technical"
 image: "/images/projects/doctorplan/logo.png"
 stack:
   - Node.js

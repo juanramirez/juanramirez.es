@@ -1,73 +1,54 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
 
-const projects = (await getCollection("portfolio")).sort((a, b) => {
+const allProjects = (await getCollection("portfolio")).sort((a, b) => {
   if (a.data.status === b.data.status) {
     return a.slug.localeCompare(b.slug);
   }
 
   return a.data.status === "in-development" ? -1 : 1;
 });
+
+const technical = allProjects.filter((p) => p.data.category === "technical");
+const literary = allProjects.filter((p) => p.data.category === "literary");
 ---
 
 <BaseLayout
   title="Portfolio | Juan Ramirez"
   description="Personal portfolio of technical and literary projects by Juan Ramirez."
 >
-  <section class="max-w-4xl space-y-8">
+  <section class="max-w-4xl space-y-16">
     <header class="space-y-2">
       <p class="text-sm uppercase tracking-[0.2em] text-muted">Portfolio</p>
       <h1 class="font-serif text-4xl md:text-5xl">Technical and literary projects</h1>
     </header>
 
-    {
-      projects.length === 0 ? (
+    <div class="space-y-6">
+      <h2 class="font-serif text-2xl">Technical</h2>
+      {technical.length === 0 ? (
         <p class="rounded-md border border-dashed border-ink/25 p-6 text-muted">
-          No projects yet. Add Markdown files to <code>src/content/portfolio</code>.
+          No technical projects yet. Add Markdown files with <code>category: technical</code> to <code>src/content/portfolio</code>.
         </p>
       ) : (
         <ul class="grid gap-6 md:grid-cols-2">
-          {projects.map((project) => (
-            <li class="flex h-full flex-col gap-3 rounded-md border border-ink/15 bg-white/40 p-6">
-              {project.data.image && (
-                <img
-                  src={project.data.image}
-                  alt={`${project.data.name} logo`}
-                  class="h-12 w-auto object-contain"
-                  loading="lazy"
-                />
-              )}
-              <div class="flex items-start justify-between gap-2">
-                <h2 class="font-serif text-2xl leading-tight">
-                  <a href={`/portfolio/${project.slug}/`}>{project.data.name}</a>
-                </h2>
-                <span class="rounded-full border border-ink/20 px-3 py-1 text-xs uppercase tracking-wide text-muted">
-                  {project.data.status === "in-development" ? "In development" : "Published"}
-                </span>
-              </div>
-              <p class="text-muted">{project.data.description}</p>
-              {project.data.stack.length > 0 && (
-                <ul class="flex flex-wrap gap-2 pt-1 text-sm text-muted">
-                  {project.data.stack.map((item) => (
-                    <li class="rounded-full border border-ink/20 px-3 py-1">{item}</li>
-                  ))}
-                </ul>
-              )}
-              <p class="pt-1 text-sm">
-                <a href={`/portfolio/${project.slug}/`}>Read details</a>
-              </p>
-              {project.data.url && (
-                <p class="text-sm">
-                  <a href={project.data.url} rel="noreferrer" target="_blank">
-                    Visit project
-                  </a>
-                </p>
-              )}
-            </li>
-          ))}
+          {technical.map((project) => <ProjectCard project={project} />)}
         </ul>
-      )
-    }
+      )}
+    </div>
+
+    <div class="space-y-6">
+      <h2 class="font-serif text-2xl">Literary</h2>
+      {literary.length === 0 ? (
+        <p class="rounded-md border border-dashed border-ink/25 p-6 text-muted">
+          No literary projects yet. Add Markdown files with <code>category: literary</code> to <code>src/content/portfolio</code>.
+        </p>
+      ) : (
+        <ul class="grid gap-6 md:grid-cols-2">
+          {literary.map((project) => <ProjectCard project={project} />)}
+        </ul>
+      )}
+    </div>
   </section>
 </BaseLayout>

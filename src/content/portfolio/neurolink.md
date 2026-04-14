@@ -2,6 +2,7 @@
 name: "NeuroLink"
 description: "A social-network project born during rehabilitation, designed to connect patients, carers, and neurological professionals."
 status: "in-development"
+category: "technical"
 image: "/images/projects/neurolink/logo.png"
 stack:
   - JavaScript

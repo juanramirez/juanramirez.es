@@ -2,6 +2,7 @@
 name: "HillPace"
 description: "An open-source Ruby tool for planning pacing strategy in hilly races from GPX/TCX route data."
 status: "published"
+category: "technical"
 image: "/images/projects/hillpace/logo.png"
 stack:
   - Ruby
