@@ -1,0 +1,40 @@
+---
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/blog", label: "Blog" },
+  { href: "/portfolio", label: "Portfolio" }
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="border-b border-ink/15">
+  <div class="content-grid flex items-center justify-between py-6">
+    <a href="/" class="no-underline">
+      <span class="font-serif text-2xl tracking-tight">Juan Ramirez</span>
+    </a>
+    <nav aria-label="Main navigation">
+      <ul class="flex gap-4 text-sm md:gap-6 md:text-base">
+        {
+          navItems.map((item) => {
+            const isActive = currentPath === item.href || currentPath.startsWith(`${item.href}/`);
+
+            return (
+              <li>
+                <a
+                  href={item.href}
+                  class:list={{
+                    "font-medium decoration-accent text-accent": isActive,
+                    "text-ink": !isActive
+                  }}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
