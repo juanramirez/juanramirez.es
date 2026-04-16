@@ -1,6 +1,7 @@
 ---
 title: "Physical sequels of a brain surgery (I)"
 date: 2021-04-29 13:00:00 +0200
+image: "/assets/images/posts/physical1.png"
 tags:
   - Physical_sequels
 excerpt: "Most people relate the brain with thoughts and mental processes, but the brain also plays a main role in our physical feelings and movements. If something touches your finger, a nerve impulse will go from your finger to your brain through the nervous system. That's what makes you realize that something touched your finger."

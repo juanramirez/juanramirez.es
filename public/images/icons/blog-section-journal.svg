@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Blog section journal icon">
+  <rect x="10" y="8" width="42" height="48" rx="4" fill="#fffdf8" stroke="#d9d3c7" stroke-width="2"/>
+  <rect x="10" y="8" width="8" height="48" rx="3" fill="#d8cec0"/>
+  <circle cx="14" cy="18" r="1.2" fill="#b39f86"/>
+  <circle cx="14" cy="28" r="1.2" fill="#b39f86"/>
+  <circle cx="14" cy="38" r="1.2" fill="#b39f86"/>
+  <line x1="22" y1="20" x2="46" y2="20" stroke="#c9beab" stroke-width="2" stroke-linecap="round"/>
+  <line x1="22" y1="27" x2="46" y2="27" stroke="#c9beab" stroke-width="2" stroke-linecap="round"/>
+  <line x1="22" y1="34" x2="44" y2="34" stroke="#c9beab" stroke-width="2" stroke-linecap="round"/>
+  <path d="M36 47 C39 44, 43 44, 46 47" fill="none" stroke="#b14623" stroke-width="2.6" stroke-linecap="round"/>
+  <circle cx="36" cy="47" r="1.2" fill="#b14623"/>
+  <circle cx="46" cy="47" r="1.2" fill="#b14623"/>
+</svg>

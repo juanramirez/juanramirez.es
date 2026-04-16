@@ -13,9 +13,16 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+const toTagSlug = (tag: string) =>
+  tag
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 ---
 
-<BaseLayout title={`${post.data.title} | Juan Ramirez`} description={post.data.excerpt} ogType="article">
+<BaseLayout title={`${post.data.title} | Juan Ramírez`} description={post.data.excerpt} ogType="article">
   <article class="mx-auto max-w-3xl">
     <header class="mb-8 space-y-3 border-b border-ink/15 pb-6">
       <p class="text-sm text-muted">
@@ -27,11 +34,18 @@ const { Content } = await render(post);
           })}
         </time>
       </p>
-      <h1 class="font-serif text-4xl leading-tight md:text-5xl">{post.data.title}</h1>
+      <h1 class="font-serif text-4xl leading-tight md:text-5xl" set:html={post.data.title}></h1>
       {post.data.tags.length > 0 && (
         <ul class="flex flex-wrap gap-2 pt-1 text-sm text-muted">
           {post.data.tags.map((tag) => (
-            <li class="rounded-full border border-ink/20 px-3 py-1">{tag}</li>
+            <li>
+              <a
+                href={`/blog/tag/${toTagSlug(tag)}/`}
+                class="inline-block rounded-full border border-ink/20 px-3 py-1 no-underline decoration-transparent"
+              >
+                {tag}
+              </a>
+            </li>
           ))}
         </ul>
       )}

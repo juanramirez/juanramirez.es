@@ -4,7 +4,7 @@ date: 2021-07-09 09:30:00 +0200
 tags:
   - epilepsy
   - sequels
-image: '/assets/images/post/epilepsy.jpg'
+image: '/assets/images/posts/epilepsy.jpeg'
 excerpt: "A nervous system is similar to an electrical circuit. If you cut an electrical circuit, an accidental connection between two points of different potential can happen. When electrical circuits in the brain are cut due to a stroke (or a surgery, in my case), abnormal electrical activity can be generated in several parts of the brain. This kind of abnormal electrical activity episodes appear in the form of epilepsy."
 
 ---

@@ -1,14 +1,15 @@
 ---
-title: "How to tell Git to ignore files locally (recovered post)"
+title: "How to tell Git to ignore files locally [<em>recovered post</em>]"
 date: 2021-08-29 13:00:00 +0200
+image: "/assets/images/posts/how-to-tell-git-to-ignore-files-locally-solid.png"
 tags:
   - version control
   - git
-twitter-card-image: "/assets/images/git_logo.png"
+twitter-card-image: "/assets/images/posts/how-to-tell-git-to-ignore-files-locally-solid.png"
 excerpt: "Excluding files for being versioned in Git is easy through the use of the widely known .gitignore file. But maybe you don't really want to use it."
 ---
 
-**Note:** This post has been recovered from my archive after having been lost [due to my brain injury](http://localhost:4000/abi/about-me/hello-and-welcome/). It was originally posted in my old development blog on August 1st, 2017.
+<div class="recovered-note"><strong>Note:</strong> This post has been recovered from my archive after having been lost <a href="http://localhost:4000/abi/about-me/hello-and-welcome/">due to my brain injury</a>. It was originally posted in my old development blog on August 1st, 2017.</div>
 
 ![git](/assets/images/posts/how-to-tell-git-to-ignore-files-locally-solid.png)
 

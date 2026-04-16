@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Blog section newspaper icon">
+  <rect x="8" y="9" width="48" height="46" rx="4" fill="#fffdf8" stroke="#d9d3c7" stroke-width="2"/>
+  <rect x="12" y="14" width="16" height="12" rx="2" fill="#ece6d9"/>
+  <line x1="31" y1="16" x2="50" y2="16" stroke="#b14623" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="31" y1="21" x2="48" y2="21" stroke="#c9beab" stroke-width="2" stroke-linecap="round"/>
+  <line x1="13" y1="31" x2="50" y2="31" stroke="#d3c8b5" stroke-width="2" stroke-linecap="round"/>
+  <line x1="13" y1="37" x2="50" y2="37" stroke="#d3c8b5" stroke-width="2" stroke-linecap="round"/>
+  <line x1="13" y1="43" x2="46" y2="43" stroke="#d3c8b5" stroke-width="2" stroke-linecap="round"/>
+  <line x1="13" y1="49" x2="40" y2="49" stroke="#d3c8b5" stroke-width="2" stroke-linecap="round"/>
+</svg>

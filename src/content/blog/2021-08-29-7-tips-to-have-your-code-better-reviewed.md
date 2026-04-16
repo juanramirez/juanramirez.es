@@ -1,5 +1,5 @@
 ---
-title: "7 tips to have your code better reviewed (recovered post)"
+title: "7 tips to have your code better reviewed [<em>recovered post</em>]"
 date: 2021-08-29 13:30:00 +0200
 tags:
   - code review
@@ -9,9 +9,9 @@ excerpt: "Code reviews are a fantastic way to keep all the team on the same page
 published: true
 ---
 
-**Note:** This post has been recovered from my archive after having been lost [due to my brain injury](/abi/about-me/hello-and-welcome/). It was originally posted in my old development blog on September 25, 2017.
+<div class="recovered-note"><strong>Note:</strong> This post has been recovered from my archive after having been lost <a href="/abi/about-me/hello-and-welcome/">due to my brain injury</a>. It was originally posted in my old development blog on September 25, 2017.</div>
 
-![code-review](/assets/images/posts/code_review.png)
+![code-review](/assets/images/code_review.png)
 
 Code reviews take time. Of course. But they are helpful. **Very** helpful. They are a fantastic way to keep all the team on the same page and encourage everybody to do _the right things_ and to do them _correctly_. Here you have some tips I've learn through the years to avoid my code reviews to become painful or useless:
 

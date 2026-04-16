@@ -32,3 +32,15 @@ a:hover {
 .prose-body :where(h1, h2, h3, h4) {
   @apply font-serif;
 }
+
+.prose-body .recovered-note {
+  @apply rounded-md border border-ink/20 bg-ink/5 px-4 py-3 text-base leading-relaxed text-ink;
+}
+
+.prose-body .recovered-note strong {
+  @apply font-semibold;
+}
+
+h1 {
+  @apply font-bold;
+}

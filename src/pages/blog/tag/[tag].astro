@@ -1,42 +1,86 @@
 ---
 import { getCollection } from "astro:content";
 import { marked } from "marked";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
 
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime()
-);
+interface PostEntry {
+  slug: string;
+  data: {
+    title: string;
+    date: Date;
+    excerpt: string;
+    tags: string[];
+    image?: string;
+    featured_image?: string;
+    "featured-image"?: string;
+  };
+}
 
-const toTagSlug = (tag: string) =>
+const tagToSlug = (tag: string) =>
   tag
     .trim()
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
+
+export async function getStaticPaths() {
+  const toTagSlug = (tag: string) =>
+    tag
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+  const allPosts = (await getCollection("blog")).sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime()
+  );
+
+  const tagBuckets = new Map<string, { label: string; posts: PostEntry[] }>();
+
+  for (const post of allPosts) {
+    for (const tag of post.data.tags) {
+      const slug = toTagSlug(tag);
+
+      if (!slug) {
+        continue;
+      }
+
+      if (!tagBuckets.has(slug)) {
+        tagBuckets.set(slug, { label: tag, posts: [] });
+      }
+
+      tagBuckets.get(slug)!.posts.push(post as PostEntry);
+    }
+  }
+
+  return Array.from(tagBuckets.entries()).map(([slug, bucket]) => ({
+    params: { tag: slug },
+    props: {
+      tagLabel: bucket.label,
+      posts: bucket.posts
+    }
+  }));
+}
+
+const { tagLabel, posts } = Astro.props;
 ---
 
 <BaseLayout
-  title="Blog | Juan Ramírez"
-  description="Articles by Juan Ramírez on acquired brain injury, technology, and personal reflections."
+  title={`Blog | Tag: ${tagLabel} | Juan Ramírez`}
+  description={`Blog posts tagged with ${tagLabel}.`}
 >
   <section class="max-w-3xl space-y-8">
-    <header>
-      <h1 class="flex items-center gap-3 font-serif text-3xl md:text-4xl">
-        <img
-          src="/images/icons/blog-section-newspaper.svg"
-          alt=""
-          aria-hidden="true"
-          class="h-8 w-8 shrink-0"
-          loading="lazy"
-        />
-        <span>Blog</span>
-      </h1>
+    <header class="space-y-3">
+      <p>
+        <a href="/blog/" class="text-sm no-underline decoration-transparent">Back to all posts</a>
+      </p>
+      <h1 class="font-serif text-3xl md:text-4xl">Tag: {tagLabel}</h1>
     </header>
 
     {
       posts.length === 0 ? (
         <p class="rounded-md border border-dashed border-ink/25 p-6 text-muted">
-          No posts yet. Add Markdown files to <code>src/content/blog</code>.
+          No posts found for this tag.
         </p>
       ) : (
         <ul class="space-y-8">
@@ -80,7 +124,7 @@ const toTagSlug = (tag: string) =>
                     {post.data.tags.map((tag) => (
                       <li>
                         <a
-                          href={`/blog/tag/${toTagSlug(tag)}/`}
+                          href={`/blog/tag/${tagToSlug(tag)}/`}
                           class="inline-block rounded-full border border-ink/20 px-3 py-1 no-underline decoration-transparent"
                         >
                           {tag}
