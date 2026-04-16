@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Blog section feather icon">
+  <rect x="8" y="10" width="34" height="44" rx="4" fill="#fffdf8" stroke="#d9d3c7" stroke-width="2"/>
+  <line x1="14" y1="22" x2="34" y2="22" stroke="#d1c6b3" stroke-width="2" stroke-linecap="round"/>
+  <line x1="14" y1="30" x2="34" y2="30" stroke="#d1c6b3" stroke-width="2" stroke-linecap="round"/>
+  <line x1="14" y1="38" x2="30" y2="38" stroke="#d1c6b3" stroke-width="2" stroke-linecap="round"/>
+  <path d="M44 49 C41 43, 42 33, 50 24 C53 21, 57 18, 59 19 C60 21, 57 24, 54 27 C47 35, 46 43, 50 48" fill="none" stroke="#b14623" stroke-width="3" stroke-linecap="round"/>
+  <path d="M45 43 L53 35" stroke="#b14623" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="50" cy="49" r="2" fill="#b14623"/>
+</svg>
