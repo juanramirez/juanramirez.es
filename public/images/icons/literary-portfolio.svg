@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Literary portfolio icon">
+  <rect x="10" y="8" width="40" height="48" rx="3" fill="#fdfaf4" stroke="#d9d3c7" stroke-width="2"/>
+  <line x1="18" y1="20" x2="44" y2="20" stroke="#d4c9b5" stroke-width="2"/>
+  <line x1="18" y1="28" x2="44" y2="28" stroke="#d4c9b5" stroke-width="2"/>
+  <line x1="18" y1="36" x2="38" y2="36" stroke="#d4c9b5" stroke-width="2"/>
+  <path d="M42 46 L55 22 L60 27 L47 51 L40 53 Z" fill="#8b5e3c"/>
+  <path d="M55 22 L58 19 L63 24 L60 27 Z" fill="#2f3338"/>
+  <circle cx="41" cy="53" r="2" fill="#5b5f65"/>
+</svg>

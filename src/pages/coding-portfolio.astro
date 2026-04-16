@@ -1,0 +1,45 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+
+const allProjects = (await getCollection("portfolio")).sort((a, b) => {
+  if (a.data.status === b.data.status) {
+    return a.slug.localeCompare(b.slug);
+  }
+
+  return a.data.status === "in-development" ? -1 : 1;
+});
+
+const technical = allProjects.filter((p) => p.data.category === "technical");
+---
+
+<BaseLayout
+  title="Coding Portfolio | Juan Ramírez"
+  description="Technical and software projects by Juan Ramírez."
+>
+  <section class="max-w-4xl space-y-6">
+    <header class="space-y-1">
+      <h1 class="flex items-center gap-3 font-serif text-3xl md:text-4xl">
+        <img
+          src="/images/icons/coding-portfolio.svg"
+          alt=""
+          aria-hidden="true"
+          class="h-8 w-8 shrink-0"
+          loading="lazy"
+        />
+        <span>Coding Portfolio</span>
+      </h1>
+      <p class="text-sm text-muted">{technical.length} project{technical.length === 1 ? "" : "s"}</p>
+    </header>
+    {technical.length === 0 ? (
+      <p class="rounded-md border border-dashed border-ink/25 p-6 text-muted">
+        No coding projects yet. Add Markdown files with <code>category: technical</code> to <code>src/content/portfolio</code>.
+      </p>
+    ) : (
+      <ul class="grid gap-6 md:grid-cols-2">
+        {technical.map((project) => <ProjectCard project={project} />)}
+      </ul>
+    )}
+  </section>
+</BaseLayout>

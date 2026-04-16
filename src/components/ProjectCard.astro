@@ -6,26 +6,52 @@ interface Props {
 }
 
 const { project } = Astro.props;
+const isLiterary = project.data.category === "literary";
+
+const statusLabel =
+  project.data.status === "in-development"
+    ? isLiterary
+      ? "En desarrollo"
+      : "In development"
+    : project.data.status === "published"
+      ? isLiterary
+        ? "Publicado"
+        : "Published"
+      : isLiterary
+        ? "Planeado"
+        : "Planned";
+
+const statusColorClass = {
+  "planned": "text-gray-600",
+  "in-development": "text-yellow-600",
+  "published": "text-green-600"
+}[project.data.status];
+
+const detailsLabel = isLiterary ? "Leer más" : "Read details";
+const visitLabel = isLiterary ? "Visitar proyecto" : "Visit project";
 ---
 
 <li class="flex h-full flex-col gap-3 rounded-md border border-ink/15 bg-white/40 p-6">
-  {project.data.image && (
-    <img
-      src={project.data.image}
-      alt={`${project.data.name} logo`}
-      class="h-12 w-auto object-contain"
-      loading="lazy"
-    />
-  )}
-  <div class="flex items-start justify-between gap-2">
+  <div class="flex items-start gap-3">
+    {project.data.image && !isLiterary && (
+      <img
+        src={project.data.image}
+        alt={`${project.data.name} logo`}
+        class="h-8 w-8 shrink-0 object-contain"
+        loading="lazy"
+      />
+    )}
     <h3 class="font-serif text-2xl leading-tight">
       <a href={`/portfolio/${project.slug}/`}>{project.data.name}</a>
     </h3>
-    <span class="rounded-full border border-ink/20 px-3 py-1 text-xs uppercase tracking-wide text-muted">
-      {project.data.status === "in-development" ? "In development" : "Published"}
-    </span>
   </div>
-  <p class="text-muted">{project.data.description}</p>
+  {project.data.subtitle && (
+    <p class="text-sm italic text-muted">{project.data.subtitle}</p>
+  )}
+  <p class={`text-sm font-semibold ${statusColorClass}`}>
+    {statusLabel}
+  </p>
+  <p class="text-muted" set:html={project.data.description} />
   {project.data.stack.length > 0 && (
     <ul class="flex flex-wrap gap-2 pt-1 text-sm text-muted">
       {project.data.stack.map((item) => (
@@ -33,13 +59,20 @@ const { project } = Astro.props;
       ))}
     </ul>
   )}
+  {project.data.tags && project.data.tags.length > 0 && (
+    <ul class="flex flex-wrap gap-2 text-sm text-muted">
+      {project.data.tags.map((tag) => (
+        <li class="rounded-full border border-ink/20 px-3 py-1">{tag}</li>
+      ))}
+    </ul>
+  )}
   <p class="pt-1 text-sm">
-    <a href={`/portfolio/${project.slug}/`}>Read details</a>
+    <a href={`/portfolio/${project.slug}/`}>{detailsLabel}</a>
   </p>
   {project.data.url && (
     <p class="text-sm">
       <a href={project.data.url} rel="noreferrer" target="_blank">
-        Visit project
+        {visitLabel}
       </a>
     </p>
   )}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Coding portfolio icon">
+  <rect x="6" y="10" width="52" height="38" rx="4" fill="#1B1F23"/>
+  <rect x="10" y="14" width="44" height="30" rx="2" fill="#11161a"/>
+  <path d="M22 24 L16 29 L22 34" fill="none" stroke="#7dd3fc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M42 24 L48 29 L42 34" fill="none" stroke="#7dd3fc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M35 21 L29 37" fill="none" stroke="#fca5a5" stroke-width="3" stroke-linecap="round"/>
+  <rect x="24" y="50" width="16" height="3" rx="1.5" fill="#3b424b"/>
+</svg>

@@ -1,0 +1,45 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+
+const allProjects = (await getCollection("portfolio")).sort((a, b) => {
+  if (a.data.status === b.data.status) {
+    return a.slug.localeCompare(b.slug);
+  }
+
+  return a.data.status === "in-development" ? -1 : 1;
+});
+
+const literary = allProjects.filter((p) => p.data.category === "literary");
+---
+
+<BaseLayout
+  title="Literary Portfolio | Juan Ramírez"
+  description="Literary projects by Juan Ramírez, written in Spanish."
+>
+  <section class="max-w-4xl space-y-6">
+    <header class="space-y-1">
+      <h1 class="flex items-center gap-3 font-serif text-3xl md:text-4xl">
+        <img
+          src="/images/icons/literary-portfolio.svg"
+          alt=""
+          aria-hidden="true"
+          class="h-8 w-8 shrink-0"
+          loading="lazy"
+        />
+        <span>Literary Portfolio <span class="text-base italic text-muted">(written in Spanish)</span></span>
+      </h1>
+      <p class="text-sm text-muted">{literary.length} project{literary.length === 1 ? "" : "s"}</p>
+    </header>
+    {literary.length === 0 ? (
+      <p class="rounded-md border border-dashed border-ink/25 p-6 text-muted">
+        No literary projects yet. Add Markdown files with <code>category: literary</code> to <code>src/content/portfolio</code>.
+      </p>
+    ) : (
+      <ul class="grid gap-6 md:grid-cols-2">
+        {literary.map((project) => <ProjectCard project={project} />)}
+      </ul>
+    )}
+  </section>
+</BaseLayout>

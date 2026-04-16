@@ -5,6 +5,9 @@ const blog = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
+    image: z.string().optional(),
+    featured_image: z.string().optional(),
+    "featured-image": z.string().optional(),
     tags: z
       .union([z.array(z.string()), z.string()])
       .optional()
@@ -30,11 +33,13 @@ const portfolio = defineCollection({
   type: "content",
   schema: z.object({
     name: z.string(),
+    subtitle: z.string().optional(),
     description: z.string(),
-    status: z.enum(["in-development", "published"]),
+    status: z.enum(["planned", "in-development", "published"]),
     category: z.enum(["technical", "literary"]).default("technical"),
     image: z.string().optional(),
     stack: z.array(z.string()).default([]),
+    tags: z.array(z.string()).optional(),
     url: z.string().url().optional()
   })
 });

@@ -9,14 +9,35 @@ export async function getStaticPaths() {
     params: { slug: project.slug },
     props: { project }
   }));
+
 }
 
 const { project } = Astro.props;
 const { Content } = await render(project);
+const isLiterary = project.data.category === "literary";
+const statusLabel =
+  project.data.status === "in-development"
+    ? isLiterary
+      ? "En desarrollo"
+      : "In development"
+    : project.data.status === "published"
+      ? isLiterary
+        ? "Publicado"
+        : "Published"
+      : isLiterary
+        ? "Planeado"
+        : "Planned";
+const statusColorClass = {
+  "planned": "text-gray-600",
+  "in-development": "text-yellow-600",
+  "published": "text-green-600"
+}[project.data.status];
+const repositoryLabel = isLiterary ? "Visitar proyecto" : "Visit project repository";
+const backLabel = isLiterary ? "Volver al portfolio" : "Back to portfolio";
 ---
 
 <BaseLayout
-  title={`${project.data.name} | Portfolio | Juan Ramirez`}
+  title={`${project.data.name} | Portfolio | Juan Ramírez`}
   description={project.data.description}
   ogType="article"
 >
@@ -30,13 +51,16 @@ const { Content } = await render(project);
           loading="lazy"
         />
       )}
-      <div class="flex flex-wrap items-center gap-3">
+      <div>
         <h1 class="font-serif text-4xl leading-tight md:text-5xl">{project.data.name}</h1>
-        <span class="rounded-full border border-ink/20 px-3 py-1 text-xs uppercase tracking-wide text-muted">
-          {project.data.status === "in-development" ? "In development" : "Published"}
-        </span>
       </div>
-      <p class="text-lg text-muted">{project.data.description}</p>
+      {project.data.subtitle && (
+        <p class="text-lg italic text-muted">{project.data.subtitle}</p>
+      )}
+      <p class={`text-sm font-semibold ${statusColorClass}`}>
+        {statusLabel}
+      </p>
+      <p class="text-lg text-muted" set:html={project.data.description} />
       {project.data.stack.length > 0 && (
         <ul class="flex flex-wrap gap-2 pt-1 text-sm text-muted">
           {project.data.stack.map((item) => (
@@ -44,10 +68,17 @@ const { Content } = await render(project);
           ))}
         </ul>
       )}
+      {project.data.tags && project.data.tags.length > 0 && (
+        <ul class="flex flex-wrap gap-2 text-sm text-muted">
+          {project.data.tags.map((tag) => (
+            <li class="rounded-full border border-ink/20 px-3 py-1">{tag}</li>
+          ))}
+        </ul>
+      )}
       {project.data.url && (
         <p class="text-sm">
           <a href={project.data.url} rel="noreferrer" target="_blank">
-            Visit project repository
+            {repositoryLabel}
           </a>
         </p>
       )}
@@ -58,7 +89,7 @@ const { Content } = await render(project);
     </div>
 
     <p class="text-sm">
-      <a href="/portfolio">Back to portfolio</a>
+      <a href="/portfolio">{backLabel}</a>
     </p>
   </article>
 </BaseLayout>
