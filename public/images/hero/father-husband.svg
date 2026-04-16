@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Father and husband illustration">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f7f4ee"/>
+      <stop offset="100%" stop-color="#efe6d8"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="28" fill="url(#bg)"/>
+  <circle cx="82" cy="102" r="34" fill="#b14623" opacity="0.9"/>
+  <circle cx="174" cy="102" r="34" fill="#1b1f23" opacity="0.9"/>
+  <path d="M58 174c10-20 24-32 40-32s30 12 40 32" fill="none" stroke="#5b5f65" stroke-width="12" stroke-linecap="round"/>
+  <path d="M118 174c10-20 24-32 40-32s30 12 40 32" fill="none" stroke="#5b5f65" stroke-width="12" stroke-linecap="round"/>
+  <path d="M102 130l26 20 26-20" fill="none" stroke="#b14623" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

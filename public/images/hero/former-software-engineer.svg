@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Former software engineer illustration">
+  <rect width="256" height="256" rx="28" fill="#f7f4ee"/>
+  <rect x="32" y="44" width="192" height="136" rx="14" fill="#1b1f23"/>
+  <rect x="44" y="58" width="168" height="110" rx="10" fill="#11161a"/>
+  <path d="M90 102l-24 18 24 18" fill="none" stroke="#7dd3fc" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M166 102l24 18-24 18" fill="none" stroke="#7dd3fc" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M142 90l-18 60" fill="none" stroke="#fca5a5" stroke-width="10" stroke-linecap="round"/>
+  <rect x="88" y="194" width="80" height="10" rx="5" fill="#5b5f65"/>
+</svg>

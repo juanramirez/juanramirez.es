@@ -3,16 +3,25 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout
-  title="Juan Ramirez | Engineer, Writer, and Adaptive Runner"
-  description="Personal website of Juan Ramirez: thoughts on acquired brain injury, technology, and the projects that shape a life in motion."
+  title="Juan Ramírez | Engineer, Writer, and Adaptive Runner"
+  description="Personal website of Juan Ramírez: thoughts on acquired brain injury, technology, and the projects that shape a life in motion."
 >
   <section class="max-w-3xl space-y-7">
     <p class="text-sm uppercase tracking-[0.22em] text-muted">Personal introduction</p>
-    <h1 class="font-serif text-4xl leading-tight md:text-6xl">
-      I am Juan Ramirez: software engineer, writer, and adaptive runner.
-    </h1>
+    <div class="flex items-center gap-5 sm:gap-6">
+      <img
+        id="hero-image"
+        src="/images/profile/juan.jpeg"
+        alt="Juan Ramírez"
+        class="h-36 w-36 rounded-full border border-ink/15 object-cover transition-opacity duration-300 sm:h-44 sm:w-44"
+        loading="lazy"
+      />
+      <h1 class="font-serif text-3xl leading-tight sm:text-4xl md:text-5xl lg:text-6xl">
+        I am <span id="hero-typed" class="font-semibold"></span>
+      </h1>
+    </div>
     <p class="text-lg leading-relaxed text-muted md:text-xl">
-      In 2020, a neurosurgery changed the trajectory of my life. Since then, I have been writing about
+      In 2020, three neurosurgeries changed the trajectory of my life. Since then, I have been writing about
       acquired brain injury, technology, and whatever else feels true and worth sharing.
     </p>
     <p class="text-lg leading-relaxed text-muted md:text-xl">
@@ -20,9 +29,73 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       writing, and ongoing process coexist.
     </p>
     <div class="pt-3 text-base">
-      <a href="/blog">Read the blog</a>
+      <a href="/blog">Read my blog</a>
       <span class="mx-3 text-muted">·</span>
-      <a href="/portfolio">Browse portfolio</a>
+      <a href="/portfolio">Explore my portfolio</a>
     </div>
   </section>
+
+  <script>
+    import Typed from "typed.js";
+
+    const typedTarget = document.querySelector("#hero-typed");
+    const heroImage = document.querySelector("#hero-image");
+
+    const heroStrings = [
+      "Juan Ramírez",
+      "a father and husband",
+      "a former software engineer",
+      "a writer",
+      "an adaptive runner",
+      "an ABI survivor"
+    ];
+
+    const heroImages = [
+      "/images/profile/juan.jpeg",
+      "/images/hero/father-husband.svg",
+      "/images/hero/former-software-engineer.svg",
+      "/images/hero/writer.svg",
+      "/images/hero/adaptive-runner.svg",
+      "/images/hero/abi-survivor.svg"
+    ];
+
+    const setHeroImage = (index: number) => {
+      if (!heroImage) {
+        return;
+      }
+
+      const nextImage = heroImages[index] ?? heroImages[0];
+
+      if (heroImage.getAttribute("src") === nextImage) {
+        return;
+      }
+
+      heroImage.classList.add("opacity-0");
+
+      window.setTimeout(() => {
+        heroImage.setAttribute("src", nextImage);
+        heroImage.classList.remove("opacity-0");
+      }, 120);
+    };
+
+    if (typedTarget) {
+      const typed = new Typed(typedTarget, {
+        strings: heroStrings,
+        typeSpeed: 55,
+        backSpeed: 32,
+        backDelay: 1200,
+        smartBackspace: false,
+        preStringTyped: (arrayPos) => {
+          setHeroImage(arrayPos);
+        },
+        loop: true,
+        showCursor: true,
+        cursorChar: "|"
+      });
+
+      window.addEventListener("pagehide", () => {
+        typed.destroy();
+      });
+    }
+  </script>
 </BaseLayout>

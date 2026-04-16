@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Adaptive runner illustration">
+  <rect width="256" height="256" rx="28" fill="#f7f4ee"/>
+  <circle cx="142" cy="56" r="18" fill="#b14623"/>
+  <path d="M118 84l34 16 24 36" fill="none" stroke="#1b1f23" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M140 98l-28 46" fill="none" stroke="#1b1f23" stroke-width="10" stroke-linecap="round"/>
+  <path d="M112 144l-34 30" fill="none" stroke="#1b1f23" stroke-width="10" stroke-linecap="round"/>
+  <path d="M170 136l32 34" fill="none" stroke="#1b1f23" stroke-width="10" stroke-linecap="round"/>
+  <path d="M36 196c42-18 72-18 114 0" fill="none" stroke="#5b5f65" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="76" cy="184" r="26" fill="none" stroke="#b14623" stroke-width="10"/>
+</svg>

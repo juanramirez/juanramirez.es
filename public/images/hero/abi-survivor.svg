@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="ABI survivor illustration">
+  <rect width="256" height="256" rx="28" fill="#f7f4ee"/>
+  <path d="M128 32c40 0 72 32 72 72s-32 72-72 72-72-32-72-72 32-72 72-72z" fill="#ece6d8"/>
+  <path d="M102 68c-16 8-26 20-26 36 0 30 22 52 52 52 16 0 30-6 40-18" fill="none" stroke="#b14623" stroke-width="10" stroke-linecap="round"/>
+  <path d="M110 74c22 8 34 22 34 44 0 8-2 16-6 24" fill="none" stroke="#1b1f23" stroke-width="8" stroke-linecap="round"/>
+  <path d="M154 192l20 20 38-38" fill="none" stroke="#3f8f63" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
