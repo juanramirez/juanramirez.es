@@ -26,7 +26,7 @@ const toTagSlug = (tag: string) =>
           src="/images/icons/blog-section-newspaper.svg"
           alt=""
           aria-hidden="true"
-          class="h-8 w-8 shrink-0"
+          class="h-10 w-10 shrink-0 md:h-11 md:w-11"
           loading="lazy"
         />
         <span>Blog</span>
@@ -54,6 +54,7 @@ const toTagSlug = (tag: string) =>
                       day: "numeric"
                     })}
                   </time>
+                  {" "}· by {post.data.author}
                 </p>
                 <h2 class="font-serif text-2xl font-semibold leading-tight">
                   <a href={`/blog/${post.slug}/`} set:html={post.data.title}></a>

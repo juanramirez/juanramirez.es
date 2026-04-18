@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import HyvorComments from "../../components/HyvorComments.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -13,6 +14,8 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const hyvorWebsiteId = import.meta.env.PUBLIC_HYVOR_WEBSITE_ID;
+const showComments = post.data.comments;
 
 const toTagSlug = (tag: string) =>
   tag
@@ -33,6 +36,7 @@ const toTagSlug = (tag: string) =>
             day: "numeric"
           })}
         </time>
+        {" "}· by {post.data.author}
       </p>
       <h1 class="font-serif text-4xl leading-tight md:text-5xl" set:html={post.data.title}></h1>
       {post.data.tags.length > 0 && (
@@ -51,8 +55,26 @@ const toTagSlug = (tag: string) =>
       )}
     </header>
 
+    {(post.data.featured_image ?? post.data["featured-image"] ?? post.data.image) && (
+      <img
+        src={post.data.featured_image ?? post.data["featured-image"] ?? post.data.image}
+        alt=""
+        class="mb-8 w-full rounded-lg object-cover"
+        loading="eager"
+      />
+    )}
+
     <div class="prose-body">
       <Content />
     </div>
+
+    {hyvorWebsiteId && showComments && <HyvorComments websiteId={hyvorWebsiteId} pageId={post.slug} />}
+
+    {import.meta.env.DEV && showComments && !hyvorWebsiteId && (
+      <p class="mt-10 rounded-md border border-dashed border-ink/25 p-4 text-sm text-muted">
+        Comments are enabled for this post, but Hyvor is not configured. Set
+        <code>PUBLIC_HYVOR_WEBSITE_ID</code> and restart the dev server.
+      </p>
+    )}
   </article>
 </BaseLayout>

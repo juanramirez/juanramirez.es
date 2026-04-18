@@ -8,6 +8,7 @@ interface PostEntry {
   data: {
     title: string;
     date: Date;
+    author: string;
     excerpt: string;
     tags: string[];
     image?: string;
@@ -98,6 +99,7 @@ const { tagLabel, posts } = Astro.props;
                       day: "numeric"
                     })}
                   </time>
+                  {" "}· by {post.data.author}
                 </p>
                 <h2 class="font-serif text-2xl font-semibold leading-tight">
                   <a href={`/blog/${post.slug}/`} set:html={post.data.title}></a>

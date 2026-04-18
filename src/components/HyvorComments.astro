@@ -1,0 +1,14 @@
+---
+interface Props {
+  websiteId: string;
+  pageId: string;
+}
+
+const { websiteId, pageId } = Astro.props;
+---
+
+<section class="mt-10 border-t border-ink/15 pt-8">
+  <h2 class="mb-4 font-serif text-2xl">Comments</h2>
+  <hyvor-talk-comments website-id={websiteId} page-id={pageId}></hyvor-talk-comments>
+  <script is:inline async type="module" src="https://talk.hyvor.com/embed/embed.js"></script>
+</section>
