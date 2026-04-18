@@ -3,3 +3,7 @@ dist/
 .astro/
 .vercel/
 .DS_Store
+.env.local
+*.swp
+temp/
+unpacked/
