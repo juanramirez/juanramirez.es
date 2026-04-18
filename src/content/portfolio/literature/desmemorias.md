@@ -11,6 +11,7 @@ tags:
 ## Muestra: Capítulo 1
 
 ### Un viaje hacia lo perdido, reconstruyendo lo que el olvido dejó atrás
+<br>
 
 El colmo de un desmemoriado es escribir unas memorias. Este comienzo parece el de un chiste, y sin embargo esta obra no tiene nada que ver con eso. Tiene ante usted el libro de memorias de un desmemoriado. O, dicho de otra forma, un libro de *desmemorias*. Y es que mi intención al escribir este libro es intentar que un no desmemoriado, como seguramente lo es usted, apreciado lector, pueda ponerse en la piel de un amnésico como yo y entender cómo llega alguien a serlo y cómo es su vida diaria.
 

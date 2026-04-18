@@ -11,8 +11,9 @@ tags:
 ## Muestra: El 49%
 
 ### La mitad que se apagó
-
-#### (grado de discapacidad del 49% reconocido el 24/03/2025, con fecha de efectos 05/04/2022)
+#### (grado de discapacidad del 49% reconocido
+#### el 24/03/2025, con fecha de efectos 05/04/2022)
+<br>
 
 Hay una mitad de mí  
 que ya no vive  
