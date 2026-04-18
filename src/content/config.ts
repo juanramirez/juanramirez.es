@@ -37,6 +37,7 @@ const portfolio = defineCollection({
     name: z.string(),
     subtitle: z.string().optional(),
     description: z.string(),
+    comments: z.boolean().default(true),
     status: z.enum(["planned", "in-development", "published"]),
     category: z.enum(["technical", "literary"]).default("technical"),
     image: z.string().optional(),

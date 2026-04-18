@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import HyvorComments from "../../components/HyvorComments.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("portfolio");
@@ -14,6 +15,8 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
+const hyvorWebsiteId = import.meta.env.PUBLIC_HYVOR_WEBSITE_ID;
+const showComments = project.data.comments;
 const isLiterary = project.data.category === "literary";
 const statusLabel =
   project.data.status === "in-development"
@@ -87,6 +90,17 @@ const backLabel = isLiterary ? "Volver al portfolio" : "Back to portfolio";
     <div class="prose-body">
       <Content />
     </div>
+
+    {hyvorWebsiteId && showComments && (
+      <HyvorComments websiteId={hyvorWebsiteId} pageId={`portfolio-${project.slug}`} />
+    )}
+
+    {import.meta.env.DEV && showComments && !hyvorWebsiteId && (
+      <p class="rounded-md border border-dashed border-ink/25 p-4 text-sm text-muted">
+        Comments are enabled for this project, but Hyvor is not configured. Set
+        <code>PUBLIC_HYVOR_WEBSITE_ID</code> and restart the dev server.
+      </p>
+    )}
 
     <p class="text-sm">
       <a href="/portfolio">{backLabel}</a>
