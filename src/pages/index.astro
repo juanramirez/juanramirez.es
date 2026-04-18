@@ -11,7 +11,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <div class="flex items-center gap-5 sm:gap-6">
       <img
         id="hero-image"
-        src="/images/profile/juan.jpeg"
+        src="/images/profile/juan.png"
         alt="Juan Ramírez"
         class="h-36 w-36 rounded-full border border-ink/15 object-cover transition-opacity duration-300 sm:h-44 sm:w-44"
         loading="lazy"
@@ -39,24 +39,24 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     import Typed from "typed.js";
 
     const typedTarget = document.querySelector("#hero-typed");
-    const heroImage = document.querySelector("#hero-image");
+    const heroImage = document.querySelector("#hero-image") as HTMLImageElement | null;
 
     const heroStrings = [
       "Juan Ramírez",
       "a father and husband",
-      "a former software engineer",
+      "a former software developer",
       "a writer",
       "an adaptive runner",
       "an ABI survivor"
     ];
 
     const heroImages = [
-      "/images/profile/juan.jpeg",
-      "/images/hero/father-husband.svg",
-      "/images/hero/former-software-engineer.svg",
+      "/images/profile/juan.png",
+      "/images/hero/father-husband.jpeg",
+      "/images/hero/developer.png",
       "/images/hero/writer.svg",
-      "/images/hero/adaptive-runner.svg",
-      "/images/hero/abi-survivor.svg"
+      "/images/hero/adaptive-runner.png",
+      "/images/hero/abi-survivor.jpeg"
     ];
 
     const setHeroImage = (index: number) => {
@@ -78,6 +78,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       }, 120);
     };
 
+    setHeroImage(0);
+
     if (typedTarget) {
       const typed = new Typed(typedTarget, {
         strings: heroStrings,
@@ -86,6 +88,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         backDelay: 1200,
         smartBackspace: false,
         preStringTyped: (arrayPos) => {
+          setHeroImage(arrayPos);
+        },
+        onStringTyped: (arrayPos) => {
           setHeroImage(arrayPos);
         },
         loop: true,
