@@ -1,6 +1,7 @@
 ---
 title:  "Hello and welcome!"
 date:   2021-04-02 08:30:00 +0200
+author: "Juan Ramírez"
 categories: ABI about-me
 featured-image: /assets/images/posts/hello-and-welcome.jpg
 excerpt: Hello and welcome! I’m Juan Ramírez, a 37-year-old software developer working at Telefónica (but now on sick leave). I decided to write this blog in March 2021 after suffering a brain surgery a year before, as a way to share my personal experience as ABI affected, and also as a way to test my English skills after that. Please consider this blog in development for the moment (I hope to be able to remove this sentence someday).
@@ -14,7 +15,7 @@ Hello and welcome! I'm Juan Ramírez, a 37-year-old software developer working a
 I decided to write this blog in March 2021 after suffering a **brain surgery** a year before, as a way to share my personal experience as [ABI](https://en.wikipedia.org/wiki/Acquired_brain_injury) affected, and also as a way to test my English skills after that.
 Please consider this blog __in development__ for the moment (I hope to be able to remove this sentence someday).
 
-~~_I seem to remember_ (I use **a lot** this expression now) that in the past I had a different blog somewhere, but I just couldn't find it.~~ (I've crossed out this text because I already found the posts of my old development blog and I'm gonna add them here with their original date). I think that this could be related to my memory problems. Following the latest report from my [neuropsychologyst](https://en.wikipedia.org/wiki/Neuropsychology), I have two different kinds of memory sequels after the process:
+~~_I seem to remember_ (I use **a lot** this expression now) that in the past I had a different blog somewhere, but I just couldn't find it.~~ (I've crossed out this text because I already found the posts of my old development blog and I'm gonna add them here with their original date). I think that this could be related to my memory problems. Following the latest report from my [neuropsychologist](https://en.wikipedia.org/wiki/Neuropsychology), I have two different kinds of memory sequels after the process:
 
 a) I can't remember a lot of things which happened or which I learned **before** the process, especially in the latest 3-4 years before (this seems to be called [retrograde amnesia](https://en.wikipedia.org/wiki/Retrograde_amnesia), and
 

@@ -1,6 +1,7 @@
 ---
 title: "Epilepsy in the context of ABI"
 date: 2021-07-09 09:30:00 +0200
+author: "Juan Ramírez"
 tags:
   - epilepsy
   - sequels

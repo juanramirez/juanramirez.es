@@ -1,6 +1,7 @@
 ---
 title:  "How it all started"
 date:   2021-04-19 08:30:00 +0200
+author: "Juan Ramírez"
 featured_image: /images/posts/how-it-all-started.jpg
 categories: ABI
 excerpt: I seem to remember having rare headaches in December 2019. I asked her because they only were manifested with what is called Valsalva maneuvers, like sneezing, for example. I went to the hospital to undergo a NMR and after it, the doctor told us that I had to have urgent surgery in my head because of that thing they had found.

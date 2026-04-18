@@ -1,13 +1,13 @@
 ---
 title: "Bradypsychia and music"
 date: 2021-08-10 19:15:46 +0200
+author: "Juan Ramírez"
 image: "/assets/images/posts/bradypsychia-and-music.jpg"
 tags:
-  - ABI
+  - abi
   - caregiving
   - neurology
   - sequels
-  - english
 excerpt: "After Juan's surgery, bradypsychia and bradylalia became very noticeable, but music seemed to help speed up his responses."
 ---
 

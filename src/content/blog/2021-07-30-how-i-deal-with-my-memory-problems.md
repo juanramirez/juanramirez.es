@@ -1,11 +1,11 @@
 ---
 title: "How I deal with my memory problems"
 date: 2021-07-30 16:39:31 +0200
+author: "Juan Ramírez"
 image: "/assets/images/posts/how-i-deal-with-my-memory-problems.jpg"
 tags:
-  - ABI
+  - abi
   - memory
-  - english
 excerpt: "I explain how I use a notebook and mnemonics to cope with memory difficulties after brain surgery."
 ---
 

@@ -1,11 +1,11 @@
 ---
 title: "Physical sequels of a brain surgery (II)"
 date: 2021-05-16 13:00:00 +0200
+author: "Juan Ramírez"
 tags:
-  - Physical rehab
+  - rehabilitation
 image: '/assets/images/posts/running.png'
 excerpt: 'Before being hospitalized, I used to do running workouts three or four times a week, depending on several factors. Also, I liked taking part in running races every two or three weeks. I also ran some marathons and half-marathons (although I preferred shorter races because I liked running faster more than running longer).'
-
 ---
 
 **Note:** This post has been moved from [my old Wordpress personal blog](http://juanramirezweblog.wordpress.com), which I don't expect to update anymore. 

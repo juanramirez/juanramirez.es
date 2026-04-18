@@ -1,6 +1,7 @@
 ---
 title: "Other symptoms derived from amnesia"
 date: 2021-06-04 09:30:00 +0200
+author: "Juan Ramírez"
 tags:
   - amnesia
   - memory

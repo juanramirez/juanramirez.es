@@ -1,6 +1,7 @@
 ---
 title: "Confusion and delirium after my brain surgery"
 date: 2021-05-18 09:00:00 +0200
+author: "Juan Ramírez"
 tags:
   - sequels
 image: '/assets/images/post/surrealism.jpg'

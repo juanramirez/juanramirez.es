@@ -1,8 +1,9 @@
 ---
 title: "7 tips to have your code better reviewed [<em>recovered post</em>]"
 date: 2021-08-29 13:30:00 +0200
+author: "Juan Ramírez"
 tags:
-  - code review
+  - code-review
 featured-image: "/assets/images/code_review.png"
 featured-image-alt: Code reviews are a fantastic way to keep all the team on the same page
 excerpt: "Code reviews are a fantastic way to keep all the team on the same page and encourage everybody to follow best coding practices. Here you have tips to avoid your code reviews to become painful or useless."

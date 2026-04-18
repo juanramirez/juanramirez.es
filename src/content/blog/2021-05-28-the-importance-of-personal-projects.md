@@ -1,7 +1,8 @@
 ---
 title: "The importance of personal projects"
 date: 2021-05-28 09:30:00 +0200
-tags: projects NeuroLink
+author: "Juan Ramírez"
+tags: [projects, neurolink]
 image: '/assets/images/posts/piano.jpg'
 excerpt: "Maybe one of the most important pieces of my ongoing recovery is having **personal projects** I can invest my time and energy in. Of course, my main project now is my rehabilitation, as a whole. But I also think it's good complementing it with other things, which I could also hopefully continue with, once I end with my, let's call it official, rehabilitation process."
 

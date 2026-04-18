@@ -1,6 +1,7 @@
 ---
 title: "Neuroplasticity: why is it important"
 date: 2021-05-24 09:30:00 +0200
+author: "Juan Ramírez"
 tags:
   - neurology
 image: '/assets/images/post/neuroplasticity.jpg'
