@@ -16,8 +16,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         class="h-36 w-36 rounded-full border border-ink/15 object-cover transition-opacity duration-300 sm:h-44 sm:w-44"
         loading="lazy"
       />
-      <h1 class="font-serif text-3xl leading-tight sm:text-4xl md:text-5xl lg:text-6xl">
-        I am <span id="hero-typed" class="font-semibold"></span>
+      <h1 class="hero-title min-w-0 flex-1 font-serif leading-tight">
+        <span class="hero-line"><span id="hero-intro" class="font-semibold"></span></span>
+        <span id="hero-subline" class="hero-line hero-subline">
+          <span class="hero-prefix">I'm </span>
+          <span id="hero-typed" class="hero-typed-live font-semibold"></span>
+        </span>
       </h1>
     </div>
     <p class="text-lg leading-relaxed text-muted md:text-xl">
@@ -38,33 +42,48 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <script>
     import Typed from "typed.js";
 
+    const introTarget = document.querySelector("#hero-intro");
     const typedTarget = document.querySelector("#hero-typed");
+    const heroSubline = document.querySelector("#hero-subline");
+    const prefixTarget = document.querySelector(".hero-prefix");
     const heroImage = document.querySelector("#hero-image") as HTMLImageElement | null;
+    const defaultHeroImage = "/images/profile/juan.png";
+    const defaultBackDelay = 1200;
+    const introStartDelay = 250;
+    const secondLineDelay = 450;
+    const introText = "I am Juan Ramírez";
 
     const heroStrings = [
-      "Juan Ramírez",
+      "an ABI survivor",
       "a father and husband",
-      "a former software developer",
       "a writer",
       "an adaptive runner",
-      "an ABI survivor"
+      "a former software developer"
     ];
+    const firstHeroString = heroStrings[0];
+    const loopHeroStrings = [...heroStrings.slice(1), firstHeroString];
 
     const heroImages = [
-      "/images/profile/juan.png",
+      "/images/hero/abi-survivor.jpeg",
       "/images/hero/father-husband.jpeg",
-      "/images/hero/developer.png",
       "/images/hero/writer.svg",
       "/images/hero/adaptive-runner.png",
-      "/images/hero/abi-survivor.jpeg"
+      "/images/hero/developer.png",
     ];
+    const firstHeroImage = heroImages[0];
+    const loopHeroImages = [...heroImages.slice(1), firstHeroImage];
 
-    const setHeroImage = (index: number) => {
+    const typingSpeed = 45;
+    const deletingSpeed = 25;
+
+    const setHeroImage = (indexOrSrc: number | string) => {
       if (!heroImage) {
         return;
       }
 
-      const nextImage = heroImages[index] ?? heroImages[0];
+      const nextImage = typeof indexOrSrc === "string"
+        ? indexOrSrc
+        : (heroImages[indexOrSrc] ?? heroImages[0]);
 
       if (heroImage.getAttribute("src") === nextImage) {
         return;
@@ -78,29 +97,204 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       }, 120);
     };
 
-    setHeroImage(0);
+    setHeroImage(defaultHeroImage);
 
-    if (typedTarget) {
-      const typed = new Typed(typedTarget, {
-        strings: heroStrings,
-        typeSpeed: 55,
-        backSpeed: 32,
-        backDelay: 1200,
+    const heroTitle = document.querySelector(".hero-title") as HTMLElement | null;
+
+    const fitSubline = () => {
+      if (!(heroTitle instanceof HTMLElement) || !(heroSubline instanceof HTMLElement)) return;
+      heroSubline.style.fontSize = "";
+      const available = heroTitle.clientWidth;
+      if (available <= 0) return;
+
+      const sublineWidth = Array.from(heroSubline.children)
+        .reduce((sum, el) => sum + (el as HTMLElement).scrollWidth, 0);
+      const cursorBuffer = 14;
+      const required = sublineWidth + cursorBuffer;
+
+      if (required > available) {
+        const base = parseFloat(getComputedStyle(heroSubline).fontSize);
+        const safety = 0.96;
+        const minSize = 14;
+        const nextSize = Math.max(minSize, base * (available / required) * safety);
+        heroSubline.style.fontSize = `${nextSize.toFixed(1)}px`;
+      }
+    };
+
+    const sublineObserver = new MutationObserver(fitSubline);
+    if (heroSubline instanceof HTMLElement) {
+      sublineObserver.observe(heroSubline, { characterData: true, subtree: true, childList: true });
+    }
+    window.addEventListener("resize", fitSubline);
+
+    let introTyped: Typed | undefined;
+    let firstPrefixTyped: Typed | undefined;
+    let firstLoopTyped: Typed | undefined;
+    let loopTyped: Typed | undefined;
+
+    const startLoop = () => {
+      if (!(typedTarget instanceof HTMLElement)) {
+        return;
+      }
+
+      typedTarget.textContent = "";
+      heroSubline?.classList.add("has-prefix", "is-visible");
+      window.requestAnimationFrame(fitSubline);
+
+      loopTyped = new Typed(typedTarget, {
+        strings: loopHeroStrings,
+        typeSpeed: typingSpeed,
+        backSpeed: deletingSpeed,
+        startDelay: secondLineDelay,
+        backDelay: defaultBackDelay,
         smartBackspace: false,
         preStringTyped: (arrayPos) => {
-          setHeroImage(arrayPos);
+          setHeroImage(loopHeroImages[arrayPos] ?? loopHeroImages[0]);
         },
         onStringTyped: (arrayPos) => {
-          setHeroImage(arrayPos);
+          setHeroImage(loopHeroImages[arrayPos] ?? loopHeroImages[0]);
         },
         loop: true,
         showCursor: true,
-        cursorChar: "|"
+        cursorChar: "_"
       });
+    };
 
-      window.addEventListener("pagehide", () => {
-        typed.destroy();
+    if (introTarget instanceof HTMLElement) {
+      introTyped = new Typed(introTarget, {
+        strings: [introText],
+        typeSpeed: typingSpeed,
+        startDelay: introStartDelay,
+        showCursor: true,
+        cursorChar: "_",
+        onComplete: (self) => {
+          if (self.cursor?.parentNode) {
+            self.cursor.parentNode.removeChild(self.cursor);
+          }
+
+          introTarget.textContent = introText;
+
+          if (!(typedTarget instanceof HTMLElement)) {
+            return;
+          }
+
+          heroSubline?.classList.add("is-visible", "has-prefix");
+          introTarget.classList.add("is-dimmed");
+          setHeroImage(firstHeroImage);
+          window.requestAnimationFrame(fitSubline);
+
+          if (!(prefixTarget instanceof HTMLElement)) {
+            return;
+          }
+
+          prefixTarget.textContent = "";
+          typedTarget.textContent = "";
+
+          firstPrefixTyped = new Typed(prefixTarget, {
+            strings: ["I'm "],
+            typeSpeed: typingSpeed,
+            startDelay: 180,
+            showCursor: false,
+            onComplete: () => {
+              prefixTarget.textContent = "I'm ";
+
+              firstLoopTyped = new Typed(typedTarget, {
+                strings: [firstHeroString, ""],
+                typeSpeed: typingSpeed,
+                backSpeed: deletingSpeed,
+                backDelay: defaultBackDelay,
+                loop: false,
+                showCursor: true,
+                cursorChar: "_",
+                onComplete: (firstPass) => {
+                  if (firstPass.cursor?.parentNode) {
+                    firstPass.cursor.parentNode.removeChild(firstPass.cursor);
+                  }
+
+                  window.setTimeout(startLoop, 220);
+                }
+              });
+            }
+          });
+        }
       });
+    } else {
+      startLoop();
     }
+
+    window.addEventListener("pagehide", () => {
+      introTyped?.destroy();
+      firstPrefixTyped?.destroy();
+      firstLoopTyped?.destroy();
+      loopTyped?.destroy();
+      sublineObserver.disconnect();
+    });
   </script>
+
+  <style>
+    .hero-title {
+      display: flex;
+      flex-direction: column;
+      font-size: clamp(1.5rem, 5vw, 3.75rem);
+    }
+
+    .hero-line {
+      display: block;
+    }
+
+    #hero-intro {
+      white-space: nowrap;
+      transition: opacity 1400ms 2000ms ease, filter 1400ms 2000ms ease;
+    }
+
+    #hero-intro.is-dimmed {
+      opacity: 0.25;
+      filter: blur(1.5px);
+    }
+
+    .hero-subline {
+      opacity: 0;
+      max-height: 0;
+      margin-top: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      transition: max-height 420ms ease, margin-top 420ms ease, opacity 300ms 120ms ease;
+    }
+
+    .hero-subline .hero-prefix {
+      display: none;
+    }
+
+    .hero-subline.is-visible {
+      opacity: 1;
+      max-height: 4rem;
+      margin-top: 0.12em;
+    }
+
+    .hero-subline.has-prefix .hero-prefix {
+      display: inline;
+    }
+
+    .hero-prefix,
+    .hero-typed-live {
+      white-space: nowrap;
+    }
+
+    .hero-typed-live {
+      min-width: 1ch;
+    }
+
+    .typed-cursor {
+      animation: blink 1.4s infinite;
+    }
+
+    @keyframes blink {
+      0%, 49% {
+        opacity: 1;
+      }
+      50%, 100% {
+        opacity: 0;
+      }
+    }
+  </style>
 </BaseLayout>
