@@ -72,9 +72,15 @@ const { tagLabel, posts } = Astro.props;
 >
   <section class="max-w-3xl space-y-8">
     <header class="space-y-3">
-      <p>
-        <a href="/blog/" class="text-sm no-underline decoration-transparent">Back to all posts</a>
-      </p>
+      <nav aria-label="Breadcrumb" class="text-sm text-muted">
+        <ol class="flex flex-wrap items-center gap-2">
+          <li><a href="/">Home</a></li>
+          <li aria-hidden="true">/</li>
+          <li><a href="/blog/">Blog</a></li>
+          <li aria-hidden="true">/</li>
+          <li class="text-ink/80">Tag: {tagLabel}</li>
+        </ol>
+      </nav>
       <h1 class="font-serif text-3xl md:text-4xl">Tag: {tagLabel}</h1>
     </header>
 
