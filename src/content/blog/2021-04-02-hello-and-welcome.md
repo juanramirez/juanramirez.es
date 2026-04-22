@@ -8,8 +8,6 @@ excerpt: Hello and welcome! I’m Juan Ramírez, a 37-year-old software develope
 
 ---
 
-![Welcome!](/../assets/images/posts/hello-and-welcome.jpg)
-
 Hello and welcome! I'm Juan Ramírez, a 37-year-old software developer working at [Telefónica](http://www.telefonica.com) (but now on sick leave). I was born in [Cádiz](https://www.google.com/maps/place/Cadiz). For years I lived in [Chiclana](https://www.google.com/maps/place/Chiclana), [Cádiz](https://www.google.com/maps/place/Cadiz), [Granada](https://www.google.com/maps/place/Granada) and [Madrid](https://www.google.com/maps/place/Madrid), but now I live in [Ronda](https://www.google.com/maps/place/Ronda) (all of them, except Madrid, are cities in [Andalusia](https://www.google.com/maps/place/Andalusia), Spain).
 
 I decided to write this blog in March 2021 after suffering a **brain surgery** a year before, as a way to share my personal experience as [ABI](https://en.wikipedia.org/wiki/Acquired_brain_injury) affected, and also as a way to test my English skills after that.

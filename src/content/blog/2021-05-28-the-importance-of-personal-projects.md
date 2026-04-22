@@ -8,8 +8,6 @@ excerpt: "Maybe one of the most important pieces of my ongoing recovery is havin
 
 ---
 
-![Me playing piano](/assets/images/posts/piano.jpg)
-
 Maybe one of the most important pieces of my ongoing recovery is having **personal projects** I can invest my time and energy in. Of course, my main project now is _my rehabilitation_, as a whole. But I also think it’s good complementing it with other little things, which I could also hopefully continue with, once I end with my, let’s call it _official_, rehabilitation process. On the one hand, I think they help me to feel active and not to feel that I’m just _wasting my time_ into something which sometimes looks like will never end; on the other hand, I want to believe they will help me to recover my previous roles in the future.
 
 One of the personal projects I’m investing my time in is **writing this blog**. As I believe I already mentioned, I post here basically for two reasons: a) because I think my experience could maybe help other people in similar situations, now or in the future; b) to exercise my English writing skills.

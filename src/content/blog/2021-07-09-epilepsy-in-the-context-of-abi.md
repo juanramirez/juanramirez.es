@@ -12,8 +12,6 @@ excerpt: "A nervous system is similar to an electrical circuit. If you cut an el
 
 **Note:** This post has been moved from [my old Wordpress personal blog](http://juanramirezweblog.wordpress.com), which I don't expect to update anymore.
 
-![Epilepsy](/assets/images/posts/epilepsy.jpeg)
-
 The nervous system is similar to an electrical circuit. If you cut an electrical wire in a circuit, an accidental connection between two points of different potential can happen. When electrical circuits in the brain are cut due to a stroke (or a surgery, in my case), abnormal electrical activity can be generated in several parts of the brain. These kind of abnormal electrical activity episodes may appear in the form of [epilepsy](https://en.wikipedia.org/wiki/Epilepsy).
 
 The first times I had this kind of epileptical attacks, I didn’t notice them, but my wife told me the following mornings that I had had them the night before. Later, I learned that the brain intentionally _switches off_ when these episodes ocurrs as a _defense mechanism_ because they are too stressful for it to be recorded.

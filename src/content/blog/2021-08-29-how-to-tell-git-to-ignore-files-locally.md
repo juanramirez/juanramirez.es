@@ -12,8 +12,6 @@ excerpt: "Excluding files for being versioned in Git is easy through the use of 
 
 <div class="recovered-note"><strong>Note:</strong> This post has been recovered from my archive after having been lost <a href="http://localhost:4000/abi/about-me/hello-and-welcome/">due to my brain injury</a>. It was originally posted in my old development blog on August 1st, 2017.</div>
 
-![git](/assets/images/posts/how-to-tell-git-to-ignore-files-locally-solid.png)
-
 Excluding files for being versioned in Git is easy [through the use of the widely known `.gitignore` file](https://git-scm.com/docs/gitignore).
 
 This `.gitignore` file is normally **versioned**.

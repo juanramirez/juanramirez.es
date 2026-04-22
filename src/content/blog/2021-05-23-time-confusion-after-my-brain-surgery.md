@@ -11,8 +11,6 @@ excerpt: "I think one of the most difficult to explain consequence of my brain i
 
 **Note:** This post has been moved from [my old Wordpress blog](http://juanramirezweblog.wordpress.com), which I don't expect to update anymore. 
 
-![Surreal time](/assets/images/posts/time-surrealism.jpg)
-
 I think one of the most difficult to explain consequence of my brain injury is **time confusion**. If someone asks you what day we are on, you’ll probably be able to answer with security and confidence in just milliseconds, or at least seconds.
 
 I know It’s maybe difficult to understand, but I wasn’t able to answer with that confidence the first weeks after my surgery. I know this sounds rare, but I wasn’t even able to know what **year** I was on. Yes, I knew how to look for the day and the year in my smartphone’s calendar, but It’s like one part of my brain was pretty sure of having already lived in that year (say 2021), and the other part of my brain saw that year like _the future_. Somehow I felt like Marty McFly, travelling through time.

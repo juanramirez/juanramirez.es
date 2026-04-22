@@ -10,8 +10,6 @@ excerpt: 'Before being hospitalized, I used to do running workouts three or four
 
 **Note:** This post has been moved from [my old Wordpress personal blog](http://juanramirezweblog.wordpress.com), which I don't expect to update anymore. 
 
-![Me running](/assets/images/posts/running.png)
-
 Before being hospitalized, I used to do running workouts three or four times a week, depending on several factors. Also, I liked taking part in running races every two or three weeks. I also ran some marathons and half-marathons (although I preferred shorter races because I liked running faster more than running longer). Normally, I used to plan my own workouts, although in some of the last few years I preferred to delegate in either [AI](https://www.trainasone.com/) or human coaches.
 
 For example, the day before the NMR where the tumor appeared, my wife was on-duty in the hospital, and I had a lot of time alone (it was Sunday), so I did [a 17km workout through Ronda roads](https://www.strava.com/activities/3125997764) (17km was a considerable distance comparing it with the rest of my workouts). I did it pretty fast (4:40 min/km), taking into account that Ronda is not precisely a flat city, so running through Ronda isn’t normally easy.
