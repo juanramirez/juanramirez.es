@@ -4,7 +4,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import HyvorComments from "../../components/HyvorComments.astro";
 
 export async function getStaticPaths() {
-  const projects = await getCollection("portfolio");
+  const projects = (await getCollection("portfolio")).filter((project) => !project.data.hidden);
 
   return projects.map((project) => ({
     params: { slug: project.slug },
@@ -37,6 +37,10 @@ const statusColorClass = {
 }[project.data.status];
 const repositoryLabel = isLiterary ? "Visitar proyecto" : "Visit project repository";
 const backLabel = isLiterary ? "Volver al portfolio" : "Back to portfolio";
+const writtenDateLabel = isLiterary ? "Fecha de escritura" : "Written";
+const publishedDateLabel = isLiterary ? "Fecha de publicacion" : "Published";
+const sectionLabel = isLiterary ? "Literary Portfolio" : "Coding Portfolio";
+const sectionHref = isLiterary ? "/literary-portfolio/" : "/coding-portfolio/";
 ---
 
 <BaseLayout
@@ -45,8 +49,18 @@ const backLabel = isLiterary ? "Volver al portfolio" : "Back to portfolio";
   ogType="article"
 >
   <article class="mx-auto max-w-3xl space-y-8">
+    <nav aria-label="Breadcrumb" class="text-sm text-muted">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a href="/portfolio/">Portfolio</a></li>
+        <li aria-hidden="true">/</li>
+        <li><a href={sectionHref}>{sectionLabel}</a></li>
+        <li aria-hidden="true">/</li>
+        <li class="text-ink/80">{project.data.name}</li>
+      </ol>
+    </nav>
+
     <header class="space-y-4 border-b border-ink/15 pb-6">
-      {project.data.image && (
+      {!isLiterary && project.data.image && (
         <img
           src={project.data.image}
           alt={`${project.data.name} logo`}
@@ -54,37 +68,65 @@ const backLabel = isLiterary ? "Volver al portfolio" : "Back to portfolio";
           loading="lazy"
         />
       )}
-      <div>
-        <h1 class="font-serif text-4xl leading-tight md:text-5xl">{project.data.name}</h1>
+
+      <div
+        class:list={[
+          isLiterary && project.data.image && "grid gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-start"
+        ]}
+      >
+        <div class="space-y-4">
+          <div>
+            <h1 class="font-serif text-4xl leading-tight md:text-5xl">{project.data.name}</h1>
+          </div>
+          {project.data.subtitle && (
+            <p class="text-lg italic text-muted">{project.data.subtitle}</p>
+          )}
+          <p class={`text-sm font-semibold ${statusColorClass}`}>
+            {statusLabel}
+          </p>
+          {(project.data.written_date || project.data.published_date) && (
+            <ul class="space-y-1 text-sm text-muted">
+              {project.data.written_date && (
+                <li><strong>{writtenDateLabel}:</strong> {project.data.written_date}</li>
+              )}
+              {project.data.published_date && (
+                <li><strong>{publishedDateLabel}:</strong> {project.data.published_date}</li>
+              )}
+            </ul>
+          )}
+          <p class="text-lg text-muted" set:html={project.data.description} />
+          {project.data.stack.length > 0 && (
+            <ul class="flex flex-wrap gap-2 pt-1 text-sm text-muted">
+              {project.data.stack.map((item) => (
+                <li class="rounded-full border border-ink/20 px-3 py-1">{item}</li>
+              ))}
+            </ul>
+          )}
+          {project.data.tags && project.data.tags.length > 0 && (
+            <ul class="flex flex-wrap gap-2 text-sm text-muted">
+              {project.data.tags.map((tag) => (
+                <li class="rounded-full border border-ink/20 px-3 py-1">{tag}</li>
+              ))}
+            </ul>
+          )}
+          {project.data.url && (
+            <p class="text-sm">
+              <a href={project.data.url} rel="noreferrer" target="_blank">
+                {repositoryLabel}
+              </a>
+            </p>
+          )}
+        </div>
+
+        {isLiterary && project.data.image && (
+          <img
+            src={project.data.image}
+            alt={`Portada de ${project.data.name}`}
+            class="h-auto w-full max-w-xs rounded-md border border-ink/15 object-cover shadow-sm md:justify-self-end"
+            loading="lazy"
+          />
+        )}
       </div>
-      {project.data.subtitle && (
-        <p class="text-lg italic text-muted">{project.data.subtitle}</p>
-      )}
-      <p class={`text-sm font-semibold ${statusColorClass}`}>
-        {statusLabel}
-      </p>
-      <p class="text-lg text-muted" set:html={project.data.description} />
-      {project.data.stack.length > 0 && (
-        <ul class="flex flex-wrap gap-2 pt-1 text-sm text-muted">
-          {project.data.stack.map((item) => (
-            <li class="rounded-full border border-ink/20 px-3 py-1">{item}</li>
-          ))}
-        </ul>
-      )}
-      {project.data.tags && project.data.tags.length > 0 && (
-        <ul class="flex flex-wrap gap-2 text-sm text-muted">
-          {project.data.tags.map((tag) => (
-            <li class="rounded-full border border-ink/20 px-3 py-1">{tag}</li>
-          ))}
-        </ul>
-      )}
-      {project.data.url && (
-        <p class="text-sm">
-          <a href={project.data.url} rel="noreferrer" target="_blank">
-            {repositoryLabel}
-          </a>
-        </p>
-      )}
     </header>
 
     <div class="prose-body">

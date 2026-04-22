@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const allProjects = await getCollection("portfolio");
+const allProjects = (await getCollection("portfolio")).filter((p) => !p.data.hidden);
 const technicalProjects = allProjects
   .filter((p) => p.data.category === "technical")
   .sort((a, b) => a.data.name.localeCompare(b.data.name));
@@ -18,6 +18,14 @@ const literaryCount = literaryProjects.length;
   description="Personal portfolio of technical and literary projects by Juan Ramírez."
 >
   <section class="max-w-4xl space-y-8">
+    <nav aria-label="Breadcrumb" class="text-sm text-muted">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a href="/">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li class="text-ink/80">Portfolio</li>
+      </ol>
+    </nav>
+
     <header class="space-y-2">
       <h1 class="flex items-center gap-3 font-serif text-4xl md:text-5xl">
         <img
