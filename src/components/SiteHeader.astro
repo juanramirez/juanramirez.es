@@ -40,6 +40,9 @@ const navItems: NavItem[] = navLanguage === "es"
       },
     ];
 
+const closeLabel = navLanguage === "es" ? "Cerrar menú" : "Close menu";
+const openLabel = navLanguage === "es" ? "Abrir menú" : "Open menu";
+
 const currentPath = Astro.url.pathname;
 const showProfilePhoto = currentPath !== "/";
 ---
@@ -57,8 +60,10 @@ const showProfilePhoto = currentPath !== "/";
       )}
       <span class="font-serif text-2xl tracking-tight">Juan Ramírez</span>
     </a>
-    <nav aria-label="Main navigation">
-      <ul class="flex gap-4 text-sm md:gap-6 md:text-base">
+
+    <!-- Desktop nav (md+) -->
+    <nav aria-label="Main navigation" class="hidden md:block">
+      <ul class="flex gap-6 text-base">
         {navItems.map((item) => {
           if (item.children) {
             const isGroupActive = item.children.some(
@@ -131,5 +136,116 @@ const showProfilePhoto = currentPath !== "/";
         })}
       </ul>
     </nav>
+
+    <!-- Hamburger button (mobile only) -->
+    <button
+      id="mobile-menu-toggle"
+      type="button"
+      class="flex md:hidden items-center justify-center rounded-md p-2 text-ink transition-colors hover:text-accent"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label={openLabel}
+    >
+      <svg id="icon-menu" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <svg id="icon-close" class="h-6 w-6 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile menu drawer -->
+  <div
+    id="mobile-menu"
+    class="hidden md:hidden border-t border-ink/15 bg-paper"
+    aria-label="Mobile navigation"
+  >
+    <nav class="content-grid py-4">
+      <ul class="space-y-1">
+        {navItems.map((item) => {
+          if (item.children) {
+            return (
+              <li>
+                <p class="px-2 pt-3 pb-1 text-xs uppercase tracking-widest text-muted">{item.label}</p>
+                <ul>
+                  {item.children.map((child) => {
+                    const isActive =
+                      currentPath === child.href ||
+                      currentPath.startsWith(`${child.href}/`);
+                    return (
+                      <li>
+                        <a
+                          href={child.href}
+                          class:list={[
+                            "block rounded-md px-3 py-2 text-base",
+                            isActive
+                              ? "font-medium text-accent"
+                              : "text-ink hover:text-accent",
+                          ]}
+                        >
+                          {child.label}
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            );
+          }
+
+          const isActive =
+            currentPath === item.href ||
+            currentPath.startsWith(`${item.href}/`);
+          return (
+            <li>
+              <a
+                href={item.href}
+                class:list={[
+                  "block rounded-md px-3 py-2 text-base",
+                  isActive
+                    ? "font-medium text-accent"
+                    : "text-ink hover:text-accent",
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
   </div>
 </header>
+
+<script define:vars={{ openLabel, closeLabel }}>
+  const toggle = document.getElementById("mobile-menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+  const iconMenu = document.getElementById("icon-menu");
+  const iconClose = document.getElementById("icon-close");
+
+  if (toggle && menu) {
+    toggle.addEventListener("click", () => {
+      const isOpen = menu.classList.contains("hidden");
+      menu.classList.toggle("hidden", !isOpen);
+      toggle.setAttribute("aria-expanded", String(isOpen));
+      toggle.setAttribute("aria-label", isOpen ? closeLabel : openLabel);
+      iconMenu?.classList.toggle("hidden", isOpen);
+      iconClose?.classList.toggle("hidden", !isOpen);
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !menu.classList.contains("hidden")) {
+        menu.classList.add("hidden");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", openLabel);
+        iconMenu?.classList.remove("hidden");
+        iconClose?.classList.add("hidden");
+        toggle.focus();
+      }
+    });
+  }
+</script>
