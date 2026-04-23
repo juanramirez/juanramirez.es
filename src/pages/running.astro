@@ -1,0 +1,130 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import RunningIntro from "../components/RunningIntro.astro";
+
+const records = [
+  {
+    distance: "1K",
+    time: "2:57.7",
+    race: "Test 1K",
+    date: "14 Sep 2016",
+    link: null,
+  },
+  {
+    distance: "1 mile",
+    time: "5:01.5",
+    race: "Milla de Suanzes",
+    date: "27 Sep 2014",
+    link: "https://atletismomadrid.com/index.php?Itemid=120&catid=28&id=3937&option=com_content&view=article",
+  },
+  {
+    distance: "5K",
+    time: "17:46",
+    race: "Carrera Azul del Autismo",
+    date: "2 Apr 2017",
+    link: null,
+  },
+  {
+    distance: "10K",
+    time: "36:59",
+    race: "Carrera Popular Memorial Padre Marcelino",
+    date: "23 Apr 2017",
+    link: "https://sportmaniacs.com/es/races/17-carrera-popular-memorial-padre-marcelino",
+  },
+  {
+    distance: "Half marathon",
+    time: "1:21:00",
+    race: "EDP Media Maratón de Sevilla",
+    date: "29 Jan 2017",
+    link: "https://sportmaniacs.com/en/races/edp-media-maraton-de-sevilla-2017",
+  },
+  {
+    distance: "Marathon",
+    time: "2:55:30",
+    race: "Zurich Maratón de Sevilla",
+    date: "19 Feb 2017",
+    link: "https://www.zurichmaratonsevilla.es/mse-clasificaciones-2017",
+  },
+];
+---
+
+<BaseLayout
+  title="Running | Juan Ramírez"
+  description="Running activities and performance tracking by Juan Ramírez."
+>
+  <section class="max-w-4xl space-y-6">
+    <RunningIntro />
+    <nav aria-label="Breadcrumb" class="text-sm text-muted">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a href="/">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li class="text-ink/80">Running</li>
+      </ol>
+    </nav>
+
+    <header class="space-y-1">
+      <h1 class="flex items-center gap-3 font-serif text-3xl md:text-4xl">
+        <img
+          src="/images/icons/running.svg"
+          alt=""
+          aria-hidden="true"
+          class="h-10 w-10 shrink-0 md:h-11 md:w-11"
+          loading="lazy"
+        />
+        <span>Running</span>
+      </h1>
+    </header>
+
+    <div class="space-y-4 text-muted">
+      <p>
+        Running has been part of my life since my early twenties. I trained across the roads of
+        Chiclana, Madrid and Ronda (wherever I've lived), competed regularly, and gradually
+        worked down to times I am proud of —including a sub-37 10K and a 2:55 marathon,
+        both set in early 2017.
+      </p>
+      <p>
+        Three neurosurgeries in 2020 changed what my body can do and how I think about movement.
+        I am now an adaptive runner — still going, on different terms and at a different pace, but
+        still moving. The records below belong to the runner I was. I keep them here because they
+        <i>are true</i>, and because the work they represent does not become less real just because the
+        circumstances around it changed.
+      </p>
+    </div>
+
+    <div class="space-y-3">
+      <h2 class="font-serif text-xl md:text-2xl">Personal records</h2>
+      <ul class="divide-y divide-ink/10">
+        {records.map((record) => (
+          <li class="flex items-baseline gap-4 py-3 sm:gap-6">
+            <span class="w-24 shrink-0 text-xs uppercase tracking-widest text-muted">
+              {record.distance}
+            </span>
+            <span class="w-20 shrink-0 font-serif text-xl font-semibold tabular-nums">
+              {record.time}
+            </span>
+            <span class="min-w-0 text-sm text-muted">
+              {record.link ? (
+                <a
+                  href={record.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="hover:text-accent"
+                >
+                  {record.race}
+                </a>
+              ) : (
+                record.race
+              )}
+              <span class="mx-1.5 opacity-40">·</span>
+              {record.date}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="space-y-6">
+      {/* Activity widgets — Strava / Garmin Connect */}
+    </div>
+  </section>
+</BaseLayout>
