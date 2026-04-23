@@ -8,7 +8,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 >
   <section class="max-w-3xl space-y-7">
     <p class="text-sm uppercase tracking-[0.22em] text-muted">Personal introduction</p>
-    <div class="flex items-center gap-5 sm:gap-6">
+    <div class="flex flex-col items-center gap-5 sm:flex-row sm:items-center sm:gap-6 w-full">
       <img
         id="hero-image"
         src="/images/profile/juan.png"
@@ -16,30 +16,44 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         class="h-36 w-36 rounded-full border border-ink/15 object-cover transition-opacity duration-300 sm:h-44 sm:w-44"
         loading="lazy"
       />
-      <h1 class="hero-title min-w-0 flex-1 font-serif leading-tight">
+      <h1 class="hero-title min-w-0 flex-1 font-serif leading-tight text-center sm:text-left w-full">
         <span class="hero-line"><span id="hero-intro" class="font-semibold"></span></span>
-        <span id="hero-subline" class="hero-line hero-subline">
+        <span id="hero-subline" class="hero-line hero-subline break-words whitespace-normal">
           <span class="hero-prefix">I'm </span>
           <span id="hero-typed" class="hero-typed-live font-semibold"></span>
         </span>
       </h1>
     </div>
-    <p class="text-lg leading-relaxed text-muted md:text-xl">
-      In 2020, three neurosurgeries changed the trajectory of my life. Since then, I have been writing about
-      acquired brain injury, technology, and whatever else feels true and worth sharing.
-    </p>
-    <p class="text-lg leading-relaxed text-muted md:text-xl">
-      This site is not about reducing identity to a single label. It is where my technical work, personal
-      writing, and ongoing process coexist.
-    </p>
-    <div class="pt-3 text-base">
-      <a href="/blog">Read my blog</a>
-      <span class="mx-3 text-muted">·</span>
-      <a href="/portfolio">Explore my portfolio</a>
+    <div id="intro-hidden" class="opacity-0 pointer-events-none transition-opacity duration-700">
+      <p class="text-lg leading-relaxed text-muted md:text-xl mb-5">
+        In 2020, three neurosurgeries changed the trajectory of my life. Since then, I have been writing about
+        acquired brain injury, technology, and whatever else feels true and worth sharing.
+      </p>
+      <p class="text-lg leading-relaxed text-muted md:text-xl">
+        This site is not about reducing identity to a single label. It is where my technical work, personal
+        writing, and ongoing process coexist.
+      </p>
+      <div class="mt-7 text-base flex flex-col items-center gap-2 sm:flex-row sm:items-center sm:justify-start sm:gap-0">
+        <a href="/blog" class="block text-center sm:text-left">Read my blog</a>
+        <span class="hidden sm:inline mx-3 text-muted">·</span>
+        <a href="/portfolio" class="block text-center sm:text-left">Explore my interests</a>
+      </div>
     </div>
   </section>
 
   <script>
+        // Mostrar intro al hacer scroll
+        window.addEventListener("scroll", () => {
+          const intro = document.getElementById("intro-hidden");
+          if (!intro) return;
+          if (window.scrollY > 40) {
+            intro.classList.remove("opacity-0", "pointer-events-none");
+            intro.classList.add("opacity-100");
+          } else {
+            intro.classList.add("opacity-0", "pointer-events-none");
+            intro.classList.remove("opacity-100");
+          }
+        });
     import Typed from "typed.js";
 
     const introTarget = document.querySelector("#hero-intro");
@@ -268,7 +282,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       max-height: 0;
       margin-top: 0;
       overflow: hidden;
-      white-space: nowrap;
+      white-space: normal;
+      word-break: break-word;
       transition: max-height 1800ms cubic-bezier(0.22, 1, 0.36, 1), margin-top 1800ms cubic-bezier(0.22, 1, 0.36, 1), opacity 700ms 120ms ease;
     }
 
