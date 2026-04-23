@@ -9,6 +9,7 @@ const records = [
     race: "Test 1K",
     date: "14 Sep 2016",
     link: null,
+    timeLink: null,
   },
   {
     distance: "1 mile",
@@ -16,6 +17,7 @@ const records = [
     race: "Milla de Suanzes",
     date: "27 Sep 2014",
     link: "https://atletismomadrid.com/index.php?Itemid=120&catid=28&id=3937&option=com_content&view=article",
+    timeLink: null,
   },
   {
     distance: "5K",
@@ -23,6 +25,7 @@ const records = [
     race: "Carrera Azul del Autismo",
     date: "2 Apr 2017",
     link: null,
+    timeLink: null,
   },
   {
     distance: "10K",
@@ -30,21 +33,24 @@ const records = [
     race: "Carrera Popular Memorial Padre Marcelino",
     date: "23 Apr 2017",
     link: "https://sportmaniacs.com/es/races/17-carrera-popular-memorial-padre-marcelino",
+    timeLink: null,
   },
   {
-    distance: "Half marathon",
-    time: "1:21:00",
-    race: "EDP Media Maratón de Sevilla",
-    date: "29 Jan 2017",
-    link: "https://sportmaniacs.com/en/races/edp-media-maraton-de-sevilla-2017",
-  },
-  {
-    distance: "Marathon",
-    time: "2:55:30",
-    race: "Zurich Maratón de Sevilla",
-    date: "19 Feb 2017",
-    link: "https://www.zurichmaratonsevilla.es/mse-clasificaciones-2017",
-  },
+        distance: "Half marathon",
+        time: "1:21:00",
+        race: "EDP Media Maratón de Sevilla",
+        date: "29 Jan 2017",
+        link: "https://sportmaniacs.com/en/races/edp-media-maraton-de-sevilla-2017",
+        timeLink: null,
+      },
+      {
+        distance: "Marathon",
+        time: "2:55:30",
+        race: "Zurich Maratón de Sevilla",
+        date: "19 Feb 2017",
+        link: "https://www.zurichmaratonsevilla.es/mse-clasificaciones-2017",
+        timeLink: null,
+      }
 ];
 ---
 
@@ -53,7 +59,6 @@ const records = [
   description="Running activities and performance tracking by Juan Ramírez."
 >
   <section class="max-w-4xl space-y-6">
-    <RunningIntro />
     <nav aria-label="Breadcrumb" class="text-sm text-muted">
       <ol class="flex flex-wrap items-center gap-2">
         <li><a href="/">Home</a></li>
@@ -74,6 +79,8 @@ const records = [
         <span>Running</span>
       </h1>
     </header>
+
+    <RunningIntro />
 
     <div class="space-y-4 text-muted">
       <p>
@@ -100,7 +107,18 @@ const records = [
               {record.distance}
             </span>
             <span class="w-20 shrink-0 font-serif text-xl font-semibold tabular-nums">
-              {record.time}
+              {record.timeLink ? (
+                <a
+                  href={record.timeLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="hover:text-accent underline"
+                >
+                  {record.time}
+                </a>
+              ) : (
+                record.time
+              )}
             </span>
             <span class="min-w-0 text-sm text-muted">
               {record.link ? (

@@ -2,36 +2,164 @@
 import useTypewriter from "../components/useTypewriter.js";
 ---
 
-<div class="flex flex-col items-center space-y-4 mt-8 mb-10">
-  <img
-    src="/images/profile/juan.png"
-    alt="Juan Ramírez"
-    class="h-32 w-32 rounded-full border border-ink/15 object-cover shadow-md"
-    loading="lazy"
-  />
-  <h1 class="text-2xl font-serif font-semibold" id="running-intro">I'm Juan Ramírez</h1>
-  <div class="text-lg text-muted min-h-[2.5em]">
-    <span id="running-typewriter"></span>
+<div class="flex flex-col items-center mt-8 mb-10">
+  <div id="slideshow-viewport" class="relative mx-auto mb-6" style="width:100%; max-width:640px; aspect-ratio:4/3; transition:width 0.5s, height 0.5s; overflow:hidden;">
+    <div class="absolute inset-0 w-full h-full" style="background: transparent;"></div>
+    <img id="slideshow-img-current" src="/images/running/2010-04-11-maraton-malaga.jpeg" alt="Maratón Málaga 2010" class="object-contain absolute inset-0 m-auto w-full h-full transition-opacity duration-500" style="background: transparent; opacity:1; z-index:2;" loading="lazy" />
+    <img id="slideshow-img-next" src="" alt="" class="object-contain absolute inset-0 m-auto w-full h-full transition-opacity duration-500" style="background: transparent; opacity:0; z-index:1; pointer-events:none;" loading="lazy" />
+    <div id="slideshow-caption" class="absolute bottom-0 left-1/2 bg-black/50 text-white text-center text-sm py-2" style="transform: translateX(-50%); white-space: pre-line; z-index: 30; box-sizing: border-box; transition: width 0.7s cubic-bezier(0.4,0,0.2,1) 0s; overflow: hidden; will-change: width;">
+      <span class="relative z-20" style="pointer-events:auto;">Maratón Málaga 2010</span>
+    </div>
   </div>
+  <!-- Aquí puedes añadir el bloque de texto descriptivo debajo del slideshow -->
 </div>
 
 <script>
-  import { onMount } from "astro/client";
-  import Typed from "typed.js";
-  onMount(() => {
-    new Typed("#running-typewriter", {
-      strings: [
-        "a former software engineer",
-        "a father and husband",
-        "an adaptive runner",
-        "a writer"
-      ],
-      typeSpeed: 45,
-      backSpeed: 25,
-      backDelay: 1200,
-      loop: true,
-      showCursor: true,
-      cursorChar: "_",
-    });
+  // Mezclar aleatoriamente el array de imágenes (Fisher-Yates shuffle)
+  function shuffle(array) {
+    let m = array.length, t, i;
+    while (m) {
+      i = Math.floor(Math.random() * m--);
+      t = array[m];
+      array[m] = array[i];
+      array[i] = t;
+    }
+    return array;
+  }
+  let images = [
+    { src: "/images/running/2010-04-11-maraton-malaga.jpeg", caption: "Maratón de Málaga 2010" },
+    { src: "/images/running/2010-urbana.jpeg", caption: "Carrera Urbana Ciudad de Chiclana, Chiclana (Cádiz) 2010" },
+    { src: "/images/running/2011-05-08-toruños.JPeG", caption: "Cross de los Toruños, Puerto Real (Cádiz) 2011" },
+    { src: "/images/running/2011-05-21-urbana.JPeG", caption: "Carrera Urbana Ciudad de Chiclana, Chiclana (Cádiz) 2011" },
+    { src: "/images/running/2012-11-09-universitaria-granada.jpeg", caption: "Carrera Universitaria de Granada, 2012" },
+    { src: "/images/running/2013-04-28-maraton-madrid.jpeg", caption: "Maratón de Madrid 2013" },
+    { src: "/images/running/2014-03-18-sanchicleti.jpeg", caption: "Carrera Chiclana - Sancti Petri, Chiclana (Cádiz) 2014" },
+    { src: "/images/running/2014-06-15-norte-sur.jpeg", caption: "Carrera Norte-Sur, Madrid 2014" },
+    { src: "/images/running/2014-10-14-media-playas-chiclana.jpeg", caption: "Media Maratón Playas de Chiclana, Chiclana (Cádiz) 2014" },
+    { src: "/images/running/2014-12-08-maraton-malaga.jpeg", caption: "Maratón de Málaga 2014" },
+    { src: "/images/running/2015-04-28-maraton-madrid.jpeg", caption: "Maratón de Madrid 2015" },
+    { src: "/images/running/2015-05-12-media-granada.jpeg", caption: "Media Maratón de Granada 2015" },
+    { src: "/images/running/2015-08-16-barrosaJPeG", caption: "Carrera Playa de la Barrosa, Chiclana (Cádiz) 2015" },
+    { src: "/images/running/2015-12-08-media-madrid-blanca.jpeg", caption: "Media Maratón de Madrid 2015" },
+    { src: "/images/running/2016-11-26-cross-san-roque.JPeG", caption: "Campeonato Andaluz de Cross, San Roque (Cádiz) 2016" },
+    { src: "/images/running/2016-12-14-cross-hierro.jpeg", caption: "Cross Pinar de Hierro, Chiclana (Cádiz) 2016" },
+    { src: "/images/running/2016-12-15-cross-cayendo.jpeg", caption: "Cross Pinar de la Barrosa, Chiclana (Cádiz) 2016" },
+    { src: "/images/running/2017-02-20-maratón-sevilla.jpeg", caption: "Maratón de Sevilla 2017" },
+    { src: "/images/running/2017-04-02-carrera-azul.jpeg", caption: "Carrera Azul por el Autismo, Santa Fe (Granada) 2017" },
+    { src: "/images/running/2017-04-09-10k-novo-sancti-petri.jpeg", caption: "10K Novo Sancti Petri, Chiclana (Cádiz) 2017" },
+    { src: "/images/running/2017-10-09-cross-colorado.jpeg", caption: "Cross El Colorado, Conil (Cádiz) 2017" },
+  ];
+  images = shuffle(images);
+  let idx = 0;
+  function adjustCaptionWidth(img) {
+    const caption = document.getElementById("slideshow-caption");
+    const viewport = document.getElementById("slideshow-viewport");
+    if (caption && viewport && img) {
+      setTimeout(() => {
+        // Usar el ancho real mostrado de la imagen (getBoundingClientRect)
+        const imgRect = img.getBoundingClientRect();
+        let visibleWidth = imgRect.width;
+        // Añadir 1px de margen de seguridad para evitar redondeos a la baja
+        visibleWidth = Math.round(visibleWidth * 10) / 10 + 1;
+        // Forzar reflow antes de cambiar el ancho para que la transición ocurra siempre
+        caption.style.transition = "none";
+        caption.offsetWidth; // trigger reflow
+        caption.style.transition = "width 0.7s cubic-bezier(0.4,0,0.2,1) 0s";
+        caption.style.width = visibleWidth + "px";
+        caption.style.minWidth = visibleWidth + "px";
+        caption.style.maxWidth = visibleWidth + "px";
+        caption.style.boxSizing = "border-box";
+      }, 30);
+    }
+  }
+
+  function adjustViewport(img) {
+    const viewport = document.getElementById("slideshow-viewport");
+    if (img && viewport) {
+      setTimeout(() => {
+        const maxW = 640;
+        const maxH = maxW * 3 / 4;
+        const imgW = img.naturalWidth;
+        const imgH = img.naturalHeight;
+        let newW = maxW, newH = maxH;
+        if (imgW && imgH) {
+          const imgRatio = imgW / imgH;
+          const containerRatio = maxW / maxH;
+          if (imgRatio > containerRatio) {
+            newW = maxW;
+            newH = maxW / imgRatio;
+          } else {
+            newH = maxH;
+            newW = maxH * imgRatio;
+          }
+        }
+        viewport.style.width = Math.round(newW) + "px";
+        viewport.style.height = Math.round(newH) + "px";
+      }, 30);
+    }
+  }
+
+
+  let isTransitioning = false;
+  setInterval(() => {
+    if (isTransitioning) return;
+    isTransitioning = true;
+    idx = (idx + 1) % images.length;
+    const imgCurrent = document.getElementById("slideshow-img-current");
+    const imgNext = document.getElementById("slideshow-img-next");
+    const caption = document.getElementById("slideshow-caption");
+    if (imgCurrent && imgNext && caption) {
+      // 1. Fijar el ancho actual y quitar transición antes de cambiar la imagen
+      const currentRect = imgCurrent.getBoundingClientRect();
+      const currentWidth = Math.round(currentRect.width * 10) / 10 + 1;
+      caption.style.transition = "none";
+      caption.style.width = currentWidth + "px";
+      caption.style.minWidth = currentWidth + "px";
+      caption.style.maxWidth = currentWidth + "px";
+      caption.offsetWidth; // forzar reflow
+      imgNext.src = images[idx].src;
+      imgNext.alt = images[idx].caption;
+      imgNext.style.opacity = 0;
+      imgNext.onload = () => {
+        adjustViewport(imgNext);
+        caption.textContent = images[idx].caption;
+        // 2. Medir el ancho anterior, forzar reflow, y luego aplicar el nuevo ancho en un segundo frame
+        const prevWidth = caption.style.width;
+        caption.style.transition = "none";
+        caption.style.width = prevWidth;
+        caption.offsetWidth;
+        requestAnimationFrame(() => {
+          caption.style.transition = "width 0.7s cubic-bezier(0.4,0,0.2,1) 0s";
+          requestAnimationFrame(() => {
+            adjustCaptionWidth(imgNext);
+          });
+        });
+        imgNext.style.transition = "opacity 0.5s";
+        imgCurrent.style.transition = "opacity 0.5s";
+        imgNext.style.opacity = 1;
+        imgCurrent.style.opacity = 0;
+        setTimeout(() => {
+          // Swap roles
+          imgCurrent.src = imgNext.src;
+          imgCurrent.alt = imgNext.alt;
+          imgCurrent.style.opacity = 1;
+          imgNext.style.opacity = 0;
+          // Forzar ajuste del caption tras el swap
+          requestAnimationFrame(() => {
+            adjustCaptionWidth(imgCurrent);
+          });
+          isTransitioning = false;
+        }, 500);
+      };
+    } else {
+      isTransitioning = false;
+    }
+  }, 3500);
+
+  // Ajustar también al cargar la primera imagen y al redimensionar
+  window.addEventListener('DOMContentLoaded', () => {
+    const img = document.getElementById("slideshow-img-current");
+    adjustViewport(img);
+    adjustCaptionWidth(img);
   });
-</script>
+      const captionBg = document.getElementById("slideshow-caption-bg");
