@@ -36,22 +36,33 @@ const statusColorClass = {
   "published": "text-green-600"
 }[project.data.status];
 const repositoryLabel = isLiterary ? "Visitar proyecto" : "Visit project repository";
-const backLabel = isLiterary ? "Volver al portfolio" : "Back to portfolio";
+const backLabel = isLiterary ? "Volver al porfolio" : "Back to portfolio";
 const writtenDateLabel = isLiterary ? "Fecha de escritura" : "Written";
 const publishedDateLabel = isLiterary ? "Fecha de publicacion" : "Published";
-const sectionLabel = isLiterary ? "Literary Portfolio" : "Coding Portfolio";
+const sectionLabel = isLiterary ? "Porfolio literario" : "Coding Portfolio";
 const sectionHref = isLiterary ? "/literary-portfolio/" : "/coding-portfolio/";
+const commentsHeading = isLiterary ? "Comentarios" : "Comments";
+const commentsLanguage = isLiterary ? "es" : undefined;
+const portfolioLabel = isLiterary ? "Porfolio" : "Portfolio";
+const homeLabel = isLiterary ? "Portada" : "Home";
 ---
 
 <BaseLayout
-  title={`${project.data.name} | Portfolio | Juan Ramírez`}
+  title={`${project.data.name} | ${portfolioLabel} | Juan Ramírez`}
   description={project.data.description}
   ogType="article"
+  navLanguage={isLiterary ? "es" : "en"}
 >
   <article class="mx-auto max-w-3xl space-y-8">
     <nav aria-label="Breadcrumb" class="text-sm text-muted">
       <ol class="flex flex-wrap items-center gap-2">
-        <li><a href="/portfolio/">Portfolio</a></li>
+        {isLiterary && (
+          <>
+            <li><a href="/">{homeLabel}</a></li>
+            <li aria-hidden="true">/</li>
+          </>
+        )}
+        <li><a href="/portfolio/">{portfolioLabel}</a></li>
         <li aria-hidden="true">/</li>
         <li><a href={sectionHref}>{sectionLabel}</a></li>
         <li aria-hidden="true">/</li>
@@ -134,13 +145,19 @@ const sectionHref = isLiterary ? "/literary-portfolio/" : "/coding-portfolio/";
     </div>
 
     {hyvorWebsiteId && showComments && (
-      <HyvorComments websiteId={hyvorWebsiteId} pageId={`portfolio-${project.slug}`} />
+      <HyvorComments
+        websiteId={hyvorWebsiteId}
+        pageId={`portfolio-${project.slug}`}
+        heading={commentsHeading}
+        language={commentsLanguage}
+      />
     )}
 
     {import.meta.env.DEV && showComments && !hyvorWebsiteId && (
       <p class="rounded-md border border-dashed border-ink/25 p-4 text-sm text-muted">
-        Comments are enabled for this project, but Hyvor is not configured. Set
-        <code>PUBLIC_HYVOR_WEBSITE_ID</code> and restart the dev server.
+        {isLiterary ? "Los comentarios están activados para este proyecto, pero Hyvor no está configurado. Define " : "Comments are enabled for this project, but Hyvor is not configured. Set "}
+        <code>PUBLIC_HYVOR_WEBSITE_ID</code>
+        {isLiterary ? " y reinicia el servidor de desarrollo." : " and restart the dev server."}
       </p>
     )}
 

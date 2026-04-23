@@ -32,18 +32,27 @@ const visitLabel = isLiterary ? "Visitar proyecto" : "Visit project";
 ---
 
 <li class="flex h-full flex-col gap-3 rounded-md border border-ink/15 bg-white/40 p-6">
-  <div class="flex items-start gap-3">
-    {project.data.image && !isLiterary && (
-      <img
-        src={project.data.image}
-        alt={`${project.data.name} logo`}
-        class="h-8 w-8 shrink-0 object-contain"
-        loading="lazy"
-      />
+  <div class="flex items-start justify-between gap-3">
+    <div class="flex min-w-0 items-start gap-3">
+      {project.data.image && !isLiterary && (
+        <img
+          src={project.data.image}
+          alt={`${project.data.name} logo`}
+          class="h-8 w-8 shrink-0 object-contain"
+          loading="lazy"
+        />
+      )}
+      <h3 class="font-serif text-2xl leading-tight">
+        <a href={`/portfolio/${project.slug}/`}>{project.data.name}</a>
+      </h3>
+    </div>
+    {project.data.tags && project.data.tags.length > 0 && (
+      <ul class="ml-2 flex max-w-[45%] flex-wrap justify-end gap-2 text-sm text-muted">
+        {project.data.tags.map((tag) => (
+          <li class="rounded-full border border-ink/20 px-3 py-1">{tag}</li>
+        ))}
+      </ul>
     )}
-    <h3 class="font-serif text-2xl leading-tight">
-      <a href={`/portfolio/${project.slug}/`}>{project.data.name}</a>
-    </h3>
   </div>
   {project.data.subtitle && (
     <p class="text-sm italic text-muted">{project.data.subtitle}</p>
@@ -56,13 +65,6 @@ const visitLabel = isLiterary ? "Visitar proyecto" : "Visit project";
     <ul class="flex flex-wrap gap-2 pt-1 text-sm text-muted">
       {project.data.stack.map((item) => (
         <li class="rounded-full border border-ink/20 px-3 py-1">{item}</li>
-      ))}
-    </ul>
-  )}
-  {project.data.tags && project.data.tags.length > 0 && (
-    <ul class="flex flex-wrap gap-2 text-sm text-muted">
-      {project.data.tags.map((tag) => (
-        <li class="rounded-full border border-ink/20 px-3 py-1">{tag}</li>
       ))}
     </ul>
   )}

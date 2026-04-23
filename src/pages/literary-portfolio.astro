@@ -13,21 +13,45 @@ const allProjects = (await getCollection("portfolio"))
   return a.data.status === "in-development" ? -1 : 1;
 });
 
-const literary = allProjects.filter((p) => p.data.category === "literary");
+const literaryOrder = ["supersticion", "desmemorias", "mientras-duren-los-versos"];
+
+const literary = allProjects
+  .filter((p) => p.data.category === "literary")
+  .sort((a, b) => {
+    const aSlug = a.slug.split("/").pop() ?? a.slug;
+    const bSlug = b.slug.split("/").pop() ?? b.slug;
+    const aIndex = literaryOrder.indexOf(aSlug);
+    const bIndex = literaryOrder.indexOf(bSlug);
+
+    if (aIndex === -1 && bIndex === -1) {
+      return aSlug.localeCompare(bSlug);
+    }
+
+    if (aIndex === -1) {
+      return 1;
+    }
+
+    if (bIndex === -1) {
+      return -1;
+    }
+
+    return aIndex - bIndex;
+  });
 ---
 
 <BaseLayout
-  title="Literary Portfolio | Juan Ramírez"
-  description="Literary projects by Juan Ramírez, written in Spanish."
+  title="Porfolio literario | Juan Ramírez"
+  description="Proyectos literarios de Juan Ramírez, escritos en español."
+  navLanguage="es"
 >
   <section class="max-w-4xl space-y-6">
     <nav aria-label="Breadcrumb" class="text-sm text-muted">
       <ol class="flex flex-wrap items-center gap-2">
-        <li><a href="/">Home</a></li>
+        <li><a href="/">Portada</a></li>
         <li aria-hidden="true">/</li>
-        <li><a href="/portfolio/">Portfolio</a></li>
+        <li><a href="/portfolio/">Porfolio</a></li>
         <li aria-hidden="true">/</li>
-        <li class="text-ink/80">Literary Portfolio</li>
+        <li class="text-ink/80">Porfolio literario</li>
       </ol>
     </nav>
 
@@ -40,13 +64,29 @@ const literary = allProjects.filter((p) => p.data.category === "literary");
           class="h-10 w-10 shrink-0 md:h-11 md:w-11"
           loading="lazy"
         />
-        <span>Literary Portfolio <span class="text-base italic text-muted">(in Spanish)</span></span>
+        <span>Porfolio literario</span>
       </h1>
-      <p class="text-sm text-muted">{literary.length} project{literary.length === 1 ? "" : "s"}</p>
+      <p class="text-sm text-muted">{literary.length} {literary.length === 1 ? "proyecto" : "proyectos"}</p>
     </header>
+
+    <div class="text-muted space-y-4">
+      <p>
+        Una de mis grandes aficiones es la literatura. Me encanta leer y me gusta también escribir. Ya de adolescente, obtuve varios premios de poesía:
+      </p>
+      <ul class="text-muted space-y-2 list-disc list-outside ml-6">
+        <li>1er premio en el XIV Certamen de Poesía Juvenil "Poeta García Gutiérrez" - Delegación de Juventud, Ayto. de Chiclana (Cádiz), 1999.</li>
+        <li>3er premio de Poesía en el XIX Certamen Literario "Roquetas de Mar" - IES Sabinar (Roquetas de Mar, Almería), 2000.</li>
+        <li>1er premio en el I Certamen Juvenil de Poesía "Juan Carlos Benítez" - Colegio San Felipe Neri (Cádiz), 2001.</li>
+        <li>2o premio de Poesía en el XX Certamen Literario "Roquetas de Mar" - IES Sabinar, (Roquetas de Mar, Almería), 2001.</li>
+        <li>1er premio en el certamen para la publicación de un cuadernillo literario - Delegación de Juventud, Ayto. de Chiclana (Cádiz), 2002.</li>
+      </ul>
+      <p>
+        En la actualidad, y especialmente a partir de mi daño cerebral, estoy intentando retomar esta pasión.
+    </div>
+
     {literary.length === 0 ? (
       <p class="rounded-md border border-dashed border-ink/25 p-6 text-muted">
-        No literary projects yet. Add Markdown files with <code>category: literary</code> to <code>src/content/portfolio</code>.
+        Aún no hay proyectos literarios. Añade archivos Markdown con <code>category: literary</code> a <code>src/content/portfolio</code>.
       </p>
     ) : (
       <ul class="grid gap-6 md:grid-cols-2">
