@@ -1,0 +1,37 @@
+---
+import useTypewriter from "../components/useTypewriter.js";
+---
+
+<div class="flex flex-col items-center space-y-4 mt-8 mb-10">
+  <img
+    src="/images/profile/juan.png"
+    alt="Juan Ramírez"
+    class="h-32 w-32 rounded-full border border-ink/15 object-cover shadow-md"
+    loading="lazy"
+  />
+  <h1 class="text-2xl font-serif font-semibold" id="running-intro">I'm Juan Ramírez</h1>
+  <div class="text-lg text-muted min-h-[2.5em]">
+    <span id="running-typewriter"></span>
+  </div>
+</div>
+
+<script>
+  import { onMount } from "astro/client";
+  import Typed from "typed.js";
+  onMount(() => {
+    new Typed("#running-typewriter", {
+      strings: [
+        "a former software engineer",
+        "a father and husband",
+        "an adaptive runner",
+        "a writer"
+      ],
+      typeSpeed: 45,
+      backSpeed: 25,
+      backDelay: 1200,
+      loop: true,
+      showCursor: true,
+      cursorChar: "_",
+    });
+  });
+</script>
