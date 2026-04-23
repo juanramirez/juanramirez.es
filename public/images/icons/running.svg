@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Running icon">
+  <rect x="7" y="9" width="50" height="46" rx="10" fill="#f7f4ee" stroke="#d9d3c7" stroke-width="1.5"/>
+
+  <!-- Sneaker-move (Phosphor Icons, MIT) — shoe body -->
+  <path
+    transform="translate(5, 7) scale(0.20)"
+    fill="#1b1f23"
+    d="M231.16,166.63l-28.63-14.31A47.74,47.74,0,0,1,176,109.39V80a8,8,0,0,0-8-8,48.05,48.05,0,0,1-48-48,8,8,0,0,0-12.83-6.37L30.13,76l-.2.16a16,16,0,0,0-1.24,23.75L142.4,213.66a8,8,0,0,0,5.66,2.34H224a16,16,0,0,0,16-16V180.94A15.92,15.92,0,0,0,231.16,166.63Z"
+  />
+
+  <!-- Speed line pills (accent color) -->
+  <path
+    transform="translate(5, 7) scale(0.20)"
+    fill="#b14623"
+    d="M70.8,184H32a8,8,0,0,1,0-16H70.8a8,8,0,1,1,0,16Z
+       M110.8,208a8,8,0,0,1-8,8H48a8,8,0,0,1,0-16h54.8A8,8,0,0,1,110.8,208Z"
+  />
+</svg>
