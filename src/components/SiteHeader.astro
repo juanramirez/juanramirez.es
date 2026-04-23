@@ -1,10 +1,44 @@
 ---
-const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/blog", label: "Blog" },
-  { href: "/coding-portfolio", label: "Coding" },
-  { href: "/literary-portfolio", label: "Literature" }
-];
+interface NavChild {
+  href: string;
+  label: string;
+}
+
+type NavItem =
+  | { href: string; label: string; children?: never }
+  | { href?: never; label: string; children: NavChild[] };
+
+interface Props {
+  navLanguage?: "en" | "es";
+}
+
+const { navLanguage = "en" } = Astro.props;
+
+const navItems: NavItem[] = navLanguage === "es"
+  ? [
+      { href: "/", label: "Portada" },
+      { href: "/blog", label: "Blog" },
+      {
+        label: "Intereses",
+        children: [
+          { href: "/coding-portfolio", label: "Código" },
+          { href: "/literary-portfolio", label: "Literatura" },
+          { href: "/running", label: "Running" },
+        ],
+      },
+    ]
+  : [
+      { href: "/", label: "Home" },
+      { href: "/blog", label: "Blog" },
+      {
+        label: "Interests",
+        children: [
+          { href: "/coding-portfolio", label: "Coding" },
+          { href: "/literary-portfolio", label: "Literature" },
+          { href: "/running", label: "Running" },
+        ],
+      },
+    ];
 
 const currentPath = Astro.url.pathname;
 const showProfilePhoto = currentPath !== "/";
@@ -25,25 +59,76 @@ const showProfilePhoto = currentPath !== "/";
     </a>
     <nav aria-label="Main navigation">
       <ul class="flex gap-4 text-sm md:gap-6 md:text-base">
-        {
-          navItems.map((item) => {
-            const isActive = currentPath === item.href || currentPath.startsWith(`${item.href}/`);
-
+        {navItems.map((item) => {
+          if (item.children) {
+            const isGroupActive = item.children.some(
+              (child) =>
+                currentPath === child.href ||
+                currentPath.startsWith(`${child.href}/`)
+            );
             return (
-              <li>
-                <a
-                  href={item.href}
-                  class:list={{
-                    "font-medium decoration-accent text-accent": isActive,
-                    "text-ink": !isActive
-                  }}
+              <li class="relative group">
+                <span
+                  class:list={[
+                    "flex cursor-default select-none items-center gap-1",
+                    isGroupActive ? "font-medium text-accent" : "text-ink",
+                  ]}
                 >
                   {item.label}
-                </a>
+                  <svg
+                    class="h-3 w-3 opacity-50 transition-transform duration-150 group-hover:rotate-180"
+                    viewBox="0 0 12 12"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M6 8 1 3h10z" />
+                  </svg>
+                </span>
+                <ul class="absolute left-1/2 top-full z-50 min-w-max -translate-x-1/2 pt-2 invisible opacity-0 transition-opacity duration-150 group-hover:visible group-hover:opacity-100">
+                  <div class="rounded-lg border border-ink/15 bg-[#fdfaf4] py-1 shadow-sm">
+                    {item.children.map((child) => {
+                      const isActive =
+                        currentPath === child.href ||
+                        currentPath.startsWith(`${child.href}/`);
+                      return (
+                        <li>
+                          <a
+                            href={child.href}
+                            class:list={[
+                              "block px-4 py-1.5",
+                              isActive
+                                ? "font-medium text-accent"
+                                : "text-ink hover:text-accent",
+                            ]}
+                          >
+                            {child.label}
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </div>
+                </ul>
               </li>
             );
-          })
-        }
+          }
+
+          const isActive =
+            currentPath === item.href ||
+            currentPath.startsWith(`${item.href}/`);
+          return (
+            <li>
+              <a
+                href={item.href}
+                class:list={{
+                  "font-medium decoration-accent text-accent": isActive,
+                  "text-ink": !isActive,
+                }}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   </div>
