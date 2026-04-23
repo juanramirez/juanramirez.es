@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import { marked } from "marked";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { readingTime } from "../../utils/readingTime";
 
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
@@ -63,6 +64,7 @@ const toTagSlug = (tag: string) =>
                     })}
                   </time>
                   {" "}· by {post.data.author}
+                  {" "}· {readingTime(post.body ?? "")}
                 </p>
                 <h2 class="font-serif text-2xl font-semibold leading-tight">
                   <a href={`/blog/${post.slug}/`} set:html={post.data.title}></a>

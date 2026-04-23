@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import HyvorComments from "../../components/HyvorComments.astro";
+import { readingTime } from "../../utils/readingTime";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -16,6 +17,7 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 const hyvorWebsiteId = import.meta.env.PUBLIC_HYVOR_WEBSITE_ID;
 const showComments = post.data.comments;
+const postReadingTime = readingTime(post.body ?? "");
 
 const toTagSlug = (tag: string) =>
   tag
@@ -47,6 +49,7 @@ const toTagSlug = (tag: string) =>
           })}
         </time>
         {" "}· by {post.data.author}
+        {" "}· {postReadingTime}
       </p>
       <h1 class="font-serif text-4xl leading-tight md:text-5xl" set:html={post.data.title}></h1>
       {post.data.tags.length > 0 && (
