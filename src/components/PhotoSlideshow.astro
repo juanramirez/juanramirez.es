@@ -1,0 +1,167 @@
+---
+interface Photo {
+  src: string;
+  caption: string;
+}
+
+interface Props {
+  id: string;
+  images: Photo[];
+}
+
+const { id, images } = Astro.props;
+const first = images[0];
+---
+
+<div class="flex flex-col items-center mt-8 mb-10">
+  <div
+    id={`${id}-viewport`}
+    class="relative mx-auto mb-6"
+    style="width:100%; max-width:640px; aspect-ratio:4/3; transition:width 0.5s, height 0.5s; overflow:hidden;"
+  >
+    <img
+      id={`${id}-img-current`}
+      src={first.src}
+      alt={first.caption}
+      class="object-contain absolute inset-0 m-auto w-full h-full transition-opacity duration-500"
+      style="background: transparent; opacity:1; z-index:2;"
+      loading="lazy"
+    />
+    <img
+      id={`${id}-img-next`}
+      src=""
+      alt=""
+      class="object-contain absolute inset-0 m-auto w-full h-full transition-opacity duration-500"
+      style="background: transparent; opacity:0; z-index:1; pointer-events:none;"
+      loading="lazy"
+    />
+    <div
+      id={`${id}-caption`}
+      class="absolute bottom-0 left-1/2 bg-black/50 text-white text-center text-sm py-2"
+      style="transform: translateX(-50%); white-space: pre-line; z-index: 30; box-sizing: border-box; transition: width 0.7s cubic-bezier(0.4,0,0.2,1) 0s; overflow: hidden; will-change: width;"
+    >
+      <span class="relative z-20" style="pointer-events:auto;">{first.caption}</span>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ id, images }}>
+  function shuffle(array) {
+    let m = array.length, t, i;
+    while (m) {
+      i = Math.floor(Math.random() * m--);
+      t = array[m];
+      array[m] = array[i];
+      array[i] = t;
+    }
+    return array;
+  }
+
+  let imgs = shuffle([...images]);
+  let idx = 0;
+
+  function adjustCaptionWidth(img) {
+    const caption = document.getElementById(`${id}-caption`);
+    const viewport = document.getElementById(`${id}-viewport`);
+    if (caption && viewport && img) {
+      setTimeout(() => {
+        const imgRect = img.getBoundingClientRect();
+        let visibleWidth = Math.round(imgRect.width * 10) / 10 + 1;
+        caption.style.transition = "none";
+        caption.offsetWidth;
+        caption.style.transition = "width 0.7s cubic-bezier(0.4,0,0.2,1) 0s";
+        caption.style.width = visibleWidth + "px";
+        caption.style.minWidth = visibleWidth + "px";
+        caption.style.maxWidth = visibleWidth + "px";
+        caption.style.boxSizing = "border-box";
+      }, 30);
+    }
+  }
+
+  function adjustViewport(img) {
+    const viewport = document.getElementById(`${id}-viewport`);
+    if (img && viewport) {
+      setTimeout(() => {
+        const maxW = 640;
+        const maxH = maxW * 3 / 4;
+        const imgW = img.naturalWidth;
+        const imgH = img.naturalHeight;
+        let newW = maxW, newH = maxH;
+        if (imgW && imgH) {
+          const imgRatio = imgW / imgH;
+          const containerRatio = maxW / maxH;
+          if (imgRatio > containerRatio) {
+            newW = maxW;
+            newH = maxW / imgRatio;
+          } else {
+            newH = maxH;
+            newW = maxH * imgRatio;
+          }
+        }
+        viewport.style.width = Math.round(newW) + "px";
+        viewport.style.height = Math.round(newH) + "px";
+      }, 30);
+    }
+  }
+
+  let isTransitioning = false;
+
+  if (imgs.length > 1) {
+    setInterval(() => {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      idx = (idx + 1) % imgs.length;
+      const imgCurrent = document.getElementById(`${id}-img-current`);
+      const imgNext = document.getElementById(`${id}-img-next`);
+      const caption = document.getElementById(`${id}-caption`);
+      if (imgCurrent && imgNext && caption) {
+        const currentRect = imgCurrent.getBoundingClientRect();
+        const currentWidth = Math.round(currentRect.width * 10) / 10 + 1;
+        caption.style.transition = "none";
+        caption.style.width = currentWidth + "px";
+        caption.style.minWidth = currentWidth + "px";
+        caption.style.maxWidth = currentWidth + "px";
+        caption.offsetWidth;
+        imgNext.src = imgs[idx].src;
+        imgNext.alt = imgs[idx].caption;
+        imgNext.style.opacity = 0;
+        imgNext.onload = () => {
+          adjustViewport(imgNext);
+          caption.textContent = imgs[idx].caption;
+          const prevWidth = caption.style.width;
+          caption.style.transition = "none";
+          caption.style.width = prevWidth;
+          caption.offsetWidth;
+          requestAnimationFrame(() => {
+            caption.style.transition = "width 0.7s cubic-bezier(0.4,0,0.2,1) 0s";
+            requestAnimationFrame(() => {
+              adjustCaptionWidth(imgNext);
+            });
+          });
+          imgNext.style.transition = "opacity 0.5s";
+          imgCurrent.style.transition = "opacity 0.5s";
+          imgNext.style.opacity = 1;
+          imgCurrent.style.opacity = 0;
+          setTimeout(() => {
+            imgCurrent.src = imgNext.src;
+            imgCurrent.alt = imgNext.alt;
+            imgCurrent.style.opacity = 1;
+            imgNext.style.opacity = 0;
+            requestAnimationFrame(() => {
+              adjustCaptionWidth(imgCurrent);
+            });
+            isTransitioning = false;
+          }, 500);
+        };
+      } else {
+        isTransitioning = false;
+      }
+    }, 3500);
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const img = document.getElementById(`${id}-img-current`);
+    adjustViewport(img);
+    adjustCaptionWidth(img);
+  });
+</script>

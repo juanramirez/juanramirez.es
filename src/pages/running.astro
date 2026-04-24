@@ -1,6 +1,35 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import RunningIntro from "../components/RunningIntro.astro";
+import PhotoSlideshow from "../components/PhotoSlideshow.astro";
+
+const historyPhotos = [
+  { src: "/images/running/2010-04-11-maraton-malaga.jpeg", caption: "Maratón de Málaga 2010" },
+  { src: "/images/running/2010-urbana.jpeg", caption: "Carrera Urbana Ciudad de Chiclana, Chiclana (Cádiz) 2010" },
+  { src: "/images/running/2011-05-08-toruños.JPeG", caption: "Cross de los Toruños, Puerto Real (Cádiz) 2011" },
+  { src: "/images/running/2011-05-21-urbana.JPeG", caption: "Carrera Urbana Ciudad de Chiclana, Chiclana (Cádiz) 2011" },
+  { src: "/images/running/2012-11-09-universitaria-granada.jpeg", caption: "Carrera Universitaria de Granada, 2012" },
+  { src: "/images/running/2013-04-28-maraton-madrid.jpeg", caption: "Maratón de Madrid 2013" },
+  { src: "/images/running/2014-03-18-sanchicleti.jpeg", caption: "Carrera Chiclana - Sancti Petri, Chiclana (Cádiz) 2014" },
+  { src: "/images/running/2014-06-15-norte-sur.jpeg", caption: "Carrera Norte-Sur, Madrid 2014" },
+  { src: "/images/running/2014-10-14-media-playas-chiclana.jpeg", caption: "Media Maratón Playas de Chiclana, Chiclana (Cádiz) 2014" },
+  { src: "/images/running/2014-12-08-maraton-malaga.jpeg", caption: "Maratón de Málaga 2014" },
+  { src: "/images/running/2015-04-28-maraton-madrid.jpeg", caption: "Maratón de Madrid 2015" },
+  { src: "/images/running/2015-05-12-media-granada.jpeg", caption: "Media Maratón de Granada 2015" },
+  { src: "/images/running/2015-08-16-barrosaJPeG", caption: "Carrera Playa de la Barrosa, Chiclana (Cádiz) 2015" },
+  { src: "/images/running/2015-12-08-media-madrid-blanca.jpeg", caption: "Media Maratón de Madrid 2015" },
+  { src: "/images/running/2016-11-26-cross-san-roque.JPeG", caption: "Campeonato Andaluz de Cross, San Roque (Cádiz) 2016" },
+  { src: "/images/running/2016-12-14-cross-hierro.jpeg", caption: "Cross Pinar de Hierro, Chiclana (Cádiz) 2016" },
+  { src: "/images/running/2016-12-15-cross-cayendo.jpeg", caption: "Cross Pinar de la Barrosa, Chiclana (Cádiz) 2016" },
+  { src: "/images/running/2017-02-20-maratón-sevilla.jpeg", caption: "Maratón de Sevilla 2017" },
+  { src: "/images/running/2017-04-02-carrera-azul.jpeg", caption: "Carrera Azul por el Autismo, Santa Fe (Granada) 2017" },
+  { src: "/images/running/2017-04-09-10k-novo-sancti-petri.jpeg", caption: "10K Novo Sancti Petri, Chiclana (Cádiz) 2017" },
+  { src: "/images/running/2017-10-09-cross-colorado.jpeg", caption: "Cross El Colorado, Conil (Cádiz) 2017" },
+];
+
+const todayPhotos = [
+  { src: "/images/posts/media-chiclana.jpeg", caption: "Media Maratón de Chiclana, abril 2026" },
+  { src: "/images/posts/viamed-superacion.jpeg", caption: "Premio Viamed Superación, abril 2026" },
+];
 
 const records = [
   {
@@ -80,10 +109,10 @@ const records = [
       </h1>
     </header>
 
-    <RunningIntro />
-
     <div class="space-y-6">
       <h2 class="font-serif text-2xl md:text-3xl">My running history</h2>
+
+      <PhotoSlideshow id="history" images={historyPhotos} />
 
       <div class="space-y-4 text-muted">
         <p>
@@ -147,6 +176,9 @@ const records = [
 
     <div class="space-y-6">
       <h2 class="font-serif text-2xl md:text-3xl">Running today</h2>
+
+      <PhotoSlideshow id="today" images={todayPhotos} />
+
       <p class="text-muted">
         Since returning to racing in 2023, I compete as an adaptive runner — slower,
         with more planning, and with a lot more respect for what the body signals.
