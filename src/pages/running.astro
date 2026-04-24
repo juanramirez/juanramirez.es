@@ -82,25 +82,28 @@ const records = [
 
     <RunningIntro />
 
-    <div class="space-y-4 text-muted">
-      <p>
-        Running has been part of my life since my early twenties. I trained across the roads of
-        Chiclana, Madrid and Ronda (wherever I've lived), competed regularly, and gradually
-        worked down to times I am proud of —including a sub-37 10K and a 2:55 marathon,
-        both set in early 2017.
-      </p>
-      <p>
-        Three neurosurgeries in 2020 changed what my body can do and how I think about movement.
-        I am now an adaptive runner — still going, on different terms and at a different pace, but
-        still moving. The records below belong to the runner I was. I keep them here because they
-        <i>are true</i>, and because the work they represent does not become less real just because the
-        circumstances around it changed.
-      </p>
-    </div>
+    <div class="space-y-6">
+      <h2 class="font-serif text-2xl md:text-3xl">My running history</h2>
 
-    <div class="space-y-3">
-      <h2 class="font-serif text-xl md:text-2xl">Personal records</h2>
-      <ul class="divide-y divide-ink/10">
+      <div class="space-y-4 text-muted">
+        <p>
+          Running has been part of my life since my early twenties. I trained across the roads of
+          Chiclana, Madrid and Ronda (wherever I've lived), competed regularly, and gradually
+          worked down to times I am proud of —including a sub-37 10K and a 2:55 marathon,
+          both set in early 2017.
+        </p>
+        <p>
+          Three neurosurgeries in 2020 changed what my body can do and how I think about movement.
+          I am now an adaptive runner — still going, on different terms and at a different pace, but
+          still moving. The records below belong to the runner I was. I keep them here because they
+          <i>are true</i>, and because the work they represent does not become less real just because the
+          circumstances around it changed.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        <h3 class="font-serif text-lg md:text-xl text-muted">Personal records</h3>
+        <ul class="divide-y divide-ink/10">
         {records.map((record) => (
           <li class="flex items-baseline gap-4 py-3 sm:gap-6">
             <span class="w-24 shrink-0 text-xs uppercase tracking-widest text-muted">
@@ -139,10 +142,11 @@ const records = [
           </li>
         ))}
       </ul>
+      </div>
     </div>
 
-    <div class="space-y-4">
-      <h2 class="font-serif text-xl md:text-2xl">Running today</h2>
+    <div class="space-y-6">
+      <h2 class="font-serif text-2xl md:text-3xl">Running today</h2>
       <p class="text-muted">
         Since returning to racing in 2023, I compete as an adaptive runner — slower,
         with more planning, and with a lot more respect for what the body signals.
