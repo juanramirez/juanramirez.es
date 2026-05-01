@@ -1,4 +1,7 @@
 ---
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+import { localizedPath, type Locale } from "../lib/i18n";
+
 interface NavChild {
   href: string;
   label: string;
@@ -9,44 +12,56 @@ type NavItem =
   | { href?: never; label: string; children: NavChild[] };
 
 interface Props {
-  navLanguage?: "en" | "es";
+  navLanguage?: Locale;
+  locale?: Locale;
 }
 
-const { navLanguage = "en" } = Astro.props;
+const { navLanguage = "en", locale = navLanguage } = Astro.props;
 
 const navItems: NavItem[] = navLanguage === "es"
   ? [
-      { href: "/", label: "Portada" },
-      { href: "/blog", label: "Blog" },
+      { href: localizedPath("/", locale), label: "Portada" },
+      { href: localizedPath("/blog/", locale), label: "Blog" },
       {
         label: "Intereses",
+        href: localizedPath("/portfolio/", locale),
         children: [
-          { href: "/coding-portfolio", label: "Código" },
-          { href: "/literary-portfolio", label: "Literatura" },
-          { href: "/running", label: "Running" },
+          { href: localizedPath("/coding-portfolio/", locale), label: "Programación" },
+          { href: localizedPath("/literary-portfolio/", locale), label: "Literatura" },
+          { href: localizedPath("/running/", locale), label: "Running" },
         ],
       },
     ]
   : [
-      { href: "/", label: "Home" },
-      { href: "/blog", label: "Blog" },
+      { href: localizedPath("/", locale), label: "Home" },
+      { href: localizedPath("/blog/", locale), label: "Blog" },
       {
         label: "Interests",
+        href: localizedPath("/portfolio/", locale),
         children: [
-          { href: "/coding-portfolio", label: "Coding" },
-          { href: "/literary-portfolio", label: "Literature" },
-          { href: "/running", label: "Running" },
+          { href: localizedPath("/coding-portfolio/", locale), label: "Coding" },
+          { href: localizedPath("/literary-portfolio/", locale), label: "Literature" },
+          { href: localizedPath("/running/", locale), label: "Running" },
         ],
       },
     ];
 
 const currentPath = Astro.url.pathname;
-const showProfilePhoto = currentPath !== "/";
+const homePath = localizedPath("/", locale);
+const showProfilePhoto = currentPath !== homePath;
+const isPathActive = (href: string) => {
+  if (href === homePath) {
+    return currentPath === href;
+  }
+
+  const normalizedHref = href.endsWith("/") ? href : `${href}/`;
+  return currentPath === normalizedHref || currentPath.startsWith(normalizedHref);
+};
 ---
 
-<header class="border-b border-ink/15">
-  <div class="content-grid flex items-center justify-between py-6">
-    <a href="/" class="flex items-center gap-3 no-underline">
+<header class="border-b border-ink/80 sticky top-0 bg-ink text-white z-50 shadow-lg">
+  <div class="content-grid flex flex-wrap items-center justify-between gap-4 py-6">
+    <a href={homePath} class="flex items-center gap-3 no-underline">
       {showProfilePhoto && (
         <img
           src="/images/profile/juan.jpeg"
@@ -55,24 +70,121 @@ const showProfilePhoto = currentPath !== "/";
           loading="lazy"
         />
       )}
-      <span class="font-serif text-2xl tracking-tight">Juan Ramírez</span>
+      <span class="font-serif text-2xl tracking-tight font-bold uppercase text-white">JUAN RAMÍREZ</span>
     </a>
-    <nav aria-label="Main navigation">
+    <div class="flex items-center gap-4 md:gap-6 text-white">
+    <nav aria-label={locale === "es" ? "Navegación principal" : "Main navigation"}>
       <ul class="flex gap-4 text-sm md:gap-6 md:text-base">
         {navItems.map((item) => {
           if (item.children) {
-            const isGroupActive = item.children.some(
-              (child) =>
-                currentPath === child.href ||
-                currentPath.startsWith(`${child.href}/`)
+            // Marcar activo si estamos en la página del grupo o en una subpágina
+            const isGroupActive = item.children.some((child) => isPathActive(child.href)) || (item.href && isPathActive(item.href));
+            // Marcar deshabilitado si no estamos ni en la página del grupo ni en una subpágina
+            const isGroupDisabled = !isGroupActive;
+            return (
+                <li
+                  class={"relative group" + (isGroupActive ? " text-white font-bold underline underline-offset-4 decoration-accent" : isGroupDisabled ? " text-white/50" : "")}
+                  tabIndex={0}
+                  aria-haspopup="true"
+                  aria-expanded={isGroupActive ? "true" : "false"}
+                  onMouseEnter={e => {
+                    window.__menuIsOver = true;
+                    clearTimeout(window.__menuLeaveTimeout);
+                    e.currentTarget.classList.add('hovering');
+                  }}
+                  onMouseLeave={e => {
+                    window.__menuIsOver = false;
+                    window.__menuLeaveTimeout = setTimeout(() => {
+                      if (!window.__menuIsOver && !window.__submenuIsOver) {
+                        e.currentTarget.classList.remove('hovering');
+                      }
+                    }, 700);
+                  }}
+                >
+                <a href={item.href}
+                  class="cursor-pointer select-none flex items-center gap-1 hover:underline focus:outline-none"
+                  tabIndex={0}
+                  onFocus={(e) => {
+                    e.currentTarget.parentElement?.classList.add('focus-within');
+                  }}
+                  onBlur={(e) => {
+                    setTimeout(() => {
+                      e.currentTarget.parentElement?.classList.remove('focus-within');
+                    }, 100);
+                  }}
+                >
+                  {item.label}
+                  <svg class="h-3 w-3 text-ink/60 group-hover:text-ink/80 transition" viewBox="0 0 12 12" fill="none"><path d="M6 8L10 4H2L6 8Z" fill="currentColor"/></svg>
+                </a>
+                {/* Mouse buffer to prevent accidental menu close */}
+                <div
+                  style="position:absolute;left:0;top:100%;height:24px;width:100%;z-index:39;"
+                  onMouseEnter={e => {
+                    window.__submenuIsOver = true;
+                    clearTimeout(window.__menuLeaveTimeout);
+                    e.currentTarget.parentElement?.classList.add('hovering');
+                  }}
+                  onMouseLeave={e => {
+                    window.__submenuIsOver = false;
+                    window.__menuLeaveTimeout = setTimeout(() => {
+                      if (!window.__menuIsOver && !window.__submenuIsOver) {
+                        e.currentTarget.parentElement?.classList.remove('hovering');
+                      }
+                    }, 700);
+                  }}
+                />
+                <ul
+                  class="absolute left-0 top-full z-40 mt-2 min-w-[10rem] rounded-md border border-ink/15 bg-white py-2 shadow-lg invisible opacity-0 group-hover:visible group-hover:opacity-100 group:focus-within:visible group:focus-within:opacity-100 group.hovering:visible group.hovering:opacity-100 transition-opacity duration-150"
+                  onMouseEnter={e => {
+                    window.__submenuIsOver = true;
+                    clearTimeout(window.__menuLeaveTimeout);
+                    e.currentTarget.parentElement?.classList.add('hovering');
+                  }}
+                  onMouseLeave={e => {
+                    window.__submenuIsOver = false;
+                    window.__menuLeaveTimeout = setTimeout(() => {
+                      if (!window.__menuIsOver && !window.__submenuIsOver) {
+                        e.currentTarget.parentElement?.classList.remove('hovering');
+                      }
+                    }, 700);
+                  }}
+                >
+                {item.children.map((child) => (
+                  <li key={child.href}>
+                    <a
+                      href={child.href}
+                      class={
+                        "block px-4 py-2 transition" +
+                        (isPathActive(child.href)
+                          ? " font-bold text-accent bg-ink/5 underline underline-offset-4"
+                          : " text-ink/50 hover:text-accent hover:bg-ink/10")
+                      }
+                      aria-current={isPathActive(child.href) ? "page" : undefined}
+                    >
+                      {child.label}
+                      {navLanguage === "en" && locale !== "es" && child.label === "Literature" && (
+                        <span class="ml-2 text-xs italic text-muted">(in Spanish)</span>
+                      )}
+                    </a>
+                  </li>
+                ))}
+                </ul>
+                </ul>
+              <script is:inline>
+              if (typeof window !== 'undefined') {
+                window.__menuIsOver = false;
+                window.__submenuIsOver = false;
+              }
+              </script>
+              </li>
             );
             return (
               <li class="relative group">
                 <span
-                  class:list={[
+                  class:list=[
                     "flex cursor-default select-none items-center gap-1",
-                    isGroupActive ? "font-medium text-accent" : "text-ink",
-                  ]}
+                    isGroupActive ? "font-medium text-white" : "text-white/80 hover:text-white",
+                  ]
                 >
                   {item.label}
                   <svg
@@ -87,9 +199,7 @@ const showProfilePhoto = currentPath !== "/";
                 <ul class="absolute left-1/2 top-full z-50 min-w-max -translate-x-1/2 pt-2 invisible opacity-0 transition-opacity duration-150 group-hover:visible group-hover:opacity-100">
                   <div class="rounded-lg border border-ink/15 bg-[#fdfaf4] py-1 shadow-sm">
                     {item.children.map((child) => {
-                      const isActive =
-                        currentPath === child.href ||
-                        currentPath.startsWith(`${child.href}/`);
+                      const isActive = isPathActive(child.href);
                       return (
                         <li>
                           <a
@@ -112,16 +222,14 @@ const showProfilePhoto = currentPath !== "/";
             );
           }
 
-          const isActive =
-            currentPath === item.href ||
-            currentPath.startsWith(`${item.href}/`);
+          const isActive = isPathActive(item.href);
           return (
             <li>
               <a
                 href={item.href}
                 class:list={{
-                  "font-medium decoration-accent text-accent": isActive,
-                  "text-ink": !isActive,
+                  "font-bold text-white underline underline-offset-4 decoration-accent": isActive,
+                  "text-white/50 hover:text-white/80": !isActive,
                 }}
               >
                 {item.label}
@@ -131,5 +239,7 @@ const showProfilePhoto = currentPath !== "/";
         })}
       </ul>
     </nav>
+    <div class="ml-2"><LanguageSwitcher locale={locale} /></div>
+    </div>
   </div>
 </header>

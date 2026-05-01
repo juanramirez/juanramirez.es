@@ -1,0 +1,79 @@
+---
+import { localeLabels, switchLocalePath, type Locale } from "../lib/i18n";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const currentPath = Astro.url.pathname;
+const enPath = switchLocalePath(currentPath, "en");
+const esPath = switchLocalePath(currentPath, "es");
+---
+
+<nav class="language-switcher" aria-label={locale === "es" ? "Idioma" : "Language"} style="color: #fff;">
+  <a
+    href={enPath}
+    lang="en"
+    hreflang="en"
+    aria-current={locale === "en" ? "true" : undefined}
+    aria-label={localeLabels.en}
+    data-locale-choice="en"
+    style={`display: flex; align-items: center; gap: 0.18em; color: ${locale === "en" ? '#fff' : '#fff8'}; font-weight: ${locale === "en" ? 'bold' : 'normal'}; text-shadow: 0 1px 2px #0008;`}
+  >
+    <span aria-hidden="true" style={`font-size:1.15em; line-height:1; filter: none; opacity: 1; color: inherit;`}>🇬🇧</span> <span style="color:inherit">EN</span>
+  </a>
+  <span aria-hidden="true">|</span>
+  <a
+    href={esPath}
+    lang="es"
+    hreflang="es"
+    aria-current={locale === "es" ? "true" : undefined}
+    aria-label={localeLabels.es}
+    data-locale-choice="es"
+    style={`display: flex; align-items: center; gap: 0.18em; color: ${locale === "es" ? '#fff' : '#fff8'}; font-weight: ${locale === "es" ? 'bold' : 'normal'}; text-shadow: 0 1px 2px #0008;`}
+  >
+    <span aria-hidden="true" style={`font-size:1.15em; line-height:1; filter: none; opacity: 1; color: inherit;`}>🇪🇸</span> <span style="color:inherit">ES</span>
+  </a>
+</nav>
+
+<script>
+  document.querySelectorAll("[data-locale-choice]").forEach((link) => {
+    link.addEventListener("click", () => {
+      if (!(link instanceof HTMLElement)) return;
+      const locale = link.dataset.localeChoice;
+      if (locale === "en" || locale === "es") {
+        window.localStorage.setItem("preferred-locale", locale);
+      }
+    });
+  });
+</script>
+
+<style>
+  .language-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .language-switcher a {
+    text-decoration: none;
+    color: #fff8;
+    opacity: 1;
+    transition: color 0.2s, font-weight 0.2s;
+  }
+  .language-switcher a[aria-current="true"] {
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 0 1px 2px #0008;
+  }
+  .language-switcher span {
+    opacity: 1;
+    color: inherit;
+  }
+</style>
