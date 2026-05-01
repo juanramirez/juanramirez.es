@@ -1,0 +1,26 @@
+---
+name: "NeuroLink"
+description: "Proyecto de red social nacido durante la rehabilitación, diseñado para conectar pacientes, cuidadores y profesionales neurológicos."
+status: "in-development"
+category: "technical"
+lang: "es"
+image: "/images/projects/neurolink/logo.png"
+stack:
+  - JavaScript
+  - Node.js
+  - ExpressJS
+  - REST APIs
+url: "https://github.com/Inspiring-White/neurolink-server"
+---
+
+NeuroLink surgió primero como un ejercicio personal de rehabilitación tras mi cirugía cerebral en 2020 y la lesión cerebral adquirida posterior, pero también tiene un propósito más amplio: ayudar a otras personas en situaciones similares.
+
+El proyecto busca cerrar la brecha que suele aparecer entre el alta médica y la vida real de la rehabilitación, conectando:
+
+- pacientes,
+- cuidadores y familiares,
+- profesionales neurológicos y de neurorehabilitación.
+
+La visión a largo plazo es una plataforma social para personas afectadas directa o indirectamente por daño cerebral adquirido y trastornos neurológicos.
+
+Desde el punto de vista técnico, NeuroLink está organizado como un proyecto cliente-servidor. El servidor es actualmente la parte más avanzada y está disponible en el repositorio de GitHub enlazado.

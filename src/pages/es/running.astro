@@ -1,0 +1,231 @@
+---
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PhotoSlideshow from "../../components/PhotoSlideshow.astro";
+
+const historyPhotos = [
+  { src: "/images/running/2010-04-11-maraton-malaga.jpeg", caption: "Maratón de Málaga 2010" },
+  { src: "/images/running/2010-urbana.jpeg", caption: "Carrera Urbana Ciudad de Chiclana, Chiclana (Cádiz) 2010" },
+  { src: "/images/running/2011-05-08-toruños.JPeG", caption: "Cross de los Toruños, Puerto Real (Cádiz) 2011" },
+  { src: "/images/running/2011-05-21-urbana.JPeG", caption: "Carrera Urbana Ciudad de Chiclana, Chiclana (Cádiz) 2011" },
+  { src: "/images/running/2012-11-09-universitaria-granada.jpeg", caption: "Carrera Universitaria de Granada, 2012" },
+  { src: "/images/running/2013-04-28-maraton-madrid.jpeg", caption: "Maratón de Madrid 2013" },
+  { src: "/images/running/2014-03-18-sanchicleti.jpeg", caption: "Carrera Chiclana - Sancti Petri, Chiclana (Cádiz) 2014" },
+  { src: "/images/running/2014-06-15-norte-sur.jpeg", caption: "Carrera Norte-Sur, Madrid 2014" },
+  { src: "/images/running/2014-10-14-media-playas-chiclana.jpeg", caption: "Media Maratón Playas de Chiclana, Chiclana (Cádiz) 2014" },
+  { src: "/images/running/2014-12-08-maraton-malaga.jpeg", caption: "Maratón de Málaga 2014" },
+  { src: "/images/running/2015-04-28-maraton-madrid.jpeg", caption: "Maratón de Madrid 2015" },
+  { src: "/images/running/2015-05-12-media-granada.jpeg", caption: "Media Maratón de Granada 2015" },
+  { src: "/images/running/2015-08-16-barrosaJPeG", caption: "Carrera Playa de la Barrosa, Chiclana (Cádiz) 2015" },
+  { src: "/images/running/2015-12-08-media-madrid-blanca.jpeg", caption: "Media Maratón de Madrid 2015" },
+  { src: "/images/running/2016-11-26-cross-san-roque.JPeG", caption: "Campeonato Andaluz de Cross, San Roque (Cádiz) 2016" },
+  { src: "/images/running/2016-12-14-cross-hierro.jpeg", caption: "Cross Pinar de Hierro, Chiclana (Cádiz) 2016" },
+  { src: "/images/running/2016-12-15-cross-cayendo.jpeg", caption: "Cross Pinar de la Barrosa, Chiclana (Cádiz) 2016" },
+  { src: "/images/running/2017-02-20-maratón-sevilla.jpeg", caption: "Maratón de Sevilla 2017" },
+  { src: "/images/running/2017-04-02-carrera-azul.jpeg", caption: "Carrera Azul por el Autismo, Santa Fe (Granada) 2017" },
+  { src: "/images/running/2017-04-09-10k-novo-sancti-petri.jpeg", caption: "10K Novo Sancti Petri, Chiclana (Cádiz) 2017" },
+  { src: "/images/running/2017-10-09-cross-colorado.jpeg", caption: "Cross El Colorado, Conil (Cádiz) 2017" },
+];
+
+const todayPhotos = [
+  { src: "/images/posts/media-chiclana.jpeg", caption: "Media Maratón de Chiclana, abril de 2026" },
+  { src: "/images/posts/viamed-superacion.jpeg", caption: "Premio Viamed Superación, abril de 2026" },
+];
+
+const records = [
+  {
+    distance: "1K",
+    time: "2:57.7",
+    race: "Test 1K",
+    date: "14 Sep 2016",
+    link: null,
+    timeLink: "https://www.strava.com/activities/712366571/best-efforts",
+  },
+  {
+    distance: "1 milla",
+    time: "5:01.5",
+    race: "Milla de Suanzes",
+    date: "27 Sep 2014",
+    link: "https://atletismomadrid.com/index.php?Itemid=120&catid=28&id=3937&option=com_content&view=article",
+    timeLink: "https://www.strava.com/activities/200169714",
+  },
+  {
+    distance: "5K",
+    time: "17:46",
+    race: "Carrera Azul del Autismo",
+    date: "2 Abr 2017",
+    link: null,
+    timeLink: "https://www.strava.com/activities/925440594",
+  },
+  {
+    distance: "10K",
+    time: "36:59",
+    race: "Carrera Popular Memorial Padre Marcelino",
+    date: "23 Abr 2017",
+    link: "https://sportmaniacs.com/es/races/17-carrera-popular-memorial-padre-marcelino",
+    timeLink: "https://www.strava.com/activities/954165730",
+  },
+  {
+    distance: "Media maratón",
+    time: "1:21:00",
+    race: "EDP Media Maratón de Sevilla",
+    date: "29 Ene 2017",
+    link: "https://sportmaniacs.com/en/races/edp-media-maraton-de-sevilla-2017",
+    timeLink: "https://www.strava.com/activities/847962790",
+  },
+  {
+    distance: "Maratón",
+    time: "2:55:30",
+    race: "Zurich Maratón de Sevilla",
+    date: "19 Feb 2017",
+    link: "https://www.zurichmaratonsevilla.es/mse-clasificaciones-2017",
+    timeLink: "https://www.strava.com/activities/871837599",
+  }
+];
+
+const highlights = [
+  {
+    date: "19 de abril de 2026",
+    event: "Media Maratón de Chiclana",
+    time: "1:57:20",
+    comment: "<a href=\"/es/blog/chiclana-half-marathon/\" class=\"hover:text-accent\">Leer crónica</a>",
+  },
+  {
+    date: "19 de abril de 2026",
+    event: "Premio Viamed Superación",
+    time: "",
+    comment: "Premio de escritura por resiliencia y running · <a href=\"/es/blog/chiclana-half-marathon/\" class=\"hover:text-accent\">Leer más</a>",
+  },
+  {
+    date: "14 de abril de 2024",
+    event: "Media Maratón de Chiclana",
+    time: "1:41:19",
+    comment: "<a href=\"https://www.strava.com/activities/11177713071\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"hover:text-accent\">Ver en Strava</a>",
+  },
+  {
+    date: "2023",
+    event: "Circuito local de carreras",
+    time: "",
+    comment: "Vuelta a la competición tras las cirugías",
+  },
+];
+---
+
+<BaseLayout
+  title="Correr | Juan Ramírez"
+  description="Actividad de correr y seguimiento deportivo de Juan Ramírez como corredor adaptado."
+  locale="es"
+>
+  <section class="max-w-4xl space-y-6">
+    <nav aria-label="Migas de pan" class="text-sm text-muted">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a href="/es/">Portada</a></li>
+        <li aria-hidden="true">/</li>
+        <li class="text-ink/80">Correr</li>
+      </ol>
+    </nav>
+
+    <header class="space-y-1">
+      <h1 class="flex items-center gap-3 font-serif text-3xl md:text-4xl">
+        <img src="/images/icons/running.svg" alt="" aria-hidden="true" class="h-10 w-10 shrink-0 md:h-11 md:w-11" loading="lazy" />
+        <span>Correr</span>
+      </h1>
+    </header>
+
+    <div class="space-y-6">
+      <h2 class="font-serif text-2xl md:text-3xl">Correr no es sólo correr</h2>
+      <PhotoSlideshow id="history-es" images={historyPhotos} />
+      <div class="space-y-4 text-muted">
+        <p>
+          Correr ha sido parte de mi vida desde que tenía unos veinte años. He entrenado por los caminos de Chiclana, Madrid y Ronda (dondequiera que he vivido), he competido con regularidad y poco a poco he ido bajando mis marcas —incluyendo un 10K por debajo de 37 minutos y una maratón en 2:55, ambos en 2017-.
+        </p>
+        <p>
+          Tres neurocirugías en 2020 cambiaron lo que mi cuerpo puede hacer y cómo pienso el movimiento. Ahora soy un corredor adaptado: sigo corriendo, en otros términos y a otro ritmo, pero sigo en movimiento. Los récords de abajo pertenecen al corredor que fui. Los mantengo aquí porque <i>son verdad</i>, y porque el trabajo que representan no deja de ser real solo porque las circunstancias hayan cambiado.
+        </p>
+      </div>
+      <div class="space-y-4 text-muted">
+        <p>
+          Correr, para mí, no es sólo correr. Es saber cuándo apretar los dientes, cuándo bajar las revoluciones, cuándo parar para no reventar. Saber qué camino hay que seguir y cuál no. Correr es como vivir, enseña a vivir. Es por todo eso por lo que corro y seguiré corriendo mientras pueda.
+        </p>
+      </div>
+      <h3 class="flex items-center gap-2 font-serif text-lg md:text-xl mt-8">
+        <img src="/images/icons/medal.svg" alt="Medalla" class="inline h-7 w-7 mr-1 align-middle" loading="lazy" />
+        Mejores marcas personales
+      </h3>
+      <div class="space-y-3">
+        <ul class="divide-y divide-ink/10">
+          {records.map((record) => (
+            <li class="flex items-baseline gap-4 py-3 sm:gap-6">
+              <span class="w-24 shrink-0 text-xs uppercase tracking-widest text-muted">
+                {record.distance}
+              </span>
+              <span class="w-20 shrink-0 font-serif text-xl font-semibold tabular-nums">
+                {record.timeLink ? (
+                  <a
+                    href={record.timeLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="hover:text-accent underline"
+                  >
+                    {record.time}
+                  </a>
+                ) : (
+                  record.time
+                )}
+              </span>
+              <span class="min-w-0 text-sm text-muted">
+                {record.link ? (
+                  <a
+                    href={record.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="hover:text-accent"
+                  >
+                    {record.race}
+                  </a>
+                ) : (
+                  record.race
+                )}
+                <span class="mx-1.5 opacity-40">·</span>
+                {record.date}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <h2 class="font-serif text-2xl md:text-3xl mt-8">Correr hoy</h2>
+      <PhotoSlideshow id="today-es" images={todayPhotos} />
+      <p class="text-muted">
+        Desde que volví a competir en 2023, participo como corredor adaptado: más lento, con más planificación
+        y con mucho más respeto por las señales del cuerpo. Estos son los hitos desde las cirugías.
+      </p>
+      <h3 class="flex items-center gap-2 font-serif text-lg md:text-xl text-muted mt-4">
+        <img src="/images/icons/camera.svg" alt="Cámara" class="inline h-6 w-6 mr-1 align-middle" loading="lazy" />
+        Hitos tras mi daño cerebral
+      </h3>
+      <ul class="divide-y divide-ink/10">
+        {highlights.map((highlight) => (
+          <li class="flex items-baseline gap-4 py-3 sm:gap-6">
+            <span class="w-20 shrink-0 font-serif text-xl font-semibold tabular-nums">
+              {highlight.timeLink ? (
+                <a href={highlight.timeLink} target="_blank" rel="noopener noreferrer" class="hover:text-accent underline">{highlight.time}</a>
+              ) : (
+                highlight.time
+              )}
+            </span>
+            <span class="min-w-0 text-sm text-muted">
+              {highlight.link ? (
+                <a href={highlight.link} target="_blank" rel="noopener noreferrer" class="hover:text-accent underline">{highlight.event}</a>
+              ) : (
+                highlight.event
+              )}
+              {highlight.comment && <><span class="mx-1.5 opacity-40">·</span><span innerHTML={highlight.comment}></span></>}
+            </span>
+            <span class="w-24 shrink-0 text-xs text-muted">{highlight.date}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

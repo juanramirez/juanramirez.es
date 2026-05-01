@@ -1,0 +1,44 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { Fragment } from "astro/jsx-runtime";
+
+const projects = (await getCollection("portfolio"))
+  .filter((p) => !p.data.hidden && p.data.category === "technical" && (p.data.lang === "es" || !p.data.lang))
+  .sort((a, b) => a.data.name.localeCompare(b.data.name));
+---
+
+<BaseLayout
+  title="Porfolio de programación | Juan Ramírez"
+  description="Proyectos técnicos y de software de Juan Ramírez."
+  locale="es"
+>
+  <section class="max-w-4xl space-y-6">
+    <nav aria-label="Migas de pan" class="text-sm text-muted">
+      <ol class="flex flex-wrap items-center gap-2 list-none">
+        <li><a href="/es/">Portada</a></li>
+        <li aria-hidden="true">/</li>
+        <li><a href="/es/portfolio/">Intereses</a></li>
+        <li aria-hidden="true">/</li>
+        <li class="text-ink/80">Porfolio de programación</li>
+      </ol>
+    </nav>
+
+    <header class="space-y-1">
+      <h1 class="flex items-center gap-3 font-serif text-3xl md:text-4xl">
+        <img src="/images/icons/coding-portfolio.svg" alt="" aria-hidden="true" class="h-10 w-10 shrink-0 md:h-11 md:w-11" loading="lazy" />
+        <span>Porfolio de programación</span>
+      </h1>
+      <p class="text-sm text-muted">{projects.length} {projects.length === 1 ? "proyecto" : "proyectos"}</p>
+    </header>
+
+    <ul class="grid gap-6 md:grid-cols-2">
+      {projects.map((project) => (
+        <Fragment>
+          <ProjectCard project={project} />
+        </Fragment>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
