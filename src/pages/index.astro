@@ -13,18 +13,34 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         id="hero-image"
         src="/images/profile/juan.png"
         alt="Juan Ramírez"
-        class="h-36 w-36 rounded-full border border-ink/15 object-cover transition-opacity duration-300 sm:h-44 sm:w-44"
+        class="h-44 w-44 rounded-full border border-ink/15 object-cover transition-opacity duration-300 sm:h-56 sm:w-56"
         loading="lazy"
       />
-      <h1 class="hero-title min-w-0 flex-1 font-serif leading-tight text-center sm:text-left w-full">
+      <h1 class="hero-title min-w-0 flex-1 font-serif leading-tight text-center sm:text-left w-full text-3xl md:text-5xl">
         <span class="hero-line"><span id="hero-intro" class="font-semibold"></span></span>
-        <span id="hero-subline" class="hero-line hero-subline break-words whitespace-normal">
-          <span class="hero-prefix">I'm </span>
-          <span id="hero-typed" class="hero-typed-live font-semibold"></span>
+        <span id="hero-lines" class="hero-lines mt-5" aria-live="polite">
+          <span class="hero-identity-line">
+            <span id="hero-husband-prefix"></span><span id="hero-husband-insert" class="hero-added-word"></span><span id="hero-husband-base"></span>
+          </span>
+          <span class="hero-identity-line">
+            <span id="hero-writer-prefix"></span><span id="hero-writer-insert" class="hero-added-word"></span><span id="hero-writer-base"></span>
+          </span>
+          <span class="hero-identity-line">
+            <span id="hero-runner-prefix"></span><span id="hero-runner-insert" class="hero-added-word"></span><span id="hero-runner-base"></span>
+          </span>
+          <span class="hero-identity-line">
+            <span id="hero-developer-prefix"></span><span id="hero-developer-insert" class="hero-added-word"></span><span id="hero-developer-base"></span>
+          </span>
+          <span class="hero-identity-line hero-abi-line">
+            <span id="hero-abi"></span><span id="abi-note" class="block text-sm text-gray-400 mt-2" style="display:none;">* ABI stands for <a href="https://en.wikipedia.org/wiki/Acquired_brain_injury" target="_blank" rel="noopener" class="underline text-accent hover:text-accent">Acquired Brain Injury</a></span>
+          </span>
+          <span class="hero-identity-line">
+            <span id="hero-alive" class="text-[0.7rem] md:text-sm font-bold mt-6 block" style="color: #111;"></span>
+          </span>
         </span>
       </h1>
     </div>
-    <div id="intro-hidden" class="opacity-0 pointer-events-none transition-opacity duration-700">
+    <div id="intro-hidden" class="opacity-0 pointer-events-none transition-opacity duration-[2500ms]">
       <p class="text-lg leading-relaxed text-muted md:text-xl mb-5">
         In 2020, three neurosurgeries changed the trajectory of my life. Since then, I have been writing about
         acquired brain injury, technology, and whatever else feels true and worth sharing.
@@ -42,42 +58,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   </section>
 
   <script>
-        // Mostrar intro al hacer scroll
-        window.addEventListener("scroll", () => {
-          const intro = document.getElementById("intro-hidden");
-          if (!intro) return;
-          if (window.scrollY > 40) {
-            intro.classList.remove("opacity-0", "pointer-events-none");
-            intro.classList.add("opacity-100");
-          } else {
-            intro.classList.add("opacity-0", "pointer-events-none");
-            intro.classList.remove("opacity-100");
-          }
-        });
-    import Typed from "typed.js";
+    // Mostrar intro al hacer scroll solo en móvil
+    // El texto bajo el hero solo aparece tras la animación, en todos los tamaños
 
-    const introTarget = document.querySelector("#hero-intro");
-    const typedTarget = document.querySelector("#hero-typed");
-    const heroSubline = document.querySelector("#hero-subline");
-    const prefixTarget = document.querySelector(".hero-prefix");
+    const introTarget = document.querySelector("#hero-intro") as HTMLElement | null;
+    const heroLines = document.querySelector("#hero-lines") as HTMLElement | null;
     const heroImage = document.querySelector("#hero-image") as HTMLImageElement | null;
     const defaultHeroImage = "/images/profile/juan.png";
-    const defaultBackDelay = 1200;
     const introStartDelay = 250;
-    const secondLineDelay = 450;
-    const introPrefix = "I am";
-    const introName = "Juan Ramírez";
+    const afterIntroPause = 1200; // Pausa tras 'I am Juan Ramírez'
+    const introPrefix = "I'M";
+    const introName = "JUAN RAMÍREZ";
     const introText = `${introPrefix} ${introName}`;
-
-    const heroStrings = [
-      "an ABI survivor",
-      "a father and husband",
-      "a writer",
-      "an adaptive runner",
-      "a former software developer"
-    ];
-    const firstHeroString = heroStrings[0];
-    const loopHeroStrings = [...heroStrings.slice(1), firstHeroString];
 
     const heroImages = [
       "/images/hero/abi-survivor.jpeg",
@@ -86,11 +78,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       "/images/hero/adaptive-runner.png",
       "/images/hero/developer.png",
     ];
-    const firstHeroImage = heroImages[0];
-    const loopHeroImages = [...heroImages.slice(1), firstHeroImage];
 
     const typingSpeed = 45;
-    const deletingSpeed = 25;
+    const editTypingSpeed = 55;
+    const linePause = 1100;
+    const editPause = 620;
+    const timers: number[] = [];
+    // Crea un cursor independiente para cada animación paralela
+    const createCursor = () => {
+      const cursor = document.createElement("span");
+      cursor.className = "hero-edit-cursor";
+      cursor.textContent = "_";
+      return cursor;
+    };
 
     const setHeroImage = (indexOrSrc: number | string) => {
       if (!heroImage) {
@@ -115,135 +115,182 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
     setHeroImage(defaultHeroImage);
 
-    const heroTitle = document.querySelector(".hero-title") as HTMLElement | null;
-
-    const fitSubline = () => {
-      if (!(heroTitle instanceof HTMLElement) || !(heroSubline instanceof HTMLElement)) return;
-      heroSubline.style.fontSize = "";
-      const available = heroTitle.clientWidth;
-      if (available <= 0) return;
-
-      const sublineWidth = Array.from(heroSubline.children)
-        .reduce((sum, el) => sum + (el as HTMLElement).scrollWidth, 0);
-      const cursorBuffer = 14;
-      const required = sublineWidth + cursorBuffer;
-
-      if (required > available) {
-        const base = parseFloat(getComputedStyle(heroSubline).fontSize);
-        const safety = 0.96;
-        const minSize = 14;
-        const nextSize = Math.max(minSize, base * (available / required) * safety);
-        heroSubline.style.fontSize = `${nextSize.toFixed(1)}px`;
-      }
-    };
-
-    const sublineObserver = new MutationObserver(fitSubline);
-    if (heroSubline instanceof HTMLElement) {
-      sublineObserver.observe(heroSubline, { characterData: true, subtree: true, childList: true });
-    }
-    window.addEventListener("resize", fitSubline);
-
-    let introTyped: Typed | undefined;
-    let firstPrefixTyped: Typed | undefined;
-    let firstLoopTyped: Typed | undefined;
-    let loopTyped: Typed | undefined;
-
-    const startLoop = () => {
-      if (!(typedTarget instanceof HTMLElement)) {
-        return;
-      }
-
-      typedTarget.textContent = "";
-      heroSubline?.classList.add("has-prefix", "is-visible");
-      window.requestAnimationFrame(fitSubline);
-
-      loopTyped = new Typed(typedTarget, {
-        strings: loopHeroStrings,
-        typeSpeed: typingSpeed,
-        backSpeed: deletingSpeed,
-        startDelay: secondLineDelay,
-        backDelay: defaultBackDelay,
-        smartBackspace: false,
-        preStringTyped: (arrayPos) => {
-          setHeroImage(loopHeroImages[arrayPos] ?? loopHeroImages[0]);
-        },
-        onStringTyped: (arrayPos) => {
-          setHeroImage(loopHeroImages[arrayPos] ?? loopHeroImages[0]);
-        },
-        loop: true,
-        showCursor: true,
-        cursorChar: "_"
+    const delay = (ms: number) =>
+      new Promise<void>((resolve) => {
+        timers.push(window.setTimeout(resolve, ms));
       });
+
+    const placeCursor = (target: HTMLElement, cursor: HTMLElement) => {
+      target.append(cursor);
     };
 
-    if (introTarget instanceof HTMLElement) {
-      introTyped = new Typed(introTarget, {
-        strings: [introText],
-        typeSpeed: typingSpeed,
-        startDelay: introStartDelay,
-        showCursor: true,
-        cursorChar: "_",
-        onComplete: (self) => {
-          if (self.cursor?.parentNode) {
-            self.cursor.parentNode.removeChild(self.cursor);
-          }
+    const typeText = async (target: HTMLElement, text: string, speed = typingSpeed, customCursor?: HTMLElement) => {
+      const cursor = customCursor || createCursor();
+      placeCursor(target, cursor);
+      for (const character of text) {
+        target.insertBefore(document.createTextNode(character), cursor);
+        await delay(speed);
+      }
+      cursor.remove();
+    };
 
-          introTarget.innerHTML = `${introPrefix} <span class="hero-intro-name">${introName}</span>`;
-
-          if (!(typedTarget instanceof HTMLElement)) {
-            return;
-          }
-
-          heroSubline?.classList.add("is-visible", "has-prefix");
-          introTarget.classList.add("is-dimmed");
-          setHeroImage(firstHeroImage);
-          window.requestAnimationFrame(fitSubline);
-
-          if (!(prefixTarget instanceof HTMLElement)) {
-            return;
-          }
-
-          prefixTarget.textContent = "";
-          typedTarget.textContent = "";
-
-          firstPrefixTyped = new Typed(prefixTarget, {
-            strings: ["I'm "],
-            typeSpeed: typingSpeed,
-            startDelay: 180,
-            showCursor: false,
-            onComplete: () => {
-              prefixTarget.textContent = "I'm ";
-
-              firstLoopTyped = new Typed(typedTarget, {
-                strings: [firstHeroString, ""],
-                typeSpeed: typingSpeed,
-                backSpeed: deletingSpeed,
-                backDelay: defaultBackDelay,
-                loop: false,
-                showCursor: true,
-                cursorChar: "_",
-                onComplete: (firstPass) => {
-                  if (firstPass.cursor?.parentNode) {
-                    firstPass.cursor.parentNode.removeChild(firstPass.cursor);
-                  }
-
-                  window.setTimeout(startLoop, 220);
-                }
-              });
-            }
-          });
+    const typeSegments = async (segments: { target: HTMLElement | null; text: string }[]) => {
+      for (const segment of segments) {
+        if (segment.target) {
+          await typeText(segment.target, segment.text);
         }
-      });
-    } else {
-      startLoop();
-    }
+      }
+    };
+
+    const startHeroSequence = async () => {
+      if (!introTarget || !heroLines) return;
+
+      await delay(introStartDelay);
+      await typeText(introTarget, introText);
+      // No eliminar cursor global, ya no se usa
+      await delay(afterIntroPause);
+      // Forzar tamaño pequeño y blur antes de mostrar líneas
+      introTarget.classList.add("shrink");
+      introTarget.classList.add("is-dimmed");
+      introTarget.style.fontSize = "clamp(1rem, 2vw, 1.5rem)";
+      introTarget.style.opacity = 0.34;
+      introTarget.style.filter = "blur(1.8px)";
+      introTarget.innerHTML = `${introPrefix} <span class=\"hero-intro-name\">${introName}</span>`;
+      // Ajustar tamaño final más pequeño
+      introTarget.style.fontSize = "clamp(1.2rem, 3vw, 2rem)";
+      heroLines.classList.add("is-visible");
+
+      const husbandPrefix = document.querySelector("#hero-husband-prefix") as HTMLElement | null;
+      const husbandInsert = document.querySelector("#hero-husband-insert") as HTMLElement | null;
+      const husbandBase = document.querySelector("#hero-husband-base") as HTMLElement | null;
+      const writerInsert = document.querySelector("#hero-writer-insert") as HTMLElement | null;
+      const writerPrefix = document.querySelector("#hero-writer-prefix") as HTMLElement | null;
+      const writerBase = document.querySelector("#hero-writer-base") as HTMLElement | null;
+      const runnerPrefix = document.querySelector("#hero-runner-prefix") as HTMLElement | null;
+      const runnerInsert = document.querySelector("#hero-runner-insert") as HTMLElement | null;
+      const runnerBase = document.querySelector("#hero-runner-base") as HTMLElement | null;
+      const developerPrefix = document.querySelector("#hero-developer-prefix") as HTMLElement | null;
+      const developerInsert = document.querySelector("#hero-developer-insert") as HTMLElement | null;
+      const developerBase = document.querySelector("#hero-developer-base") as HTMLElement | null;
+      const abiTarget = document.querySelector("#hero-abi") as HTMLElement | null;
+      const abiNote = document.getElementById("abi-note");
+
+      // Escribir las líneas base con efecto typewriter
+      setHeroImage(1);
+      await typeText(husbandPrefix, "I'm a ");
+      await typeText(husbandBase, "husband");
+      await delay(linePause);
+
+      setHeroImage(2);
+      await typeText(writerPrefix, "I'm a ");
+      await typeText(writerBase, "writer");
+      await delay(linePause);
+
+      setHeroImage(3);
+      await typeText(runnerPrefix, "I'm a ");
+      await typeText(runnerBase, "runner");
+      await delay(linePause);
+
+      setHeroImage(4);
+      await typeText(developerPrefix, "I'm a ");
+      await typeText(developerBase, "software developer");
+      await delay(linePause);
+
+      // ABI primero, luego añadidos y 'I'm still alive' en paralelo
+      if (abiTarget && runnerInsert && developerInsert && husbandInsert && writerInsert) {
+        // Mostrar primero 'I'm a brain tumor survivor' con efecto typewriter
+        setHeroImage(0); // Imagen actual para survivor
+        runnerInsert.textContent = "";
+        developerInsert.textContent = "";
+        husbandInsert.textContent = "";
+        writerInsert.textContent = "";
+        abiTarget.textContent = "";
+        // Creamos un span para 'I'm a brain tumor survivor'
+        const survivorSpan = document.createElement('span');
+        abiTarget.appendChild(survivorSpan);
+        await typeText(survivorSpan, "I'm a brain tumor survivor");
+        if (abiNote) abiNote.style.display = "block";
+        await delay(900);
+        // Ahora mostrar 'I have an ABI*' debajo, con otra imagen
+        setHeroImage("/images/hero/abi-diagnosis.png");
+        const abiSpan = document.createElement('span');
+        abiSpan.style.display = 'block';
+        abiTarget.appendChild(abiSpan);
+        await typeText(abiSpan, "I have an ABI*");
+        await delay(900);
+        // Ahora añadidos y 'I'm still alive' en paralelo
+        const aliveTarget = document.querySelector("#hero-alive") as HTMLElement | null;
+        if (aliveTarget) {
+          setHeroImage("/images/hero/alive.jpeg");
+          await delay(linePause);
+          // Efecto progresivo para restaurar el color de 'I am Juan Ramírez' mientras se escribe 'I'm still alive'
+          const introTarget = document.querySelector("#hero-intro");
+          if (introTarget) {
+            // Quitar clases de difuminado si existen
+            introTarget.classList.remove("is-dimmed");
+            introTarget.classList.remove("shrink");
+            // Animar color, opacidad, blur y font-size progresivamente (más rápido y menos grande)
+            const duration = 350; // antes 1200
+            const start = performance.now();
+            const initialOpacity = 0.34;
+            const finalOpacity = 1;
+            const initialBlur = 1.8;
+            const finalBlur = 0;
+            const initialColor = [167, 159, 143]; // #a79f8f
+            const finalColor = [17, 17, 17]; // #111
+            const minFont = 22; // px (aprox clamp(1.1rem, 2.8vw, 2.1rem))
+            const maxFont = 34; // px (más pequeño que antes)
+            const nameSpan = introTarget.querySelector('.hero-intro-name');
+            function lerp(a, b, t) { return a + (b - a) * t; }
+            function animateRestore(now) {
+              const elapsed = Math.min(now - start, duration);
+              const t = elapsed / duration;
+              const opacity = lerp(initialOpacity, finalOpacity, t);
+              const blur = lerp(initialBlur, finalBlur, t);
+              const fontSize = lerp(minFont, maxFont, t);
+              introTarget.style.opacity = opacity;
+              introTarget.style.filter = `blur(${blur}px)`;
+              introTarget.style.fontSize = fontSize + "px";
+              const r = Math.round(lerp(initialColor[0], finalColor[0], t));
+              const g = Math.round(lerp(initialColor[1], finalColor[1], t));
+              const b = Math.round(lerp(initialColor[2], finalColor[2], t));
+              if (nameSpan) nameSpan.style.color = `rgb(${r},${g},${b})`;
+              if (elapsed < duration) {
+                requestAnimationFrame(animateRestore);
+              } else {
+                introTarget.style.opacity = finalOpacity;
+                introTarget.style.filter = `blur(${finalBlur}px)`;
+                introTarget.style.fontSize = "clamp(2.2rem, 7vw, 2.8rem)";
+                if (nameSpan) nameSpan.style.color = `rgb(${finalColor[0]},${finalColor[1]},${finalColor[2]})`;
+              }
+            }
+            requestAnimationFrame(animateRestore);
+          }
+          const texts = [
+            { target: runnerInsert, text: "adaptive " },
+            { target: developerInsert, text: "former " },
+            { target: husbandInsert, text: "father and " },
+            { target: writerInsert, text: "still " },
+            { target: aliveTarget, text: "I'm still alive" },
+          ];
+          const totalDuration = 1200;
+          const speeds = texts.map(t => t.text.length ? Math.floor(totalDuration / t.text.length) : typingSpeed);
+          await Promise.all(texts.map((t, i) => typeText(t.target, t.text, speeds[i], createCursor())));
+        }
+      }
+    };
+
+    startHeroSequence().then(() => {
+      // Mostrar intro bajo el hero solo cuando la animación ha terminado
+      const intro = document.getElementById("intro-hidden");
+      if (intro) {
+        intro.classList.remove("opacity-0", "pointer-events-none");
+        intro.classList.add("opacity-100");
+      }
+    });
 
     window.addEventListener("pagehide", () => {
-      introTyped?.destroy();
-      firstPrefixTyped?.destroy();
-      firstLoopTyped?.destroy();
-      loopTyped?.destroy();
-      sublineObserver.disconnect();
+      timers.forEach((timer) => window.clearTimeout(timer));
     });
   </script>
 
@@ -251,7 +298,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     .hero-title {
       display: flex;
       flex-direction: column;
-      font-size: clamp(1.5rem, 5vw, 3.75rem);
+      font-size: clamp(1.1rem, 2.8vw, 2.1rem);
+      font-weight: 600; /* semibold para todo el título */
     }
 
     .hero-line {
@@ -260,7 +308,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
     #hero-intro {
       white-space: nowrap;
-      transition: opacity 1800ms ease, filter 1800ms ease;
+      font-size: clamp(2.2rem, 7vw, 4.5rem);
+      transition: font-size 11s cubic-bezier(.4,0,.2,1), opacity 1800ms ease, filter 11s cubic-bezier(.4,0,.2,1);
+    }
+
+    #hero-intro.shrink {
+      font-size: clamp(1.1rem, 2.8vw, 2.1rem);
     }
 
     #hero-intro .hero-intro-name {
@@ -277,41 +330,47 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       color: #a79f8f;
     }
 
-    .hero-subline {
+    .hero-lines {
+      display: grid;
+      gap: 0.03em;
+      margin-top: 0.18em;
       opacity: 0;
-      max-height: 0;
-      margin-top: 0;
       overflow: hidden;
-      white-space: normal;
-      word-break: break-word;
-      transition: max-height 1800ms cubic-bezier(0.22, 1, 0.36, 1), margin-top 1800ms cubic-bezier(0.22, 1, 0.36, 1), opacity 700ms 120ms ease;
+      transition: opacity 700ms 120ms ease;
     }
 
-    .hero-subline .hero-prefix {
-      display: none;
-    }
-
-    .hero-subline.is-visible {
+    .hero-lines.is-visible {
       opacity: 1;
-      max-height: 4rem;
-      margin-top: 0.12em;
     }
 
-    .hero-subline.has-prefix .hero-prefix {
-      display: inline;
-    }
-
-    .hero-prefix,
-    .hero-typed-live {
+    .hero-identity-line {
+      display: block;
+      min-height: 1.02em;
       white-space: nowrap;
     }
 
-    .hero-typed-live {
-      min-width: 1ch;
+    #hero-alive {
+      font-size: clamp(2.2rem, 7vw, 4.5rem);
+      font-weight: 700; /* bold solo para 'I'm still alive' */
+      display: inline-block;
+      margin-top: 0.18em;
     }
 
-    .typed-cursor {
+    .hero-abi-line,
+    .hero-added-word {
+      color: #b14623;
+    }
+
+    .hero-edit-cursor {
+      display: inline-block;
+      color: currentColor;
       animation: blink 1.4s infinite;
+    }
+
+    @media (max-width: 420px) {
+      .hero-title {
+        font-size: clamp(1.25rem, 7vw, 1.75rem);
+      }
     }
 
     @keyframes blink {
