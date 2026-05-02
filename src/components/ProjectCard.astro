@@ -7,7 +7,7 @@ interface Props {
 
 const { project } = Astro.props;
 const isLiterary = project.data.category === "literary";
-const isSpanish = project.data.lang === "es";
+const isSpanish = project.data.lang === "es" || isLiterary;
 
 const statusLabel =
   project.data.status === "in-development"
