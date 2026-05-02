@@ -1,0 +1,111 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const allProjects = (await getCollection("portfolio")).filter((p) => !p.data.hidden);
+// Filtrar proyectos técnicos únicos por slug para evitar duplicados por idioma
+const technicalProjects = Object.values(
+  allProjects
+    .filter((p) => p.data.category === "technical")
+    .reduce((acc, p) => {
+      acc[p.slug] = acc[p.slug] || p;
+      return acc;
+    }, {})
+).sort((a, b) => a.data.name.localeCompare(b.data.name));
+// Filtrar proyectos literarios únicos por slug para evitar duplicados por idioma
+const literaryProjects = Object.values(
+  allProjects
+    .filter((p) => p.data.category === "literary")
+    .reduce((acc, p) => {
+      acc[p.slug] = acc[p.slug] || p;
+      return acc;
+    }, {})
+).sort((a, b) => a.data.name.localeCompare(b.data.name));
+const technicalCount = technicalProjects.length;
+const literaryCount = literaryProjects.length;
+---
+
+<BaseLayout
+  title="Interests | Juan Ramírez"
+  description="Personal interests of Juan Ramírez across coding, literature, and running."
+>
+  <section class="max-w-4xl space-y-8">
+    <nav aria-label="Breadcrumb" class="text-sm text-muted">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a href="/">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li class="text-ink/80">Interests</li>
+      </ol>
+    </nav>
+
+    <header class="space-y-2">
+      <h1 class="flex items-center gap-3 font-serif text-4xl md:text-5xl">
+        <img
+          src="/images/icons/portfolio-hub.svg"
+          alt=""
+          aria-hidden="true"
+          class="h-10 w-10 shrink-0 md:h-11 md:w-11"
+          loading="lazy"
+        />
+        <span>Interests</span>
+      </h1>
+      <p class="text-muted">Explore my interests across different domains.</p>
+    </header>
+
+    <div class="grid gap-6 md:grid-cols-2">
+      <div class="group rounded-md border border-ink/15 bg-white/40 p-8 transition hover:bg-white/60 hover:shadow-sm">
+        <a href="/coding-portfolio/" class="block no-underline decoration-transparent">
+          <div class="space-y-2">
+            <h2 class="flex items-center gap-3 font-serif text-2xl group-hover:text-ink/80">
+              <img
+                src="/images/icons/coding-portfolio.svg"
+                alt=""
+                aria-hidden="true"
+                class="h-8 w-8 shrink-0"
+                loading="lazy"
+              />
+              Coding Portfolio
+            </h2>
+            <p class="pt-4 text-sm text-ink/60 group-hover:text-ink/80">Explore my coding portfolio →</p>
+          </div>
+        </a>
+      </div>
+      <div class="group rounded-md border border-ink/15 bg-white/40 p-8 transition hover:bg-white/60 hover:shadow-sm">
+        <a href="/literary-portfolio/" class="block no-underline decoration-transparent">
+          <div class="space-y-2">
+            <h2 class="flex items-center gap-3 font-serif text-2xl group-hover:text-ink/80">
+              <img
+                src="/images/icons/literary-portfolio.svg"
+                alt=""
+                aria-hidden="true"
+                class="h-8 w-8 shrink-0"
+                loading="lazy"
+              />
+              Literary Portfolio
+            </h2>
+            <p class="pt-4 text-sm text-ink/60 group-hover:text-ink/80">Explore my literary portfolio →</p>
+          </div>
+        </a>
+      </div>
+      <div class="group rounded-md border border-ink/15 bg-white/40 p-8 transition hover:bg-white/60 hover:shadow-sm">
+        <a href="/running/" class="block no-underline decoration-transparent">
+          <div class="space-y-2">
+            <h2 class="flex items-center gap-3 font-serif text-2xl group-hover:text-ink/80">
+              <img
+                src="/images/icons/running.svg"
+                alt=""
+                aria-hidden="true"
+                class="h-8 w-8 shrink-0"
+                loading="lazy"
+              />
+              <span>Running</span>
+            </h2>
+            <p class="text-sm text-muted">Adaptive running activities.</p>
+            <p class="text-sm text-muted">Performance and tracking.</p>
+          </div>
+          <p class="pt-4 text-sm text-ink/60 group-hover:text-ink/80">Explore →</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
