@@ -24,6 +24,7 @@ const {
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const enUrl = new URL(localizedPath(Astro.url.pathname, "en"), Astro.site);
 const esUrl = new URL(localizedPath(Astro.url.pathname, "es"), Astro.site);
+const rssUrl = new URL("/rss.xml", Astro.site);
 ---
 
 <!doctype html>
@@ -45,6 +46,7 @@ const esUrl = new URL(localizedPath(Astro.url.pathname, "es"), Astro.site);
     <link rel="alternate" hreflang="en" href={enUrl.toString()} />
     <link rel="alternate" hreflang="es" href={esUrl.toString()} />
     <link rel="alternate" hreflang="x-default" href={enUrl.toString()} />
+    <link rel="alternate" type="application/rss+xml" title="Juan Ramírez Blog" href={rssUrl.toString()} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
     <link
