@@ -2,7 +2,9 @@
 import { getCollection } from "astro:content";
 import { marked } from "marked";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+
 import { getLocalizedContentSlug, toTagSlug } from "../../lib/i18n";
+import { readingTime } from "../../utils/readingTime";
 
 const locale = "en";
 const posts = (await getCollection("blog"))
@@ -38,6 +40,7 @@ const posts = (await getCollection("blog"))
                     })}
                   </time>
                   {" "}· by {post.data.author}
+                  {" "}· {readingTime(post.body ?? "")}
                 </p>
                 <h2 class="font-serif text-2xl font-semibold leading-tight">
                   <a href={`/blog/${post.slug}/`} set:html={post.data.title}></a>
