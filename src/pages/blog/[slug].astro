@@ -2,12 +2,14 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import HyvorComments from "../../components/HyvorComments.astro";
+import { getLocalizedContentSlug, toTagSlug } from "../../lib/i18n";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+  const locale = "en";
+  const posts = (await getCollection("blog")).filter((post) => post.data.lang === locale);
 
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: getLocalizedContentSlug(post.slug, locale) },
     props: { post }
   }));
 }
@@ -17,15 +19,9 @@ const { Content } = await render(post);
 const hyvorWebsiteId = import.meta.env.PUBLIC_HYVOR_WEBSITE_ID;
 const showComments = post.data.comments;
 
-const toTagSlug = (tag: string) =>
-  tag
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
 ---
 
-<BaseLayout title={`${post.data.title} | Juan Ramírez`} description={post.data.excerpt} ogType="article">
+<BaseLayout title={`${post.data.title} | Juan Ramírez`} description={post.data.excerpt} ogType="article" locale="en">
   <article class="mx-auto max-w-3xl">
     <nav aria-label="Breadcrumb" class="mb-6 text-sm text-muted">
       <ol class="flex flex-wrap items-center gap-2">

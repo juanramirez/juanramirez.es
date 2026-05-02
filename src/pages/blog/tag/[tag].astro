@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import { marked } from "marked";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getLocalizedContentSlug, toTagSlug } from "../../../lib/i18n";
 
 interface PostEntry {
   slug: string;
@@ -17,24 +18,11 @@ interface PostEntry {
   };
 }
 
-const tagToSlug = (tag: string) =>
-  tag
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
 export async function getStaticPaths() {
-  const toTagSlug = (tag: string) =>
-    tag
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-
-  const allPosts = (await getCollection("blog")).sort(
-    (a, b) => b.data.date.getTime() - a.data.date.getTime()
-  );
+  const locale = "en";
+  const allPosts = (await getCollection("blog"))
+    .filter((post) => post.data.lang === locale)
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
   const tagBuckets = new Map<string, { label: string; posts: PostEntry[] }>();
 
@@ -64,6 +52,7 @@ export async function getStaticPaths() {
 }
 
 const { tagLabel, posts } = Astro.props;
+const locale = "en";
 ---
 
 <BaseLayout
@@ -108,7 +97,7 @@ const { tagLabel, posts } = Astro.props;
                   {" "}· by {post.data.author}
                 </p>
                 <h2 class="font-serif text-2xl font-semibold leading-tight">
-                  <a href={`/blog/${post.slug}/`} set:html={post.data.title}></a>
+                  <a href={`/blog/${getLocalizedContentSlug(post.slug, locale)}/`} set:html={post.data.title}></a>
                 </h2>
 
                 {postImage ? (
@@ -132,7 +121,7 @@ const { tagLabel, posts } = Astro.props;
                     {post.data.tags.map((tag) => (
                       <li>
                         <a
-                          href={`/blog/tag/${tagToSlug(tag)}/`}
+                          href={`/blog/tag/${toTagSlug(tag)}/`}
                           class="inline-block rounded-full border border-ink/20 px-3 py-1 no-underline decoration-transparent"
                         >
                           {tag}

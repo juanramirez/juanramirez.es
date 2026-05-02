@@ -3,39 +3,54 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PhotoSlideshow from "../components/PhotoSlideshow.astro";
 
 const historyPhotos = [
-  { src: "/images/running/2010-04-11-maraton-malaga.jpeg", caption: "Maratón de Málaga 2010" },
-  { src: "/images/running/2010-urbana.jpeg", caption: "Carrera Urbana Ciudad de Chiclana, Chiclana (Cádiz) 2010" },
-  { src: "/images/running/2011-05-08-toruños.JPeG", caption: "Cross de los Toruños, Puerto Real (Cádiz) 2011" },
-  { src: "/images/running/2011-05-21-urbana.JPeG", caption: "Carrera Urbana Ciudad de Chiclana, Chiclana (Cádiz) 2011" },
-  { src: "/images/running/2012-11-09-universitaria-granada.jpeg", caption: "Carrera Universitaria de Granada, 2012" },
-  { src: "/images/running/2013-04-28-maraton-madrid.jpeg", caption: "Maratón de Madrid 2013" },
-  { src: "/images/running/2014-03-18-sanchicleti.jpeg", caption: "Carrera Chiclana - Sancti Petri, Chiclana (Cádiz) 2014" },
-  { src: "/images/running/2014-06-15-norte-sur.jpeg", caption: "Carrera Norte-Sur, Madrid 2014" },
-  { src: "/images/running/2014-10-14-media-playas-chiclana.jpeg", caption: "Media Maratón Playas de Chiclana, Chiclana (Cádiz) 2014" },
-  { src: "/images/running/2014-12-08-maraton-malaga.jpeg", caption: "Maratón de Málaga 2014" },
-  { src: "/images/running/2015-04-28-maraton-madrid.jpeg", caption: "Maratón de Madrid 2015" },
-  { src: "/images/running/2015-05-12-media-granada.jpeg", caption: "Media Maratón de Granada 2015" },
-  { src: "/images/running/2015-08-16-barrosaJPeG", caption: "Carrera Playa de la Barrosa, Chiclana (Cádiz) 2015" },
-  { src: "/images/running/2015-12-08-media-madrid-blanca.jpeg", caption: "Media Maratón de Madrid 2015" },
-  { src: "/images/running/2016-11-26-cross-san-roque.JPeG", caption: "Campeonato Andaluz de Cross, San Roque (Cádiz) 2016" },
-  { src: "/images/running/2016-12-14-cross-hierro.jpeg", caption: "Cross Pinar de Hierro, Chiclana (Cádiz) 2016" },
-  { src: "/images/running/2016-12-15-cross-cayendo.jpeg", caption: "Cross Pinar de la Barrosa, Chiclana (Cádiz) 2016" },
-  { src: "/images/running/2017-02-20-maratón-sevilla.jpeg", caption: "Maratón de Sevilla 2017" },
-  { src: "/images/running/2017-04-02-carrera-azul.jpeg", caption: "Carrera Azul por el Autismo, Santa Fe (Granada) 2017" },
-  { src: "/images/running/2017-04-09-10k-novo-sancti-petri.jpeg", caption: "10K Novo Sancti Petri, Chiclana (Cádiz) 2017" },
-  { src: "/images/running/2017-10-09-cross-colorado.jpeg", caption: "Cross El Colorado, Conil (Cádiz) 2017" },
+  { src: "/images/running/2010-04-11-maraton-malaga.jpeg", caption: "Málaga Marathon 2010" },
+  { src: "/images/running/2010-urbana.jpeg", caption: "Urban Race City of Chiclana, Chiclana (Cádiz) 2010" },
+  { src: "/images/running/2011-05-08-toruños.JPeG", caption: "Toruños Cross Country, Puerto Real (Cádiz) 2011" },
+  { src: "/images/running/2011-05-21-urbana.JPeG", caption: "Urban Race City of Chiclana, Chiclana (Cádiz) 2011" },
+  { src: "/images/running/2012-11-09-universitaria-granada.jpeg", caption: "University of Granada Race, 2012" },
+  { src: "/images/running/2013-04-28-maraton-madrid.jpeg", caption: "Madrid Marathon 2013" },
+  { src: "/images/running/2014-03-18-sanchicleti.jpeg", caption: "Chiclana - Sancti Petri Race, Chiclana (Cádiz) 2014" },
+  { src: "/images/running/2014-06-15-norte-sur.jpeg", caption: "North-South Race, Madrid 2014" },
+  { src: "/images/running/2014-10-14-media-playas-chiclana.jpeg", caption: "Chiclana Beaches Half Marathon, Chiclana (Cádiz) 2014" },
+  { src: "/images/running/2014-12-08-maraton-malaga.jpeg", caption: "Málaga Marathon 2014" },
+  { src: "/images/running/2015-04-28-maraton-madrid.jpeg", caption: "Madrid Marathon 2015" },
+  { src: "/images/running/2015-05-12-media-granada.jpeg", caption: "Granada Half Marathon 2015" },
+  { src: "/images/running/2015-08-16-barrosaJPeG", caption: "Barrosa Beach Race, Chiclana (Cádiz) 2015" },
+  { src: "/images/running/2015-12-08-media-madrid-blanca.jpeg", caption: "Madrid Half Marathon 2015" },
+  { src: "/images/running/2016-11-26-cross-san-roque.JPeG", caption: "Andalusian Cross Country Championship, San Roque (Cádiz) 2016" },
+  { src: "/images/running/2016-12-14-cross-hierro.jpeg", caption: "Hierro Pinewood Cross Country, Chiclana (Cádiz) 2016" },
+  { src: "/images/running/2016-12-15-cross-cayendo.jpeg", caption: "Barrosa Pinewood Cross Country, Chiclana (Cádiz) 2016" },
+  { src: "/images/running/2017-02-20-maratón-sevilla.jpeg", caption: "Seville Marathon 2017" },
+  { src: "/images/running/2017-04-02-carrera-azul.jpeg", caption: "Blue Race for Autism, Santa Fe (Granada) 2017" },
+  { src: "/images/running/2017-04-09-10k-novo-sancti-petri.jpeg", caption: "Novo Sancti Petri 10K, Chiclana (Cádiz) 2017" },
+  { src: "/images/running/2017-10-09-cross-colorado.jpeg", caption: "El Colorado Cross Country, Conil (Cádiz) 2017" },
 ];
 
 const todayPhotos = [
-  { src: "/images/posts/media-chiclana.jpeg", caption: "Media Maratón de Chiclana, abril 2026" },
-  { src: "/images/posts/viamed-superacion.jpeg", caption: "Premio Viamed Superación, abril 2026" },
+  { src: "/images/running/20200905_ronda_training.jpeg", caption: "Training at Ronda, september 2020" },
+  { src: "/images/running/20210524_granada_training.jpeg", caption: "Training at Granada, october 2021" },
+  { src: "/images/running/20211212_hierro.jpeg", caption: "Hierro Pinewood Cross Country, Chiclana (Cádiz) 2021" },
+  { src: "/images/running/20211212_hierro2.jpeg", caption: "Hierro Pinewood Cross Country, Chiclana (Cádiz) 2021" },
+  { src: "/images/running/20211212_hierro3.jpeg", caption: "Hierro Pinewood Cross Country, Chiclana (Cádiz) 2021" },
+  { src: "/images/running/20211212_hierro4.jpeg", caption: "Hierro Pinewood Cross Country, Chiclana (Cádiz) 2021" },
+  { src: "/images/running/20211212_hierro5.jpeg", caption: "Hierro Pinewood Cross Country, Chiclana (Cádiz) 2021" },
+  { src: "/images/running/20220221_urbana_chiclana.jpeg", caption: "Urban Race City of Chiclana, Chiclana (Cádiz) 2022" },
+  { src: "/images/running/20230219_urbana.jpeg", caption: "Urban Race City of Chiclana, Chiclana (Cádiz) 2023" },
+  { src: "/images/running/20230428_10k_novo.jpeg", caption: "Novo Sancti Petri 10K Race, Chiclana (Cádiz) 2023" },
+  { src: "/images/running/20230501_esteros.jpeg", caption: "Estuaries Race, Chiclana (Cádiz) 2023" },
+  { src: "/images/running/20230502_esteros2.jpeg", caption: "Estuaries Race, Chiclana (Cádiz) 2023" },
+  { src: "/images/running/20230501_esteros3.jpeg", caption: "Estuaries Race, Chiclana (Cádiz) 2023" },
+  { src: "/images/running/20241215_pinar_barrosa.jpeg", caption: "Barrosa Pinewood Cross Country, Chiclana (Cádiz) 2024" },
+  { src: "/images/running/20241230_san_silvestre.jpeg", caption: "New Year's Eve race, Chiclana (Cádiz) 2024" },
+  { src: "/images/running/20260419_media_chiclana.jpeg", caption: "Half Marathon City of Chiclana, Chiclana (Cádiz) 2026" }
 ];
 
 const records = [
   {
     distance: "1K",
     time: "2:57.7",
-    race: "Test 1K",
+    race: "1K Test",
+    comment: "",
     date: "14 Sep 2016",
     link: null,
     timeLink: null,
@@ -43,7 +58,8 @@ const records = [
   {
     distance: "1 mile",
     time: "5:01.5",
-    race: "Milla de Suanzes",
+    race: "Suanzes Mile",
+    comment: "",
     date: "27 Sep 2014",
     link: "https://atletismomadrid.com/index.php?Itemid=120&catid=28&id=3937&option=com_content&view=article",
     timeLink: null,
@@ -51,7 +67,8 @@ const records = [
   {
     distance: "5K",
     time: "17:46",
-    race: "Carrera Azul del Autismo",
+    race: "Blue Race for Autism",
+    comment: "",
     date: "2 Apr 2017",
     link: null,
     timeLink: null,
@@ -59,27 +76,57 @@ const records = [
   {
     distance: "10K",
     time: "36:59",
-    race: "Carrera Popular Memorial Padre Marcelino",
+    race: "Popular Race Father Marcelino",
+    comment: "",
     date: "23 Apr 2017",
     link: "https://sportmaniacs.com/es/races/17-carrera-popular-memorial-padre-marcelino",
     timeLink: null,
   },
   {
-        distance: "Half marathon",
-        time: "1:21:00",
-        race: "EDP Media Maratón de Sevilla",
-        date: "29 Jan 2017",
-        link: "https://sportmaniacs.com/en/races/edp-media-maraton-de-sevilla-2017",
-        timeLink: null,
-      },
-      {
-        distance: "Marathon",
-        time: "2:55:30",
-        race: "Zurich Maratón de Sevilla",
-        date: "19 Feb 2017",
-        link: "https://www.zurichmaratonsevilla.es/mse-clasificaciones-2017",
-        timeLink: null,
-      }
+    distance: "Half marathon",
+    time: "1:21:00",
+    race: "EDP Seville Half Marathon",
+    comment: "",
+    date: "29 Jan 2017",
+    link: "https://sportmaniacs.com/en/races/edp-media-maraton-de-sevilla-2017",
+    timeLink: null,
+  },
+  {
+    distance: "Marathon",
+    time: "2:55:30",
+    race: "Zurich Seville Marathon",
+    comment: "",
+    date: "19 Feb 2017",
+    link: "https://www.zurichmaratonsevilla.es/mse-clasificaciones-2017",
+    timeLink: null,
+  }
+];
+
+const highlights = [
+  {
+    event: "Chiclana Half-Marathon",
+    time: "1:57:20",
+    comment: '<a href="/blog/chiclana-half-marathon/" class="hover:text-accent">Read race report</a>',
+    date: "April 19, 2026",
+  },
+  {
+    event: "Viamed Overcoming Prize",
+    time: "",
+    comment: 'Writing award for resilience and running · <a href="/blog/chiclana-half-marathon/" class="hover:text-accent">Read more</a>',
+    date: "April 19, 2026",
+  },
+  {
+    event: "Chiclana Half-Marathon",
+    time: "1:41:19",
+    comment: '<a href="https://www.strava.com/activities/11177713071" target="_blank" rel="noopener noreferrer" class="hover:text-accent">View on Strava</a>',
+    date: "April 14, 2024",
+  },
+  {
+    event: "Chiclana local race circuit",
+    time: "",
+    comment: "Return to competition after the surgeries",
+    date: "2023",
+  },
 ];
 ---
 
@@ -110,7 +157,7 @@ const records = [
     </header>
 
     <div class="space-y-6">
-      <h2 class="font-serif text-2xl md:text-3xl">My running history</h2>
+      <h2 class="font-serif text-2xl md:text-3xl">Running isn't only running</h2>
 
       <PhotoSlideshow id="history" images={historyPhotos} />
 
@@ -129,48 +176,34 @@ const records = [
           circumstances around it changed.
         </p>
       </div>
+      <div class="space-y-4 text-muted">
+        <p>
+          For me, running isn't only running. It's knowing when to grit your teeth, when to slow down, when to stop so you don't break. Knowing which path to take and which to avoid. Running is like living; it teaches you how to live. That's why I run, and why I'll keep running as long as I can.
+        </p>
+      </div>
 
       <div class="space-y-3">
-        <h3 class="font-serif text-lg md:text-xl text-muted">Personal records</h3>
+          <h3 class="flex items-center gap-2 font-serif text-lg md:text-xl text-muted">
+            <img src="/images/icons/medal.svg" alt="Medal" class="inline h-6 w-6 mr-1 align-middle" loading="lazy" />
+            Personal records
+          </h3>
         <ul class="divide-y divide-ink/10">
-        {records.map((record) => (
+        {records.map((item) => (
           <li class="flex items-baseline gap-4 py-3 sm:gap-6">
-            <span class="w-24 shrink-0 text-xs uppercase tracking-widest text-muted">
-              {record.distance}
-            </span>
-            <span class="w-20 shrink-0 font-serif text-xl font-semibold tabular-nums">
-              {record.timeLink ? (
-                <a
-                  href={record.timeLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="hover:text-accent underline"
-                >
-                  {record.time}
-                </a>
-              ) : (
-                record.time
-              )}
-            </span>
+            <span class="w-48 shrink-0 text-xs uppercase tracking-widest text-muted">{item.distance}</span>
+            <span class="w-20 shrink-0 font-serif text-xl font-semibold tabular-nums">{item.time}</span>
             <span class="min-w-0 text-sm text-muted">
-              {record.link ? (
-                <a
-                  href={record.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="hover:text-accent"
-                >
-                  {record.race}
-                </a>
+              {item.link ? (
+                <a href={item.link} target="_blank" rel="noopener noreferrer" class="hover:text-accent">{item.race}</a>
               ) : (
-                record.race
+                item.race
               )}
-              <span class="mx-1.5 opacity-40">·</span>
-              {record.date}
+              {item.comment && <><span class="mx-1.5 opacity-40">·</span><span innerHTML={item.comment}></span></>}
             </span>
+            <span class="w-24 shrink-0 text-xs text-muted">{item.date}</span>
           </li>
         ))}
-      </ul>
+        </ul>
       </div>
     </div>
 
@@ -184,50 +217,22 @@ const records = [
         with more planning, and with a lot more respect for what the body signals.
         These are the highlights since the surgeries.
       </p>
+
+        <h3 class="flex items-center gap-2 font-serif text-lg md:text-xl text-muted">
+          <img src="/images/icons/camera.svg" alt="Camera" class="inline h-6 w-6 mr-1 align-middle" loading="lazy" />
+          Highlights after brain injury
+        </h3>
       <ul class="divide-y divide-ink/10">
-        <li class="flex items-baseline gap-4 py-3 sm:gap-6">
-          <span class="w-24 shrink-0 text-xs uppercase tracking-widest text-muted">Apr 2026</span>
-          <span class="min-w-0 text-sm text-muted">
-            <span class="font-medium text-ink">Chiclana Half-Marathon</span>
-            <span class="mx-1.5 opacity-40">·</span>
-            1:57:20
-            <span class="mx-1.5 opacity-40">·</span>
-            <a href="/blog/chiclana-half-marathon/" class="hover:text-accent">Read race report</a>
-          </span>
-        </li>
-        <li class="flex items-baseline gap-4 py-3 sm:gap-6">
-          <span class="w-24 shrink-0 text-xs uppercase tracking-widest text-muted">Apr 2026</span>
-          <span class="min-w-0 text-sm text-muted">
-            <span class="font-medium text-ink">Viamed Overcoming Prize</span>
-            <span class="mx-1.5 opacity-40">·</span>
-            Writing award for resilience and running
-            <span class="mx-1.5 opacity-40">·</span>
-            <a href="/blog/chiclana-half-marathon/" class="hover:text-accent">Read more</a>
-          </span>
-        </li>
-        <li class="flex items-baseline gap-4 py-3 sm:gap-6">
-          <span class="w-24 shrink-0 text-xs uppercase tracking-widest text-muted">Mar 2024</span>
-          <span class="min-w-0 text-sm text-muted">
-            <span class="font-medium text-ink">Chiclana Half-Marathon</span>
-            <span class="mx-1.5 opacity-40">·</span>
-            1:41:19
-            <span class="mx-1.5 opacity-40">·</span>
-            <a
-              href="https://www.strava.com/activities/11177713071"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="hover:text-accent"
-            >View on Strava</a>
-          </span>
-        </li>
-        <li class="flex items-baseline gap-4 py-3 sm:gap-6">
-          <span class="w-24 shrink-0 text-xs uppercase tracking-widest text-muted">2023</span>
-          <span class="min-w-0 text-sm text-muted">
-            <span class="font-medium text-ink">Chiclana circuit races</span>
-            <span class="mx-1.5 opacity-40">·</span>
-            Return to competition after the surgeries
-          </span>
-        </li>
+        {highlights.map((item) => (
+          <li class="flex items-baseline gap-4 py-3 sm:gap-6">
+            <span class="w-20 shrink-0 font-serif text-xl font-semibold tabular-nums">{item.time}</span>
+            <span class="min-w-0 text-sm text-muted">
+              {item.event}
+              {item.comment && <><span class="mx-1.5 opacity-40">·</span><span innerHTML={item.comment}></span></>}
+            </span>
+            <span class="w-24 shrink-0 text-xs text-muted">{item.date}</span>
+          </li>
+        ))}
       </ul>
     </div>
   </section>

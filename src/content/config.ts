@@ -4,6 +4,8 @@ const blog = defineCollection({
   type: "content",
   schema: z.object({
     title: z.string(),
+    lang: z.enum(["en", "es"]).default("en"),
+    translationKey: z.string().optional(),
     date: z.coerce.date(),
     author: z.string().default("Juan Ramírez"),
     comments: z.boolean().default(true),
@@ -35,6 +37,8 @@ const portfolio = defineCollection({
   type: "content",
   schema: z.object({
     name: z.string(),
+    lang: z.enum(["en", "es"]).default("en"),
+    translationKey: z.string().optional(),
     subtitle: z.string().optional(),
     description: z.string(),
     comments: z.boolean().default(true),

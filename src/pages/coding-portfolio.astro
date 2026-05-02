@@ -13,7 +13,7 @@ const allProjects = (await getCollection("portfolio"))
   return a.data.status === "in-development" ? -1 : 1;
 });
 
-const technical = allProjects.filter((p) => p.data.category === "technical");
+const technical = allProjects.filter((p) => p.data.category === "technical" && (p.data.lang === "en" || !p.data.lang));
 ---
 
 <BaseLayout
@@ -22,7 +22,7 @@ const technical = allProjects.filter((p) => p.data.category === "technical");
 >
   <section class="max-w-4xl space-y-6">
     <nav aria-label="Breadcrumb" class="text-sm text-muted">
-      <ol class="flex flex-wrap items-center gap-2">
+      <ol class="flex flex-wrap items-center gap-2 list-none">
         <li><a href="/">Home</a></li>
         <li aria-hidden="true">/</li>
         <li><a href="/portfolio/">Interests</a></li>

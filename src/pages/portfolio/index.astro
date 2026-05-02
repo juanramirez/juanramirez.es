@@ -3,12 +3,24 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const allProjects = (await getCollection("portfolio")).filter((p) => !p.data.hidden);
-const technicalProjects = allProjects
-  .filter((p) => p.data.category === "technical")
-  .sort((a, b) => a.data.name.localeCompare(b.data.name));
-const literaryProjects = allProjects
-  .filter((p) => p.data.category === "literary")
-  .sort((a, b) => a.data.name.localeCompare(b.data.name));
+// Filtrar proyectos técnicos únicos por slug para evitar duplicados por idioma
+const technicalProjects = Object.values(
+  allProjects
+    .filter((p) => p.data.category === "technical")
+    .reduce((acc, p) => {
+      acc[p.slug] = acc[p.slug] || p;
+      return acc;
+    }, {})
+).sort((a, b) => a.data.name.localeCompare(b.data.name));
+// Filtrar proyectos literarios únicos por slug para evitar duplicados por idioma
+const literaryProjects = Object.values(
+  allProjects
+    .filter((p) => p.data.category === "literary")
+    .reduce((acc, p) => {
+      acc[p.slug] = acc[p.slug] || p;
+      return acc;
+    }, {})
+).sort((a, b) => a.data.name.localeCompare(b.data.name));
 const technicalCount = technicalProjects.length;
 const literaryCount = literaryProjects.length;
 ---
@@ -61,11 +73,14 @@ const literaryCount = literaryProjects.length;
         </a>
         {technicalProjects.length > 0 && (
           <ul class="mt-4 space-y-1 text-sm text-muted">
-            {technicalProjects.map((project) => (
+            {technicalProjects.slice(0, 3).map((project) => (
               <li>
                 <a href={`/portfolio/${project.slug}/`}>{project.data.name}</a>
               </li>
             ))}
+            <li>
+              <a href="/coding-portfolio/" class="font-semibold text-accent hover:underline">See all coding projects →</a>
+            </li>
           </ul>
         )}
       </div>
@@ -90,11 +105,14 @@ const literaryCount = literaryProjects.length;
         </a>
         {literaryProjects.length > 0 && (
           <ul class="mt-4 space-y-1 text-sm text-muted">
-            {literaryProjects.map((project) => (
+            {literaryProjects.slice(0, 3).map((project) => (
               <li>
                 <a href={`/portfolio/${project.slug}/`}>{project.data.name}</a>
               </li>
             ))}
+            <li>
+              <a href="/literary-portfolio/" class="font-semibold text-accent hover:underline">Ver todo el porfolio literario →</a>
+            </li>
           </ul>
         )}
       </div>

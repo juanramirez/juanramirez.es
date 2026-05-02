@@ -1,5 +1,7 @@
 ---
 title: "Chiclana Half Marathon: my comeback to long-distance races"
+lang: en
+translationKey: chiclana-half-marathon
 date: 2026-04-21
 author: "Juan Ramírez"
 excerpt: "Last Sunday I ran the Chiclana Half Marathon. This was my comeback to long-distance races, after two years without running more than a 10K race."
