@@ -19,6 +19,9 @@ const project = (await getCollection("portfolio")).find(
   (p) => p.slug === slug && (p.data.lang === "es" || !p.data.lang)
     && (p.id.endsWith(`/${slug}.es.md`) || p.id.endsWith(`/${slug}.md`))
 );
+if (!project) {
+  return Astro.redirect('/404', 302);
+}
 const { Content } = await render(project);
 const hyvorWebsiteId = import.meta.env.PUBLIC_HYVOR_WEBSITE_ID;
 const showComments = project.data.comments;
