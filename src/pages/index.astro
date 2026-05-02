@@ -17,7 +17,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         loading="lazy"
       />
       <h1 class="hero-title min-w-0 flex-1 font-serif leading-tight text-center sm:text-left w-full text-3xl md:text-5xl">
-        <span class="hero-line"><span id="hero-intro" class="font-semibold"></span></span>
+        <span class="hero-line">
+          <span id="hero-intro" class="font-semibold" style="position:relative;display:inline-block;">
+            <span class="hero-underline" style="position:absolute;left:0;bottom:-0.18em;width:0;height:0.13em;background:#111;border-radius:2px;transition:width 0.3s;"></span>
+          </span>
+        </span>
         <span id="hero-lines" class="hero-lines mt-5" aria-live="polite">
           <span class="hero-identity-line">
             <span id="hero-husband-prefix"></span><span id="hero-husband-insert" class="hero-added-word"></span><span id="hero-husband-base"></span>
@@ -32,7 +36,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <span id="hero-developer-prefix"></span><span id="hero-developer-insert" class="hero-added-word"></span><span id="hero-developer-base"></span>
           </span>
           <span class="hero-identity-line hero-abi-line">
-            <span id="hero-abi"></span><span id="abi-note" class="block text-sm text-gray-400 mt-2" style="display:none;">* ABI stands for <a href="https://en.wikipedia.org/wiki/Acquired_brain_injury" target="_blank" rel="noopener" class="underline text-accent hover:text-accent">Acquired Brain Injury</a></span>
+            <span id="hero-abi"></span><span id="abi-note" class="block text-sm text-gray-400 mt-2" style="display:none;"></span>
           </span>
           <span class="hero-identity-line">
             <span id="hero-alive" class="text-[0.7rem] md:text-sm font-bold mt-6 block" style="color: #111;"></span>
@@ -155,7 +159,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       introTarget.style.fontSize = "clamp(1rem, 2vw, 1.5rem)";
       introTarget.style.opacity = 0.34;
       introTarget.style.filter = "blur(1.8px)";
-      introTarget.innerHTML = `${introPrefix} <span class=\"hero-intro-name\">${introName}</span>`;
+      introTarget.innerHTML = `${introPrefix} <span class=\"hero-intro-name\">${introName}</span><span class=\"hero-underline\"></span>`;
       // Ajustar tamaño final más pequeño
       introTarget.style.fontSize = "clamp(1.2rem, 3vw, 2rem)";
       heroLines.classList.add("is-visible");
@@ -216,8 +220,30 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         abiSpan.style.display = 'block';
         abiTarget.appendChild(abiSpan);
         await typeText(abiSpan, "I have an ABI*");
-        if (abiNote) abiNote.style.display = "block";
-        await delay(900);
+        if (abiNote) {
+          abiNote.style.display = "block";
+          // Typewriter para el asterisco y explicación
+          const abiType = '* ABI stands for ';
+          abiNote.textContent = '';
+          for (let i = 0; i < abiType.length; i++) {
+            abiNote.textContent += abiType[i];
+            await new Promise(res => setTimeout(res, 22));
+          }
+          // Ahora el enlace, también con efecto máquina de escribir
+          const link = document.createElement('a');
+          link.href = 'https://en.wikipedia.org/wiki/Acquired_brain_injury';
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.className = 'underline text-accent hover:text-accent';
+          const linkText = 'Acquired Brain Injury';
+          link.textContent = '';
+          abiNote.appendChild(link);
+          for (let i = 0; i < linkText.length; i++) {
+            link.textContent += linkText[i];
+            await new Promise(res => setTimeout(res, 22));
+          }
+        }
+        await delay(300);
         // Ahora añadidos y 'I'm still alive' en paralelo
         const aliveTarget = document.querySelector("#hero-alive") as HTMLElement | null;
         if (aliveTarget) {
@@ -242,6 +268,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             const maxFont = 34; // px (más pequeño que antes)
             const nameSpan = introTarget.querySelector('.hero-intro-name');
             function lerp(a, b, t) { return a + (b - a) * t; }
+            const underline = introTarget.querySelector('.hero-underline');
             function animateRestore(now) {
               const elapsed = Math.min(now - start, duration);
               const t = elapsed / duration;
@@ -255,6 +282,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
               const g = Math.round(lerp(initialColor[1], finalColor[1], t));
               const b = Math.round(lerp(initialColor[2], finalColor[2], t));
               if (nameSpan) nameSpan.style.color = `rgb(${r},${g},${b})`;
+              // El subrayado crece desde el principio pero mucho más lento (t^0.2)
+              if (underline) {
+                const underlineProgress = Math.pow(Math.max(0, Math.min(t, 1)), 0.2);
+                underline.style.width = `${Math.round(underlineProgress * 100)}%`;
+              }
               if (elapsed < duration) {
                 requestAnimationFrame(animateRestore);
               } else {
@@ -262,6 +294,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 introTarget.style.filter = `blur(${finalBlur}px)`;
                 introTarget.style.fontSize = "clamp(2.2rem, 7vw, 2.8rem)";
                 if (nameSpan) nameSpan.style.color = `rgb(${finalColor[0]},${finalColor[1]},${finalColor[2]})`;
+                if (underline) underline.style.width = "100%";
               }
             }
             requestAnimationFrame(animateRestore);
@@ -296,6 +329,17 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   <style>
     .hero-title {
+          .hero-underline {
+            position: absolute;
+            left: 0;
+            bottom: -0.02em; /* Mucho más cerca del texto */
+            width: 0;
+            height: 0.13em;
+            background: #111;
+            border-radius: 2px;
+            transition: width 0.3s;
+            z-index: 1;
+          }
       display: flex;
       flex-direction: column;
       font-size: clamp(1.1rem, 2.8vw, 2.1rem);
