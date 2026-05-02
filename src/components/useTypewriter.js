@@ -1,8 +1,8 @@
-import Typed from "typed.js";
-import { onMount } from "astro/client";
 
-export default function useTypewriter(targetSelector, strings, options = {}) {
-  onMount(() => {
+import Typed from "typed.js";
+
+  // Ejecutar el efecto al llamar a la función (solo en cliente)
+  if (typeof window !== "undefined") {
     const target = document.querySelector(targetSelector);
     if (!target) return;
     const typed = new Typed(target, {
@@ -16,5 +16,5 @@ export default function useTypewriter(targetSelector, strings, options = {}) {
       ...options,
     });
     return () => typed.destroy();
-  });
+  }
 }

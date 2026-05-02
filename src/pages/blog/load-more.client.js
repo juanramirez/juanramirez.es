@@ -1,7 +1,7 @@
-import { onMount } from 'astro/client';
+// Código ejecutado directamente al cargar el script (Astro client:load)
 
-onMount(() => {
-  const list = document.getElementById('blog-list');
+const list = document.getElementById('blog-list');
+if (list) {
   const items = Array.from(list.children);
   let visibleCount = 5;
 
@@ -22,4 +22,4 @@ onMount(() => {
 
   showItems();
   window.addEventListener('scroll', onScroll);
-});
+}
