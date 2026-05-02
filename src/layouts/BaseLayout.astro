@@ -1,27 +1,33 @@
 ---
+import LocalePrompt from "../components/LocalePrompt.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import { localizedPath, type Locale } from "../lib/i18n";
 import "../styles/global.css";
 
 interface Props {
   title: string;
   description: string;
   ogType?: "website" | "article";
-  navLanguage?: "en" | "es";
+  locale?: Locale;
+  navLanguage?: Locale;
 }
 
 const {
   title,
   description,
   ogType = "website",
-  navLanguage = "en"
+  locale = Astro.props.navLanguage ?? "en",
+  navLanguage = locale
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const enUrl = new URL(localizedPath(Astro.url.pathname, "en"), Astro.site);
+const esUrl = new URL(localizedPath(Astro.url.pathname, "es"), Astro.site);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -30,10 +36,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonical.toString()} />
+    <meta property="og:locale" content={locale === "es" ? "es_ES" : "en_US"} />
+    <meta property="og:locale:alternate" content={locale === "es" ? "en_US" : "es_ES"} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <link rel="canonical" href={canonical.toString()} />
+    <link rel="alternate" hreflang="en" href={enUrl.toString()} />
+    <link rel="alternate" hreflang="es" href={esUrl.toString()} />
+    <link rel="alternate" hreflang="x-default" href={enUrl.toString()} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
     <link
@@ -43,10 +54,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <title>{title}</title>
   </head>
   <body class="font-sans">
-    <SiteHeader navLanguage={navLanguage} />
+    <SiteHeader navLanguage={navLanguage} locale={locale} />
     <main class="content-grid py-12 md:py-16">
       <slot />
     </main>
     <SiteFooter />
+    <LocalePrompt locale={locale} />
   </body>
 </html>

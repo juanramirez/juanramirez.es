@@ -1,11 +1,27 @@
-<footer class="mt-20 border-t border-ink/15">
+<footer class="mt-20 border-t border-ink/15 relative">
   <div class="content-grid py-8 text-sm text-muted">
-    <p>
-      © {new Date().getFullYear()} Juan Ramírez. Built with
-      <a href="https://astro.build" rel="noreferrer" target="_blank">Astro</a>,
-      <a href="https://tailwindcss.com" rel="noreferrer" target="_blank">Tailwind CSS</a>,
-      <a href="https://claude.ai/code" rel="noreferrer" target="_blank">Claude Code</a> and
-      <a href="https://github.com/features/copilot" rel="noreferrer" target="_blank">GitHub Copilot</a>.
-    </p>
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full">
+      <p class="mb-2 sm:mb-0">
+        © {new Date().getFullYear()} Juan Ramírez. Built with
+        <a href="https://astro.build" rel="noreferrer" target="_blank">Astro</a>,
+        <a href="https://tailwindcss.com" rel="noreferrer" target="_blank">Tailwind CSS</a>,
+        <a href="https://claude.ai/code" rel="noreferrer" target="_blank">Claude Code</a> and
+        <a href="https://github.com/features/copilot" rel="noreferrer" target="_blank">GitHub Copilot</a>.
+      </p>
+      <span class="text-xs text-muted select-none sm:text-right" style="pointer-events:none;">
+        {Astro.url.pathname.startsWith('/es/')
+          ? 'Última actualización: '
+          : 'Last updated: '}
+        {new Date().toLocaleDateString(
+          Astro.url.pathname.startsWith('/es/') ? 'es-ES' : 'en-GB',
+          { year: 'numeric', month: 'long', day: 'numeric' }
+        )}
+        {' '}
+        {new Date().toLocaleTimeString(
+          Astro.url.pathname.startsWith('/es/') ? 'es-ES' : 'en-GB',
+          { hour: '2-digit', minute: '2-digit', second: '2-digit' }
+        )}
+      </span>
+    </div>
   </div>
 </footer>

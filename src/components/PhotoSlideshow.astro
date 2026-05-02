@@ -19,6 +19,24 @@ const first = images[0];
     class="relative mx-auto mb-6"
     style="width:100%; max-width:640px; aspect-ratio:4/3; transition:width 0.5s, height 0.5s; overflow:hidden;"
   >
+    <button
+      type="button"
+      id={`${id}-arrow-left`}
+      aria-label="Anterior"
+      class="absolute left-2 top-1/2 z-30 -translate-y-1/2 bg-black/40 hover:bg-black/70 rounded-full p-1 transition"
+      style="width:2.5rem; height:2.5rem;"
+    >
+      <img src="/images/icons/arrow-left.svg" alt="Anterior" class="w-6 h-6" loading="lazy" />
+    </button>
+    <button
+      type="button"
+      id={`${id}-arrow-right`}
+      aria-label="Siguiente"
+      class="absolute right-2 top-1/2 z-30 -translate-y-1/2 bg-black/40 hover:bg-black/70 rounded-full p-1 transition"
+      style="width:2.5rem; height:2.5rem;"
+    >
+      <img src="/images/icons/arrow-right.svg" alt="Siguiente" class="w-6 h-6" loading="lazy" />
+    </button>
     <img
       id={`${id}-img-current`}
       src={first.src}
@@ -37,10 +55,10 @@ const first = images[0];
     />
     <div
       id={`${id}-caption`}
-      class="absolute bottom-0 left-1/2 bg-black/50 text-white text-center text-sm py-2"
-      style="transform: translateX(-50%); white-space: pre-line; z-index: 30; box-sizing: border-box; transition: width 0.7s cubic-bezier(0.4,0,0.2,1) 0s; overflow: hidden; will-change: width;"
+      class="absolute bottom-0 left-1/2 bg-black/50 text-white text-center text-sm py-2 px-2"
+      style="transform: translateX(-50%); white-space: normal; z-index: 30; box-sizing: border-box; transition: width 0.7s cubic-bezier(0.4,0,0.2,1) 0s; overflow-wrap: break-word; word-break: break-word; max-width: 95vw; min-width: 80px; will-change: width; overflow: hidden;"
     >
-      <span class="relative z-20" style="pointer-events:auto;">{first.caption}</span>
+      <span id={`${id}-caption-text`} class="relative z-20" style="pointer-events:auto; display: inline-block; width: 100%;">{first.caption}</span>
     </div>
   </div>
 </div>
@@ -66,13 +84,15 @@ const first = images[0];
     if (caption && viewport && img) {
       setTimeout(() => {
         const imgRect = img.getBoundingClientRect();
+        // El ancho máximo del pie de foto será el de la imagen o el 95vw, el que sea menor
         let visibleWidth = Math.round(imgRect.width * 10) / 10 + 1;
+        const maxWidth = Math.min(visibleWidth, window.innerWidth * 0.95);
         caption.style.transition = "none";
         caption.offsetWidth;
         caption.style.transition = "width 0.7s cubic-bezier(0.4,0,0.2,1) 0s";
-        caption.style.width = visibleWidth + "px";
-        caption.style.minWidth = visibleWidth + "px";
-        caption.style.maxWidth = visibleWidth + "px";
+        caption.style.width = maxWidth + "px";
+        caption.style.minWidth = "80px";
+        caption.style.maxWidth = "95vw";
         caption.style.boxSizing = "border-box";
       }, 30);
     }
@@ -104,59 +124,92 @@ const first = images[0];
     }
   }
 
+
   let isTransitioning = false;
+  let intervalId = null;
+
+  function showImage(newIdx) {
+    if (isTransitioning) return;
+    isTransitioning = true;
+    idx = (newIdx + imgs.length) % imgs.length;
+    const imgCurrent = document.getElementById(`${id}-img-current`);
+    const imgNext = document.getElementById(`${id}-img-next`);
+    const caption = document.getElementById(`${id}-caption`);
+    if (imgCurrent && imgNext && caption) {
+      const currentRect = imgCurrent.getBoundingClientRect();
+      const currentWidth = Math.round(currentRect.width * 10) / 10 + 1;
+      caption.style.transition = "none";
+      caption.style.width = currentWidth + "px";
+      caption.style.minWidth = currentWidth + "px";
+      caption.style.maxWidth = currentWidth + "px";
+      caption.offsetWidth;
+      imgNext.src = imgs[idx].src;
+      imgNext.alt = imgs[idx].caption;
+      imgNext.style.opacity = 0;
+      imgNext.onload = () => {
+        adjustViewport(imgNext);
+        // Mostrar el caption en una sola línea por defecto
+        caption.innerHTML = `<span id='${id}-caption-text' class='relative z-20' style='pointer-events:auto; display:inline-block; width:100%;'>${imgs[idx].caption}</span>`;
+        // Esperar a que el DOM pinte y luego comprobar si hay wrap
+        setTimeout(() => {
+          const captionText = document.getElementById(`${id}-caption-text`);
+          if (captionText) {
+            const isWrapped = captionText.offsetHeight > parseFloat(getComputedStyle(captionText).lineHeight) * 1.5;
+            const parts = imgs[idx].caption.split(/,(.+)/);
+            if (isWrapped && parts.length > 1) {
+              caption.innerHTML = `<span id='${id}-caption-text' class='relative z-20' style='pointer-events:auto; display:inline-block; width:100%;'><span>${parts[0]},</span><br/><span>${parts[1].trim()}</span></span>`;
+            }
+          }
+        }, 10);
+        const prevWidth = caption.style.width;
+        caption.style.transition = "none";
+        caption.style.width = prevWidth;
+        caption.offsetWidth;
+        requestAnimationFrame(() => {
+          caption.style.transition = "width 0.7s cubic-bezier(0.4,0,0.2,1) 0s";
+          requestAnimationFrame(() => {
+            adjustCaptionWidth(imgNext);
+          });
+        });
+        imgNext.style.transition = "opacity 0.5s";
+        imgCurrent.style.transition = "opacity 0.5s";
+        imgNext.style.opacity = 1;
+        imgCurrent.style.opacity = 0;
+        setTimeout(() => {
+          imgCurrent.src = imgNext.src;
+          imgCurrent.alt = imgNext.alt;
+          requestAnimationFrame(() => {
+            adjustCaptionWidth(imgCurrent);
+          });
+          isTransitioning = false;
+        }, 500);
+      };
+    } else {
+      isTransitioning = false;
+    }
+  }
+
+  function nextImage() {
+    showImage(idx + 1);
+    resetInterval();
+  }
+  function prevImage() {
+    showImage(idx - 1);
+    resetInterval();
+  }
+  function resetInterval() {
+    if (intervalId) clearInterval(intervalId);
+    intervalId = setInterval(() => {
+      nextImage();
+    }, 3000);
+  }
 
   if (imgs.length > 1) {
-    setInterval(() => {
-      if (isTransitioning) return;
-      isTransitioning = true;
-      idx = (idx + 1) % imgs.length;
-      const imgCurrent = document.getElementById(`${id}-img-current`);
-      const imgNext = document.getElementById(`${id}-img-next`);
-      const caption = document.getElementById(`${id}-caption`);
-      if (imgCurrent && imgNext && caption) {
-        const currentRect = imgCurrent.getBoundingClientRect();
-        const currentWidth = Math.round(currentRect.width * 10) / 10 + 1;
-        caption.style.transition = "none";
-        caption.style.width = currentWidth + "px";
-        caption.style.minWidth = currentWidth + "px";
-        caption.style.maxWidth = currentWidth + "px";
-        caption.offsetWidth;
-        imgNext.src = imgs[idx].src;
-        imgNext.alt = imgs[idx].caption;
-        imgNext.style.opacity = 0;
-        imgNext.onload = () => {
-          adjustViewport(imgNext);
-          caption.textContent = imgs[idx].caption;
-          const prevWidth = caption.style.width;
-          caption.style.transition = "none";
-          caption.style.width = prevWidth;
-          caption.offsetWidth;
-          requestAnimationFrame(() => {
-            caption.style.transition = "width 0.7s cubic-bezier(0.4,0,0.2,1) 0s";
-            requestAnimationFrame(() => {
-              adjustCaptionWidth(imgNext);
-            });
-          });
-          imgNext.style.transition = "opacity 0.5s";
-          imgCurrent.style.transition = "opacity 0.5s";
-          imgNext.style.opacity = 1;
-          imgCurrent.style.opacity = 0;
-          setTimeout(() => {
-            imgCurrent.src = imgNext.src;
-            imgCurrent.alt = imgNext.alt;
-            imgCurrent.style.opacity = 1;
-            imgNext.style.opacity = 0;
-            requestAnimationFrame(() => {
-              adjustCaptionWidth(imgCurrent);
-            });
-            isTransitioning = false;
-          }, 500);
-        };
-      } else {
-        isTransitioning = false;
-      }
-    }, 3500);
+    resetInterval();
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById(`${id}-arrow-left`).addEventListener("click", prevImage);
+      document.getElementById(`${id}-arrow-right`).addEventListener("click", nextImage);
+    });
   }
 
   window.addEventListener("DOMContentLoaded", () => {

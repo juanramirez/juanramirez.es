@@ -7,17 +7,22 @@ interface Props {
 
 const { project } = Astro.props;
 const isLiterary = project.data.category === "literary";
+const isSpanish = project.data.lang === "es";
 
 const statusLabel =
   project.data.status === "in-development"
-    ? isLiterary
-      ? "En desarrollo"
-      : "In development"
+    ? (project.data.name === "NeuroLink"
+        ? (isSpanish
+            ? "🐌 En desarrollo (muy lento y muy temprano aún)"
+            : "🐌 In (veeery slow and early) development")
+        : (isSpanish
+            ? "En desarrollo"
+            : "In development"))
     : project.data.status === "published"
-      ? isLiterary
+      ? isSpanish
         ? "Publicado"
         : "Published"
-      : isLiterary
+      : isSpanish
         ? "Planeado"
         : "Planned";
 
@@ -27,8 +32,8 @@ const statusColorClass = {
   "published": "text-green-600"
 }[project.data.status];
 
-const detailsLabel = isLiterary ? "Leer más" : "Read details";
-const visitLabel = isLiterary ? "Visitar proyecto" : "Visit project";
+const detailsLabel = isSpanish ? "Leer más" : "Read details";
+const visitLabel = isSpanish ? "Visitar proyecto" : "Visit project";
 ---
 
 <li class="flex h-full flex-col gap-3 rounded-md border border-ink/15 bg-white/40 p-6">

@@ -1,3 +1,9 @@
+.prose-body span.text-xl.font-bold {
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  line-height: 1.1;
+  color: #222;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -43,4 +49,50 @@ a:hover {
 
 h1 {
   @apply font-bold;
+}
+
+.hero-identity-line {
+  display: block;
+  margin-bottom: 0.18em;
+}
+.hero-title > .hero-line {
+  margin-bottom: 0.55em;
+}
+
+.hero-title .shrink {
+  font-size: 1.5rem !important;
+  color: #a3a3a3 !important;
+  transition: font-size 0.7s, color 0.7s;
+}
+
+.hero-title .is-dimmed {
+  color: #a3a3a3 !important;
+}
+
+.hero-intro-name {
+  font-weight: 600;
+}
+
+.hero-added-word {
+  color: #dc2626 !important; /* Tailwind red-600 */
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+/* Tamaño normal para la versión EN */
+#hero-alive {
+  font-size: 1.35em !important;
+  font-weight: bold;
+}
+
+/* Más pequeño para la versión ES */
+
+.hero-abi-line {
+  margin-top: 0.5rem;
+}
+
+#abi-note {
+  font-size: 0.95rem;
+  color: #a3a3a3;
+  margin-top: 0.25rem;
 }
