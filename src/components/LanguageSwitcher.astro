@@ -11,7 +11,7 @@ const enPath = switchLocalePath(currentPath, "en");
 const esPath = switchLocalePath(currentPath, "es");
 ---
 
-<nav class="language-switcher" aria-label={locale === "es" ? "Idioma" : "Language"} style="color: #fff;">
+<nav class="language-switcher" aria-label={locale === "es" ? "Idioma" : "Language"} style="color: #fff; display: inline-flex; align-items: center; gap: 0.3em; white-space: nowrap;">
   <a
     href={enPath}
     lang="en"
