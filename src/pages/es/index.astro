@@ -1,0 +1,368 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Juan Ramírez | Desarrollador, escritor y corredor adaptado"
+  description="Web personal de Juan Ramírez: reflexiones sobre daño cerebral adquirido, tecnología y los proyectos que dan forma a una vida en movimiento."
+  locale="es"
+>
+  <section class="max-w-3xl space-y-7">
+    <p class="text-sm uppercase tracking-[0.22em] text-muted">Presentación personal</p>
+    <div class="flex flex-col items-center gap-5 sm:flex-row sm:items-center sm:gap-6 w-full">
+      <img
+        id="hero-image"
+        src="/images/profile/juan.png"
+        alt="Juan Ramírez"
+        class="h-44 w-44 rounded-full border border-ink/15 object-cover transition-opacity duration-300 sm:h-56 sm:w-56"
+        loading="lazy"
+      />
+      <h1 class="hero-title min-w-0 flex-1 font-serif leading-tight text-center sm:text-left w-full text-3xl md:text-5xl">
+        <span class="hero-line"><span id="hero-intro" class="font-semibold"></span></span>
+        <span id="hero-lines" class="hero-lines mt-5" aria-live="polite">
+          <span class="hero-identity-line">
+            <span id="hero-husband-prefix"></span><span id="hero-husband-insert" class="hero-added-word text-red-600"></span><span id="hero-husband-base"></span>
+          </span>
+          <span class="hero-identity-line">
+            <span id="hero-writer-prefix"></span><span id="hero-writer-insert" class="hero-added-word text-red-600"></span><span id="hero-writer-base"></span>
+          </span>
+          <span class="hero-identity-line">
+            <span id="hero-runner-prefix"></span><span id="hero-runner-base"></span><span id="hero-runner-insert" class="hero-added-word text-red-600"></span>
+          </span>
+          <span class="hero-identity-line">
+            <span id="hero-developer-prefix"></span><span id="hero-developer-insert" class="hero-added-word text-red-600"></span><span id="hero-developer-base"></span>
+          </span>
+          <span class="hero-identity-line hero-abi-line">
+            <span id="hero-abi" class="text-accent"></span>
+          </span>
+        </span>
+        <span id="abi-note" class="block text-sm text-gray-400 mt-2" style="display:none;">
+          <span class="text-red-600">*</span> <a href="https://es.wikipedia.org/wiki/Da%C3%B1o_cerebral_adquirido" target="_blank" rel="noopener" class="underline text-accent hover:text-accent"><span id="abi-typewriter"></span></a><span id="abi-parentesis"></span>
+        </span>
+        <span class="hero-identity-line mt-7">
+          <span id="hero-alive" class="text-[0.7rem] md:text-sm font-bold mt-3 block" style="color: #111;"></span>
+        </span>
+      </h1>
+    </div>
+    <div id="intro-hidden" class="opacity-0 pointer-events-none transition-opacity duration-[2500ms]">
+      <p class="text-lg leading-relaxed text-muted md:text-xl mb-5">
+        En 2020, un tumor cerebral y tres neurocirugías cambiaron el rumbo de mi vida. Desde entonces, escribo sobre daño cerebral adquirido, tecnología y todo lo que considero verdadero y digno de compartir.
+      </p>
+      <p class="text-lg leading-relaxed text-muted md:text-xl">
+        Esta web no trata de reducir mi identidad a una sola etiqueta. Es el lugar donde conviven mi trabajo técnico, mi escritura personal y mi proceso vital.
+      </p>
+      <div class="mt-7 text-base flex flex-col items-center gap-2 sm:flex-row sm:items-center sm:justify-start sm:gap-0">
+        <a href="/es/blog/" class="block text-center sm:text-left">Leer el blog</a>
+        <span class="hidden sm:inline mx-3 text-muted">·</span>
+        <a href="/es/portfolio/" class="block text-center sm:text-left">Explorar mis intereses</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .hero-title {
+      display: flex;
+      flex-direction: column;
+      font-size: clamp(1.1rem, 2.8vw, 2.1rem);
+      font-weight: 600;
+    }
+    .hero-line {
+      display: block;
+    }
+    #hero-intro {
+      white-space: nowrap;
+      font-size: clamp(2.2rem, 7vw, 4.5rem);
+      transition: font-size 11s cubic-bezier(.4,0,.2,1), opacity 1800ms ease, filter 11s cubic-bezier(.4,0,.2,1);
+    }
+    #hero-intro.shrink {
+      font-size: inherit !important;
+    }
+    #hero-intro .hero-intro-name {
+      color: inherit;
+      transition: color 1800ms ease;
+    }
+    #hero-intro.is-dimmed {
+      opacity: 0.6;
+      filter: blur(0.7px);
+    }
+    #hero-intro.is-dimmed .hero-intro-name {
+      color: #a79f8f;
+    }
+    .hero-lines {
+      display: grid;
+      gap: 0.03em;
+      margin-top: 0.18em;
+      opacity: 0;
+      overflow: hidden;
+      transition: opacity 700ms 120ms ease;
+    }
+    .hero-lines.is-visible {
+      opacity: 1;
+    }
+    .hero-identity-line {
+      display: block;
+      min-height: 1.02em;
+      white-space: nowrap;
+    }
+    #hero-alive {
+      font-size: clamp(2.2rem, 7vw, 4.5rem);
+      font-weight: 700;
+      display: inline-block;
+    }
+  </style>
+
+  <script>
+    // Animación hero sincronizada (versión española mejorada)
+    const introTarget = document.querySelector("#hero-intro");
+    const heroLines = document.querySelector("#hero-lines");
+    const heroImage = document.querySelector("#hero-image");
+    const abiAsterisk = document.getElementById("abi-asterisk");
+    const abiNote = document.getElementById("abi-note");
+    const defaultHeroImage = "/images/profile/juan.png";
+    const introStartDelay = 250;
+    const afterIntroPause = 1200;
+    const introPrefix = "SOY";
+    const introName = "JUAN RAMÍREZ";
+    const introText = `${introPrefix} ${introName}`;
+    const heroImages = [
+      "/images/hero/hello-and-welcome.jpeg",
+      "/images/hero/father-husband.jpeg",
+      "/images/hero/writer.svg",
+      "/images/hero/adaptive-runner.png",
+      "/images/hero/developer.png",
+      "/images/hero/brain-tumor-survivor.jpeg",
+      "/images/hero/abi-affected.png"
+    ];
+    const typingSpeed = 45;
+    const linePause = 1100;
+    const timers = [];
+    // Crea un cursor independiente para cada animación paralela
+    const createCursor = () => {
+      const cursor = document.createElement("span");
+      cursor.className = "hero-edit-cursor";
+      cursor.textContent = "_";
+      return cursor;
+    };
+    const setHeroImage = (indexOrSrc) => {
+      if (!heroImage) return;
+      const nextImage = typeof indexOrSrc === "string" ? indexOrSrc : (heroImages[indexOrSrc] ?? heroImages[0]);
+      if (heroImage.getAttribute("src") === nextImage) return;
+      heroImage.classList.add("opacity-0");
+      window.setTimeout(() => {
+        heroImage.setAttribute("src", nextImage);
+        heroImage.classList.remove("opacity-0");
+      }, 120);
+    };
+    setHeroImage(defaultHeroImage);
+    const delay = (ms) => new Promise((resolve) => { timers.push(window.setTimeout(resolve, ms)); });
+    const placeCursor = (target, cursor) => { target.append(cursor); };
+    const typeText = async (target, text, speed = typingSpeed, customCursor) => {
+      const cursor = customCursor || createCursor();
+      placeCursor(target, cursor);
+      for (const character of text) {
+        target.insertBefore(document.createTextNode(character), cursor);
+        await delay(speed);
+      }
+      cursor.remove();
+    };
+    const startHeroSequence = async () => {
+      if (!introTarget || !heroLines) return;
+      await delay(introStartDelay);
+      // Intro grande y animada (sin clases Tailwind de tamaño)
+      introTarget.classList.add("font-semibold");
+      await typeText(introTarget, introText);
+      // Animación progresiva de opacidad y blur mientras se hace pequeño
+      await delay(afterIntroPause);
+      introTarget.classList.add("shrink");
+      // Forzar tamaño pequeño y difuminado antes de restaurar
+      introTarget.style.fontSize = "clamp(1.1rem, 2.8vw, 2.1rem)";
+      introTarget.style.opacity = 0.6;
+      introTarget.style.filter = "blur(0.7px)";
+      introTarget.classList.remove("is-dimmed");
+      introTarget.classList.remove("shrink");
+      introTarget.innerHTML = `<span class="hero-intro-prefix">${introPrefix}</span> <span class="hero-intro-name">${introName}</span>`;
+      const prefixSpan = introTarget.querySelector('.hero-intro-prefix');
+      const nameSpan = introTarget.querySelector('.hero-intro-name');
+      heroLines.classList.add("is-visible");
+      const husbandPrefix = document.querySelector("#hero-husband-prefix");
+      const husbandInsert = document.querySelector("#hero-husband-insert");
+      const husbandBase = document.querySelector("#hero-husband-base");
+      const writerInsert = document.querySelector("#hero-writer-insert");
+      const writerPrefix = document.querySelector("#hero-writer-prefix");
+      const writerBase = document.querySelector("#hero-writer-base");
+      const runnerPrefix = document.querySelector("#hero-runner-prefix");
+      const runnerInsert = document.querySelector("#hero-runner-insert");
+      const runnerBase = document.querySelector("#hero-runner-base");
+      const developerPrefix = document.querySelector("#hero-developer-prefix");
+      const developerInsert = document.querySelector("#hero-developer-insert");
+      const developerBase = document.querySelector("#hero-developer-base");
+      const abiTarget = document.querySelector("#hero-abi");
+      // Frases base con efecto typewriter
+      setHeroImage(1);
+      if (husbandPrefix) husbandPrefix.style.color = "#444";
+      await typeText(husbandPrefix, "Soy ");
+      await typeText(husbandBase, "marido");
+      await delay(linePause);
+      setHeroImage(2);
+      if (writerPrefix) writerPrefix.style.color = "#444";
+      await typeText(writerPrefix, "Soy ");
+      await typeText(writerBase, "escritor");
+      await delay(linePause);
+      setHeroImage(3);
+      if (runnerPrefix) runnerPrefix.style.color = "#444";
+      await typeText(runnerPrefix, "Soy ");
+      await typeText(runnerBase, "corredor");
+      await delay(linePause);
+      setHeroImage(4);
+      if (developerPrefix) developerPrefix.style.color = "#444";
+      await typeText(developerPrefix, "Soy ");
+      await typeText(developerBase, "desarrollador de software");
+      await delay(linePause);
+      // ABI primero, luego añadidos y 'Sigo vivo' en paralelo
+      if (runnerInsert && developerInsert && husbandInsert && writerInsert && runnerBase && abiTarget) {
+        setHeroImage(0);
+        runnerInsert.textContent = "";
+        developerInsert.textContent = "";
+        husbandInsert.textContent = "";
+        writerInsert.textContent = "";
+        abiTarget.textContent = "";
+        // Escribir ABI primero
+        await typeText(abiTarget, "Soy superviviente de un DCA*");
+        if (abiNote) {
+          abiNote.style.display = "block";
+          const abiTypewriter = document.getElementById("abi-typewriter");
+          const abiParentesis = document.getElementById("abi-parentesis");
+          if (abiTypewriter && abiParentesis) {
+            abiTypewriter.textContent = "";
+            abiParentesis.textContent = "";
+            await typeText(abiTypewriter, "Daño cerebral adquirido");
+            await typeText(abiParentesis, " (o sobrevenido)");
+          }
+        }
+        await delay(900);
+        // Ahora añadidos y 'Sigo vivo' en paralelo
+        const aliveTarget = document.querySelector("#hero-alive");
+        if (aliveTarget) {
+          setHeroImage("/images/hero/alive.jpeg");
+          await delay(linePause);
+          // Animar tamaño y blur de SOY JUAN RAMÍREZ mientras se escribe 'Sigo vivo'
+          // Escribir añadidos primero
+          // Lanzar animación de restauración y typewriter de añadidos y '... y sigo vivo' en paralelo
+          // const totalDuration = 1200; // Eliminada, ya está declarada arriba
+          // function lerp(a, b, t) { return a + (b - a) * t; } // Eliminada, ya está declarada arriba
+          function animateRestore(now) {
+            const duration = totalDuration;
+            const start = now;
+            function frame(now2) {
+              const elapsed = Math.min(now2 - start, duration);
+              const t = elapsed / duration;
+              // Font size: interpolar entre valores en px
+              const minFont = 22; // px (aprox clamp(1.1rem, 2.8vw, 2.1rem))
+              const maxFont = 45; // px (aprox clamp(2.2rem, 7vw, 4.5rem))
+              const fontSize = lerp(minFont, maxFont, t);
+              introTarget.style.opacity = lerp(0.6, 1, t);
+              introTarget.style.filter = `blur(${lerp(0.7, 0, t)}px)`;
+              introTarget.style.fontSize = fontSize + "px";
+              if (t < 1) {
+                requestAnimationFrame(frame);
+              } else {
+                introTarget.style.opacity = 1;
+                introTarget.style.filter = "blur(0px)";
+                introTarget.style.fontSize = ""; // Limpia el inline para que el CSS tome el control
+                // Forzar color negro puro al final
+                if (prefixSpan) prefixSpan.style.color = "#111";
+                if (nameSpan) nameSpan.style.color = "#111";
+              }
+            }
+            requestAnimationFrame(frame);
+          }
+          // Forzar tamaño pequeño antes de restaurar
+          introTarget.style.fontSize = "clamp(1.1rem, 2.8vw, 2.1rem)";
+          // Lanzar typewriter de añadidos en paralelo, pero animar restauración sincronizada con cada carácter de '... y sigo vivo'
+          const totalDuration = 1200;
+          const aliveText = "... y sigo vivo";
+          let aliveProgress = 0;
+          function lerp(a, b, t) { return a + (b - a) * t; }
+          function animateRestoreSync(progress) {
+            // progress: 0..1
+            const minFont = 22;
+            const maxFont = 45;
+            const fontSize = lerp(minFont, maxFont, progress);
+            introTarget.style.opacity = lerp(0.6, 1, progress);
+            introTarget.style.filter = `blur(${lerp(0.7, 0, progress)}px)`;
+            introTarget.style.fontSize = fontSize + "px";
+            if (progress === 1) {
+              introTarget.style.opacity = 1;
+              introTarget.style.filter = "blur(0px)";
+              introTarget.style.fontSize = "";
+              if (prefixSpan) prefixSpan.style.color = "#111";
+              if (nameSpan) nameSpan.style.color = "#111";
+            }
+          }
+          // Lanzar añadidos en paralelo
+          // Lanzar añadidos en paralelo, pero sincronizar animación y typewriter de '... y sigo vivo' carácter a carácter
+          await Promise.all([
+            typeText(runnerInsert, " adaptado", typingSpeed, createCursor()),
+            typeText(developerInsert, "ex ", typingSpeed, createCursor()),
+            typeText(husbandInsert, "padre y ", typingSpeed, createCursor()),
+            typeText(writerInsert, "aún ", typingSpeed, createCursor()),
+            (async () => {
+              const cursor = createCursor();
+              placeCursor(aliveTarget, cursor);
+              const minFont = 22;
+              const maxFont = 45;
+              const startColor = [167, 159, 143]; // #a79f8f
+              const endColor = [17, 17, 17]; // #111
+              for (let i = 0; i < aliveText.length; i++) {
+                aliveTarget.insertBefore(document.createTextNode(aliveText[i]), cursor);
+                const progress = (i + 1) / aliveText.length;
+                // Animación sincronizada tamaño, blur, opacidad y color
+                introTarget.style.opacity = 0.6 + 0.4 * progress;
+                introTarget.style.filter = `blur(${0.7 * (1 - progress)}px)`;
+                introTarget.style.fontSize = (minFont + (maxFont - minFont) * progress) + "px";
+                const r = Math.round(startColor[0] + (endColor[0] - startColor[0]) * progress);
+                const g = Math.round(startColor[1] + (endColor[1] - startColor[1]) * progress);
+                const b = Math.round(startColor[2] + (endColor[2] - startColor[2]) * progress);
+                if (prefixSpan) prefixSpan.style.color = `rgb(${r},${g},${b})`;
+                if (nameSpan) nameSpan.style.color = `rgb(${r},${g},${b})`;
+                await delay(typingSpeed);
+              }
+              cursor.remove();
+              // Estado final
+              introTarget.style.opacity = 1;
+              introTarget.style.filter = "blur(0px)";
+              introTarget.style.fontSize = "";
+              if (prefixSpan) prefixSpan.style.color = "#111";
+              if (nameSpan) nameSpan.style.color = "#111";
+            })()
+          ]);
+        }
+      } else if (abiTarget) {
+        // Fallback: solo la línea ABI si faltan añadidos
+        setHeroImage(0);
+        abiTarget.textContent = "";
+        const abiText = "Soy superviviente de un DCA*";
+        await typeText(abiTarget, abiText);
+        if (abiNote) abiNote.style.display = "block";
+        await delay(900);
+        const aliveTarget = document.querySelector("#hero-alive");
+        if (aliveTarget) {
+          setHeroImage("/images/hero/alive.jpeg");
+          await delay(linePause);
+          await typeText(aliveTarget, "Sigo vivo");
+        }
+      }
+    };
+    startHeroSequence().then(() => {
+      // Mostrar intro bajo el hero solo cuando la animación ha terminado
+      const intro = document.getElementById("intro-hidden");
+      if (intro) {
+        intro.classList.remove("opacity-0", "pointer-events-none");
+        intro.classList.add("opacity-100");
+      }
+    });
+    window.addEventListener("pagehide", () => {
+      timers.forEach((timer) => window.clearTimeout(timer));
+    });
+  </script>
+</BaseLayout>
