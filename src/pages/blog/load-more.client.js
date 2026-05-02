@@ -1,7 +1,6 @@
-import { onMount } from 'astro/client';
-
-onMount(() => {
+document.addEventListener('DOMContentLoaded', () => {
   const list = document.getElementById('blog-list');
+  if (!list) return;
   const items = Array.from(list.children);
   let visibleCount = 5;
 
