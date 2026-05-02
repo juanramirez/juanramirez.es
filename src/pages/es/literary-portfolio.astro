@@ -13,7 +13,7 @@ const projects = (await getCollection("portfolio"))
 ---
 
 <BaseLayout
-  title="Portfolio literario | Juan Ramírez"
+  title="Literatura | Juan Ramírez"
   description="Proyectos literarios de Juan Ramírez, escritos en español."
   locale="es"
 >
@@ -24,14 +24,14 @@ const projects = (await getCollection("portfolio"))
         <li aria-hidden="true">/</li>
         <li><a href="/es/portfolio/">Intereses</a></li>
         <li aria-hidden="true">/</li>
-        <li class="text-ink/80">Portfolio literario</li>
+        <li class="text-ink/80">Literatura</li>
       </ol>
     </nav>
 
     <header class="space-y-1">
       <h1 class="flex items-center gap-3 font-serif text-3xl md:text-4xl">
         <img src="/images/icons/literary-portfolio.svg" alt="" aria-hidden="true" class="h-10 w-10 shrink-0 md:h-11 md:w-11" loading="lazy" />
-        <span>Portfolio literario</span>
+        <span>Literatura</span>
       </h1>
       <p class="text-sm text-muted">{projects.length} {projects.length === 1 ? "proyecto" : "proyectos"}</p>
     </header>
