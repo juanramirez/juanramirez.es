@@ -162,7 +162,7 @@ const isPathActive = (href: string) => {
                       aria-current={isPathActive(child.href) ? "page" : undefined}
                     >
                       {navLanguage === "en" && locale !== "es" && child.label === "Literature"
-                        ? <><span>Literature</span><span class="ml-2 text-xs italic text-muted" style="white-space:nowrap;">&nbsp;(in Spanish)</span></>
+                        ? <><span>Literature</span><span class="ml-2 text-xs italic text-muted" style="white-space:nowrap;">&nbsp;(in&nbsp;Spanish)</span></>
                         : child.label}
                     </a>
                   </li>
