@@ -8,6 +8,7 @@ image: "/images/portfolio/supersticion-cover.png"
 hidden: false
 written_date: "1999-2001"
 published_date: "2001"
+url: "https://www.google.es/books/edition/Superstici%C3%B3n/rAsFSQAACAAJ?hl=es"
 tags:
   - Poesia
 ---

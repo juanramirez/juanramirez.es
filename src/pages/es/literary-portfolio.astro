@@ -8,8 +8,25 @@ const projects = (await getCollection("portfolio"))
   .sort((a, b) => {
     const aSlug = a.slug.split("/").pop() ?? a.slug;
     const bSlug = b.slug.split("/").pop() ?? b.slug;
-    return literaryOrder.indexOf(aSlug) - literaryOrder.indexOf(bSlug);
+    const aIndex = literaryOrder.indexOf(aSlug);
+    const bIndex = literaryOrder.indexOf(bSlug);
+    if (aIndex === -1 && bIndex === -1) return aSlug.localeCompare(bSlug);
+    if (aIndex === -1) return 1;
+    if (bIndex === -1) return -1;
+    return aIndex - bIndex;
   });
+
+const statusLabel = (status: string) => ({
+  planned: "Planeado",
+  "in-development": "En desarrollo",
+  published: "Publicado"
+}[status] ?? status);
+
+const statusColorClass = (status: string) => ({
+  planned: "text-gray-600",
+  "in-development": "text-yellow-600",
+  published: "text-green-600"
+}[status] ?? "");
 ---
 
 <BaseLayout
@@ -22,7 +39,7 @@ const projects = (await getCollection("portfolio"))
       <ol class="flex flex-wrap items-center gap-2">
         <li><a href="/es/">Portada</a></li>
         <li aria-hidden="true">/</li>
-        <li><a href="/es/portfolio/">Intereses</a></li>
+        <li><a href="/es/interests/">Intereses</a></li>
         <li aria-hidden="true">/</li>
         <li class="text-ink/80">Literatura</li>
       </ol>
@@ -38,20 +55,39 @@ const projects = (await getCollection("portfolio"))
 
     <div class="text-muted space-y-4">
       <p>
-        Una de mis grandes aficiones es la literatura. Me encanta leer y también escribir. A partir de mi daño cerebral,
-        estoy intentando retomar esta pasión con calma.
+        Una de mis grandes aficiones es la literatura. Me encanta leer y me gusta también escribir. Ya de adolescente, obtuve varios premios de poesía:
+      </p>
+      <ul class="text-muted space-y-2 list-disc list-outside ml-6">
+        <li>1er premio en el XIV Certamen de Poesía Juvenil "Poeta García Gutiérrez" - Delegación de Juventud, Ayto. de Chiclana (Cádiz), 1999.</li>
+        <li>3er premio de Poesía en el XIX Certamen Literario "Roquetas de Mar" - IES Sabinar (Roquetas de Mar, Almería), 2000.</li>
+        <li>1er premio en el I Certamen Juvenil de Poesía "Juan Carlos Benítez" - Colegio San Felipe Neri (Cádiz), 2001.</li>
+        <li>2o premio de Poesía en el XX Certamen Literario "Roquetas de Mar" - IES Sabinar, (Roquetas de Mar, Almería), 2001.</li>
+        <li>1er premio en el certamen para la publicación de un cuadernillo literario - Delegación de Juventud, Ayto. de Chiclana (Cádiz), 2002.</li>
+      </ul>
+      <p>
+        En la actualidad, y especialmente a partir de mi daño cerebral, estoy intentando retomar esta pasión.
       </p>
     </div>
+
+    <h2 class="font-serif text-2xl md:text-3xl">Porfolio literario</h2>
 
     <ul class="grid gap-6 md:grid-cols-2">
       {projects.map((project) => (
         <li class="flex h-full flex-col gap-3 rounded-md border border-ink/15 bg-white/40 p-6">
-          <h2 class="font-serif text-2xl leading-tight">
+          <h3 class="font-serif text-2xl leading-tight">
             <a href={`/es/portfolio/${project.slug}/`}>{project.data.name}</a>
-          </h2>
+          </h3>
           {project.data.subtitle && <p class="text-sm italic text-muted">{project.data.subtitle}</p>}
+          <p class={`text-sm font-semibold ${statusColorClass(project.data.status)}`}>
+            {statusLabel(project.data.status)}
+          </p>
           <p class="text-muted" set:html={project.data.description} />
           <p class="pt-1 text-sm"><a href={`/es/portfolio/${project.slug}/`}>Leer más</a></p>
+          {project.data.url && (
+            <p class="text-sm">
+              <a href={project.data.url} rel="noreferrer" target="_blank">Visitar proyecto</a>
+            </p>
+          )}
         </li>
       ))}
     </ul>
