@@ -314,11 +314,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     };
 
     startHeroSequence().then(() => {
-      // Mostrar intro bajo el hero solo cuando la animación ha terminado
       const intro = document.getElementById("intro-hidden");
       if (intro) {
-        intro.classList.remove("opacity-0", "pointer-events-none");
-        intro.classList.add("opacity-100");
+        const observer = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting) {
+            intro.classList.remove("opacity-0", "pointer-events-none");
+            intro.classList.add("opacity-100");
+            observer.disconnect();
+          }
+        }, { threshold: 0.1 });
+        observer.observe(intro);
       }
     });
 
