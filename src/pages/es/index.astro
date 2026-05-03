@@ -71,7 +71,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     }
     #hero-intro {
       white-space: nowrap;
-      font-size: clamp(2.2rem, 7vw, 4.5rem);
+      font-size: clamp(1rem, 7vw, 4.5rem);
       transition: font-size 11s cubic-bezier(.4,0,.2,1), opacity 1800ms ease, filter 11s cubic-bezier(.4,0,.2,1);
     }
     #hero-intro.shrink {
@@ -102,12 +102,18 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     .hero-identity-line {
       display: block;
       min-height: 1.02em;
-      white-space: nowrap;
+      white-space: normal;
+      overflow-wrap: break-word;
     }
     #hero-alive {
-      font-size: clamp(2.2rem, 7vw, 4.5rem);
+      font-size: clamp(1rem, 7vw, 4.5rem);
       font-weight: 700;
       display: inline-block;
+    }
+    @media (max-width: 420px) {
+      .hero-title {
+        font-size: clamp(1.25rem, 7vw, 1.75rem);
+      }
     }
   </style>
 
@@ -258,7 +264,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
               const t = elapsed / duration;
               // Font size: interpolar entre valores en px
               const minFont = 22; // px (aprox clamp(1.1rem, 2.8vw, 2.1rem))
-              const maxFont = 45; // px (aprox clamp(2.2rem, 7vw, 4.5rem))
+              const maxFont = Math.min(45, Math.round(window.innerWidth * 0.07));
               const fontSize = lerp(minFont, maxFont, t);
               introTarget.style.opacity = lerp(0.6, 1, t);
               introTarget.style.filter = `blur(${lerp(0.7, 0, t)}px)`;
@@ -286,7 +292,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           function animateRestoreSync(progress) {
             // progress: 0..1
             const minFont = 22;
-            const maxFont = 45;
+            const maxFont = Math.min(45, Math.round(window.innerWidth * 0.07));
             const fontSize = lerp(minFont, maxFont, progress);
             introTarget.style.opacity = lerp(0.6, 1, progress);
             introTarget.style.filter = `blur(${lerp(0.7, 0, progress)}px)`;
@@ -310,7 +316,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
               const cursor = createCursor();
               placeCursor(aliveTarget, cursor);
               const minFont = 22;
-              const maxFont = 45;
+              const maxFont = Math.min(45, Math.round(window.innerWidth * 0.07));
               const startColor = [167, 159, 143]; // #a79f8f
               const endColor = [17, 17, 17]; // #111
               for (let i = 0; i < aliveText.length; i++) {

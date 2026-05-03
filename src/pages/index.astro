@@ -265,7 +265,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             const initialColor = [167, 159, 143]; // #a79f8f
             const finalColor = [17, 17, 17]; // #111
             const minFont = 22; // px (aprox clamp(1.1rem, 2.8vw, 2.1rem))
-            const maxFont = 34; // px (más pequeño que antes)
+            const maxFont = Math.min(34, Math.round(window.innerWidth * 0.07));
             const nameSpan = introTarget.querySelector('.hero-intro-name');
             function lerp(a, b, t) { return a + (b - a) * t; }
             const underline = introTarget.querySelector('.hero-underline');
@@ -292,7 +292,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
               } else {
                 introTarget.style.opacity = finalOpacity;
                 introTarget.style.filter = `blur(${finalBlur}px)`;
-                introTarget.style.fontSize = "clamp(2.2rem, 7vw, 2.8rem)";
+                introTarget.style.fontSize = "clamp(1rem, 7vw, 2.8rem)";
                 if (nameSpan) nameSpan.style.color = `rgb(${finalColor[0]},${finalColor[1]},${finalColor[2]})`;
                 if (underline) underline.style.width = "100%";
               }
@@ -352,7 +352,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
     #hero-intro {
       white-space: nowrap;
-      font-size: clamp(2.2rem, 7vw, 4.5rem);
+      font-size: clamp(1rem, 7vw, 4.5rem);
       transition: font-size 11s cubic-bezier(.4,0,.2,1), opacity 1800ms ease, filter 11s cubic-bezier(.4,0,.2,1);
     }
 
@@ -390,11 +390,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     .hero-identity-line {
       display: block;
       min-height: 1.02em;
-      white-space: nowrap;
+      white-space: normal;
+      overflow-wrap: break-word;
     }
 
     #hero-alive {
-      font-size: clamp(2.2rem, 7vw, 4.5rem);
+      font-size: clamp(1rem, 7vw, 4.5rem);
       font-weight: 700; /* bold solo para 'I'm still alive' */
       display: inline-block;
       margin-top: 0.18em;
