@@ -19,19 +19,30 @@ const projects = (await getCollection("portfolio"))
       <ol class="flex flex-wrap items-center gap-2 list-none">
         <li><a href="/es/">Portada</a></li>
         <li aria-hidden="true">/</li>
-        <li><a href="/es/portfolio/">Intereses</a></li>
+        <li><a href="/es/interests/">Intereses</a></li>
         <li aria-hidden="true">/</li>
-        <li class="text-ink/80">Porfolio de programación</li>
+        <li class="text-ink/80">Programación</li>
       </ol>
     </nav>
 
     <header class="space-y-1">
       <h1 class="flex items-center gap-3 font-serif text-3xl md:text-4xl">
         <img src="/images/icons/coding-portfolio.svg" alt="" aria-hidden="true" class="h-10 w-10 shrink-0 md:h-11 md:w-11" loading="lazy" />
-        <span>Porfolio de programación</span>
+        <span>Programación</span>
       </h1>
       <p class="text-sm text-muted">{projects.length} {projects.length === 1 ? "proyecto" : "proyectos"}</p>
     </header>
+
+    <div class="text-muted space-y-4">
+      <p>Mi pasión desde muy pequeño fue la informática y, en concreto, siempre me llamó la atención la programación. Construir cosas que otros pudiesen utilizar y que fuesen útiles.</p>
+      <p>Poco a poco, ese deseo fue convirtiéndose en una realidad. Cursé estudios de Ingeniería en Informática en Granada, y después comencé a trabajar, primero en empresas que realizaban software para el ámbito militar.</p>
+      <p>Poco después comencé a trabajar para Tuenti, esa red social española, con bastante enfoque adolescente al principio, y que poco después se convirtió en una operadora móvil que compró Telefónica.</p>
+      <p>Después de un tiempo de excedencia en el que trabajé para otra empresa, Influencity, dedicada al marketing de influencers, volví a Telefónica.</p>
+      <p>Tras el proceso quirúrgico y de rehabilitación de mi tumor cerebral y al reconocimiento de mi incapacidad permanente total, y debido a diferencias en la forma de adaptar mi puesto de trabajo, decidí acogerme al ERE que la empresa convocó en 2026, finalizando así mi relación laboral con ellos.</p>
+      <p>En la actualidad ya no ejerzo como programador, aunque, gracias a la IA, he conseguido, por ejemplo, tener funcionando esta web personal.</p>
+    </div>
+
+    <h2 class="font-serif text-2xl md:text-3xl">Porfolio literario</h2>
 
     <ul class="grid gap-6 md:grid-cols-2">
       {projects.map((project) => (
