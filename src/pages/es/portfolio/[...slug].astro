@@ -89,7 +89,7 @@ const sectionHref = isLiterary ? "/es/literary-portfolio/" : "/es/coding/";
           <p class="text-lg text-muted" set:html={project.data.description} />
           {project.data.url && (
             <p class="text-sm">
-              <a href={project.data.url} rel="noreferrer" target="_blank">Visitar proyecto</a>
+              <a href={project.data.url} rel="noreferrer" target="_blank">{isLiterary ? "Visitar proyecto" : "Visitar proyecto en GitHub"}</a>
             </p>
           )}
         </div>

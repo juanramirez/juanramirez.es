@@ -33,7 +33,7 @@ const statusColorClass = {
 }[project.data.status];
 
 const detailsLabel = isSpanish ? "Leer más" : "Read details";
-const visitLabel = isSpanish ? "Visitar proyecto" : "Visit project";
+const visitLabel = isLiterary ? "Visitar proyecto" : (isSpanish ? "Visitar proyecto en GitHub" : "Visit project on GitHub");
 ---
 
 <li class="flex h-full flex-col gap-3 rounded-md border border-ink/15 bg-white/40 p-6">

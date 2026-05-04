@@ -1,5 +1,5 @@
 ---
-name: "On-duty organizer (a.k.a. DoctorPlan)"
+name: "DoctorPlan"
 description: "An open-source scheduler for hospital on-duty planning, using evolutionary algorithms to balance constraints and preferences."
 status: "published"
 category: "technical"

@@ -1,5 +1,5 @@
 ---
-name: "Organizador de guardias (DoctorPlan)"
+name: "DoctorPlan"
 description: "Planificador de guardias hospitalarias de código abierto, usando algoritmos evolutivos para equilibrar restricciones y preferencias."
 status: "published"
 category: "technical"
