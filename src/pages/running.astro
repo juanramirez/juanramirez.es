@@ -49,83 +49,97 @@ const records = [
   {
     distance: "1K",
     time: "2:57.7",
+    pace: "2:58/km",
     race: "1K Test",
     comment: "",
     date: "14 Sep 2016",
     link: null,
-    timeLink: null,
+    timeLink: "https://www.strava.com/activities/712366571/best-efforts",
   },
   {
     distance: "1 mile",
     time: "5:01.5",
+    pace: "3:07/km",
     race: "Suanzes Mile",
     comment: "",
     date: "27 Sep 2014",
     link: "https://atletismomadrid.com/index.php?Itemid=120&catid=28&id=3937&option=com_content&view=article",
-    timeLink: null,
+    timeLink: "https://www.strava.com/activities/200169714",
   },
   {
     distance: "5K",
     time: "17:46",
+    pace: "3:33/km",
     race: "Blue Race for Autism",
     comment: "",
     date: "2 Abr 2017",
     link: null,
-    timeLink: null,
+    timeLink: "https://www.strava.com/activities/925440594",
   },
   {
     distance: "10K",
     time: "36:59",
+    pace: "3:42/km",
     race: "Popular Race Father Marcelino",
     comment: "",
     date: "23 Abr 2017",
     link: "https://sportmaniacs.com/es/races/17-carrera-popular-memorial-padre-marcelino",
-    timeLink: null,
+    timeLink: "https://www.strava.com/activities/954165730",
   },
   {
     distance: "Half marathon",
     time: "1:21:00",
+    pace: "3:50/km",
     race: "EDP Seville Half Marathon",
     comment: "",
     date: "29 Ene 2017",
     link: "https://sportmaniacs.com/en/races/edp-media-maraton-de-sevilla-2017",
-    timeLink: null,
+    timeLink: "https://www.strava.com/activities/847962790",
   },
   {
     distance: "Marathon",
     time: "2:55:30",
+    pace: "4:10/km",
     race: "Zurich Seville Marathon",
     comment: "",
     date: "19 Feb 2017",
     link: "https://www.zurichmaratonsevilla.es/mse-clasificaciones-2017",
-    timeLink: null,
+    timeLink: "https://www.strava.com/activities/871837599",
   }
 ];
 
 const highlights = [
   {
+    event: "Chiclana local race circuit",
+    time: "",
+    pace: "",
+    comment: "Return to competition after the surgeries",
+    date: "2023–2025",
+  },
+  {
     event: "Chiclana Half-Marathon",
+    eventLink: "https://mediamaratonciudaddechiclana.com/",
+    time: "1:41:19",
+    pace: "4:48/km",
+    timeLink: "https://www.strava.com/activities/11177713071",
+    comment: "",
+    date: "14 Abr 2024",
+  },
+  {
+    event: "Chiclana Half-Marathon",
+    eventLink: "https://mediamaratonciudaddechiclana.com/",
     time: "1:57:20",
+    pace: "5:34/km",
+    timeLink: "https://www.strava.com/activities/18168134004",
     comment: '<a href="/blog/chiclana-half-marathon/" class="hover:text-accent">Read race report</a>',
     date: "19 Abr 2026",
   },
   {
     event: "Viamed Overcoming Prize",
     time: "",
+    pace: "",
     comment: 'Writing award for resilience and running · <a href="/blog/chiclana-half-marathon/" class="hover:text-accent">Read more</a>',
     date: "19 Abr 2026",
-  },
-  {
-    event: "Chiclana Half-Marathon",
-    time: "1:41:19",
-    comment: '<a href="https://www.strava.com/activities/11177713071" target="_blank" rel="noopener noreferrer" class="hover:text-accent">View on Strava</a>',
-    date: "14 Abr 2024",
-  },
-  {
-    event: "Chiclana local race circuit",
-    time: "",
-    comment: "Return to competition after the surgeries",
-    date: "2023",
   },
 ];
 ---
@@ -188,11 +202,25 @@ const highlights = [
             Personal records
           </h3>
         <ul class="divide-y divide-ink/10">
+        <li class="flex items-baseline gap-4 pb-2 sm:gap-6 text-xs uppercase tracking-widest text-muted border-b border-ink/20">
+          <span class="w-48 shrink-0">Distance</span>
+          <span class="w-20 shrink-0">Time</span>
+          <span class="hidden sm:block w-20 shrink-0">Pace</span>
+          <span class="flex-1 min-w-0">Race</span>
+          <span class="w-24 shrink-0">Date</span>
+        </li>
         {records.map((item) => (
           <li class="flex items-baseline gap-4 py-3 sm:gap-6">
             <span class="w-48 shrink-0 text-xs uppercase tracking-widest text-muted">{item.distance}</span>
-            <span class="w-20 shrink-0 font-serif text-xl font-semibold tabular-nums">{item.time}</span>
-            <span class="min-w-0 text-sm text-muted">
+            <span class="w-20 shrink-0 font-serif text-xl font-semibold tabular-nums">
+              {item.timeLink ? (
+                <a href={item.timeLink} target="_blank" rel="noopener noreferrer" class="hover:text-accent underline">{item.time}</a>
+              ) : (
+                item.time
+              )}
+            </span>
+            <span class="hidden sm:block w-20 shrink-0 text-sm text-muted tabular-nums">{item.pace}</span>
+            <span class="flex-1 min-w-0 text-sm text-muted">
               {item.link ? (
                 <a href={item.link} target="_blank" rel="noopener noreferrer" class="hover:text-accent">{item.race}</a>
               ) : (
@@ -223,14 +251,31 @@ const highlights = [
           Highlights after brain injury
         </h3>
       <ul class="divide-y divide-ink/10">
+        <li class="flex items-baseline gap-4 pb-2 sm:gap-6 text-xs uppercase tracking-widest text-muted border-b border-ink/20">
+          <span class="w-24 shrink-0">Date</span>
+          <span class="flex-1 min-w-0">Event</span>
+          <span class="w-20 shrink-0">Time</span>
+          <span class="hidden sm:block w-20 shrink-0">Pace</span>
+        </li>
         {highlights.map((item) => (
           <li class="flex items-baseline gap-4 py-3 sm:gap-6">
-            <span class="w-20 shrink-0 font-serif text-xl font-semibold tabular-nums">{item.time}</span>
-            <span class="min-w-0 text-sm text-muted">
-              {item.event}
+            <span class="w-24 shrink-0 text-xs text-muted">{item.date}</span>
+            <span class="flex-1 min-w-0 text-sm text-muted">
+              {item.eventLink ? (
+                <a href={item.eventLink} target="_blank" rel="noopener noreferrer" class="hover:text-accent">{item.event}</a>
+              ) : (
+                item.event
+              )}
               {item.comment && <><span class="mx-1.5 opacity-40">·</span><span innerHTML={item.comment}></span></>}
             </span>
-            <span class="w-24 shrink-0 text-xs text-muted">{item.date}</span>
+            <span class="w-20 shrink-0 font-serif text-xl font-semibold tabular-nums">
+              {item.timeLink ? (
+                <a href={item.timeLink} target="_blank" rel="noopener noreferrer" class="hover:text-accent underline">{item.time}</a>
+              ) : (
+                item.time
+              )}
+            </span>
+            <span class="hidden sm:block w-20 shrink-0 text-sm text-muted tabular-nums">{item.pace}</span>
           </li>
         ))}
       </ul>
