@@ -13,7 +13,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         id="hero-image"
         src="/images/profile/juan.png"
         alt="Juan Ramírez"
-        class="h-44 w-44 rounded-full border border-ink/15 object-cover transition-opacity duration-300 sm:h-56 sm:w-56"
+        class="h-72 w-72 rounded-full border border-ink/15 object-cover transition-opacity duration-300 sm:h-80 sm:w-80"
         loading="lazy"
       />
       <h1 class="hero-title min-w-0 flex-1 font-serif leading-tight text-center sm:text-left w-full text-3xl md:text-5xl">
@@ -295,6 +295,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 introTarget.style.fontSize = "clamp(1rem, 7vw, 2.8rem)";
                 if (nameSpan) nameSpan.style.color = `rgb(${finalColor[0]},${finalColor[1]},${finalColor[2]})`;
                 if (underline) underline.style.width = "100%";
+                heroLines?.classList.add("shrink-identities");
               }
             }
             requestAnimationFrame(animateRestore);
@@ -397,13 +398,23 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       min-height: 1.02em;
       white-space: nowrap;
       font-size: clamp(0.85rem, 4.5vw, 2.1rem);
+      transition: font-size 11s cubic-bezier(.4,0,.2,1);
+    }
+
+    .hero-lines.shrink-identities .hero-identity-line {
+      font-size: clamp(0.72rem, 3.8vw, 1.75rem);
+    }
+
+    .hero-lines.shrink-identities #abi-note {
+      font-size: 0.75rem;
+      transition: font-size 11s cubic-bezier(.4,0,.2,1);
     }
 
     #hero-alive {
       font-size: clamp(1rem, 7vw, 4.5rem);
       font-weight: 700; /* bold solo para 'I'm still alive' */
       display: inline-block;
-      margin-top: 0.18em;
+      margin-top: 0.6em;
     }
 
     .hero-abi-line,
