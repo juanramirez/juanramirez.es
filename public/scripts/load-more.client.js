@@ -1,7 +1,6 @@
-// Código ejecutado directamente al cargar el script (Astro client:load)
-
-const list = document.getElementById('blog-list');
-if (list) {
+document.addEventListener('DOMContentLoaded', () => {
+  const list = document.getElementById('blog-list');
+  if (!list) return;
   const items = Array.from(list.children);
   let visibleCount = 5;
 
@@ -22,4 +21,4 @@ if (list) {
 
   showItems();
   window.addEventListener('scroll', onScroll);
-}
+});
