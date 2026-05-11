@@ -1,7 +1,7 @@
 ---
 import { getCollection, getEntryBySlug, render } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import HyvorComments from "../../../components/HyvorComments.astro";
+import CusdisComments from "../../../components/CusdisComments.astro";
 
 
 export async function getStaticPaths() {
@@ -23,7 +23,8 @@ if (!project) {
   return Astro.redirect('/404', 302);
 }
 const { Content } = await render(project);
-const hyvorWebsiteId = import.meta.env.PUBLIC_HYVOR_WEBSITE_ID;
+const cusdisAppId = import.meta.env.PUBLIC_CUSDIS_APP_ID;
+const pageUrl = new URL(`/es/portfolio/${slug}/`, Astro.site).href;
 const showComments = project.data.comments;
 const isLiterary = project.data.category === "literary";
 const statusLabel = {
@@ -109,8 +110,15 @@ const sectionHref = isLiterary ? "/es/literary-portfolio/" : "/es/coding/";
       <Content />
     </div>
 
-    {hyvorWebsiteId && showComments && (
-      <HyvorComments websiteId={hyvorWebsiteId} pageId={`es-portfolio-${project.slug}`} heading="Comentarios" language="es" />
+    {cusdisAppId && showComments && (
+      <CusdisComments
+        appId={cusdisAppId}
+        pageId={`es-portfolio-${project.slug}`}
+        pageUrl={pageUrl}
+        pageTitle={project.data.name}
+        heading="Comentarios"
+        lang="es"
+      />
     )}
 
     <p class="text-sm">

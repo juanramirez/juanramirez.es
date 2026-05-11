@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import HyvorComments from "../../components/HyvorComments.astro";
+import CusdisComments from "../../components/CusdisComments.astro";
 
 import { getLocalizedContentSlug, toTagSlug } from "../../lib/i18n";
 import { readingTime } from "../../utils/readingTime";
@@ -18,8 +18,9 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-const hyvorWebsiteId = import.meta.env.PUBLIC_HYVOR_WEBSITE_ID;
+const cusdisAppId = import.meta.env.PUBLIC_CUSDIS_APP_ID;
 const showComments = post.data.comments;
+const pageUrl = new URL(`/blog/${post.slug}/`, Astro.site).href;
 const postReadingTime = readingTime(post.body ?? "");
 
 ---
@@ -78,13 +79,13 @@ const postReadingTime = readingTime(post.body ?? "");
       <Content />
     </div>
 
-    {hyvorWebsiteId && showComments && <HyvorComments websiteId={hyvorWebsiteId} pageId={post.slug} />}
-
-    {import.meta.env.DEV && showComments && !hyvorWebsiteId && (
-      <p class="mt-10 rounded-md border border-dashed border-ink/25 p-4 text-sm text-muted">
-        Comments are enabled for this post, but Hyvor is not configured. Set
-        <code>PUBLIC_HYVOR_WEBSITE_ID</code> and restart the dev server.
-      </p>
+    {cusdisAppId && showComments && (
+      <CusdisComments
+        appId={cusdisAppId}
+        pageId={post.slug}
+        pageUrl={pageUrl}
+        pageTitle={post.data.title}
+      />
     )}
   </article>
 </BaseLayout>

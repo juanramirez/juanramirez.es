@@ -12,8 +12,8 @@ if (list) {
   if (items.length > INITIAL) {
     const css = document.createElement('style');
     css.textContent =
-      '.blog-item-enter{opacity:0;transform:translateY(28px)}' +
-      '.blog-item-reveal{opacity:1;transform:none;transition:opacity .55s ease,transform .55s ease}' +
+      '.blog-item-enter{opacity:0;transform:translateY(10px)}' +
+      '.blog-item-reveal{opacity:1;transform:none;transition:opacity 2s ease,transform 2s ease}' +
       '@keyframes blog-dots{0%,100%{opacity:.2}50%{opacity:1}}' +
       '.blog-loading{text-align:center;padding:1.5rem 0;color:#bbb;letter-spacing:.4em;font-size:1.1rem;animation:blog-dots 1.4s ease-in-out infinite}';
     document.head.appendChild(css);
@@ -40,11 +40,11 @@ if (list) {
       item.getBoundingClientRect(); // force reflow so initial state is registered
       requestAnimationFrame(() => {
         item.classList.add('blog-item-reveal');
-        setTimeout(() => { item.classList.remove('blog-item-enter', 'blog-item-reveal'); }, 600);
+        setTimeout(() => { item.classList.remove('blog-item-enter', 'blog-item-reveal'); }, 2200);
         setTimeout(() => {
           revealing = false;
           if (sentinel.getBoundingClientRect().top < window.innerHeight + 200) revealOne();
-        }, 220);
+        }, 500);
       });
     }
 
