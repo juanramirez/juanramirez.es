@@ -77,6 +77,8 @@ const homeLabel = isLiterary ? "Portada" : "Home";
           src={project.data.image}
           alt={`${project.data.name} logo`}
           class="h-14 w-auto object-contain"
+          width={56}
+          height={56}
           loading="lazy"
         />
       )}
@@ -141,6 +143,8 @@ const homeLabel = isLiterary ? "Portada" : "Home";
             src={project.data.image}
             alt={`Portada de ${project.data.name}`}
             class="h-auto w-full max-w-xs rounded-md border border-ink/15 object-cover shadow-sm md:justify-self-end"
+            width={320}
+            height={480}
             loading="lazy"
           />
         )}

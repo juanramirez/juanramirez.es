@@ -14,33 +14,34 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         id="hero-image"
         src="/images/profile/juan.png"
         alt="Juan Ramírez"
-        class="h-44 w-44 rounded-full border border-ink/15 object-cover transition-opacity duration-300 sm:h-56 sm:w-56"
+        class="w-[min(20rem,50vw)] h-[min(20rem,50vw)] rounded-full border border-ink/15 object-cover transition-opacity duration-300 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96"
         loading="lazy"
       />
       <h1 class="hero-title min-w-0 flex-1 font-serif leading-tight text-center sm:text-left w-full text-3xl md:text-5xl">
-        <span class="hero-line"><span id="hero-intro" class="font-semibold"></span></span>
+        <span class="hero-line">
+          <span id="hero-intro" class="font-semibold" style="position:relative;display:inline-block;">
+            <span class="hero-underline" style="position:absolute;left:0;bottom:-0.18em;width:0;height:0.13em;background:#111;border-radius:2px;transition:width 0.3s;"></span>
+          </span>
+        </span>
         <span id="hero-lines" class="hero-lines mt-5" aria-live="polite">
           <span class="hero-identity-line">
-            <span id="hero-husband-prefix"></span><span id="hero-husband-insert" class="hero-added-word text-red-600"></span><span id="hero-husband-base"></span>
+            <span id="hero-husband-prefix"></span><span id="hero-husband-insert" class="hero-added-word"></span><span id="hero-husband-base"></span>
           </span>
           <span class="hero-identity-line">
-            <span id="hero-writer-prefix"></span><span id="hero-writer-insert" class="hero-added-word text-red-600"></span><span id="hero-writer-base"></span>
+            <span id="hero-writer-prefix"></span><span id="hero-writer-insert" class="hero-added-word"></span><span id="hero-writer-base"></span>
           </span>
           <span class="hero-identity-line">
-            <span id="hero-runner-prefix"></span><span id="hero-runner-base"></span><span id="hero-runner-insert" class="hero-added-word text-red-600"></span>
+            <span id="hero-runner-prefix"></span><span id="hero-runner-base"></span><span id="hero-runner-insert" class="hero-added-word"></span>
           </span>
           <span class="hero-identity-line">
-            <span id="hero-developer-prefix"></span><span id="hero-developer-insert" class="hero-added-word text-red-600"></span><span id="hero-developer-base"></span>
+            <span id="hero-developer-prefix"></span><span id="hero-developer-insert" class="hero-added-word"></span><span id="hero-developer-base"></span>
           </span>
           <span class="hero-identity-line hero-abi-line">
-            <span id="hero-abi" class="text-accent"></span>
+            <span id="hero-abi"></span><span id="abi-note" class="block text-xs text-gray-400 mt-2" style="display:none;"></span>
           </span>
-        </span>
-        <span id="abi-note" class="block text-sm text-gray-400 mt-2" style="display:none;">
-          <span class="text-red-600">*</span> <a href="https://es.wikipedia.org/wiki/Da%C3%B1o_cerebral_adquirido" target="_blank" rel="noopener" class="underline text-accent hover:text-accent"><span id="abi-typewriter"></span></a><span id="abi-parentesis"></span>
-        </span>
-        <span class="hero-identity-line mt-7">
-          <span id="hero-alive" class="text-[0.7rem] md:text-sm font-bold mt-3 block" style="color: #111;"></span>
+          <span class="hero-identity-line">
+            <span id="hero-alive" class="text-[0.7rem] md:text-sm font-bold mt-6 block" style="color: #111;"></span>
+          </span>
         </span>
       </h1>
     </div>
@@ -51,79 +52,158 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       <p class="text-lg leading-relaxed text-muted md:text-xl">
         Esta web no trata de reducir mi identidad a una sola etiqueta. Es el lugar donde conviven mi trabajo técnico, mi escritura personal y mi proceso vital.
       </p>
-      <div class="mt-7 text-base flex flex-col items-center gap-2 sm:flex-row sm:items-center sm:justify-start sm:gap-0">
-        <a href="/es/blog/" class="block text-center sm:text-left">Leer el blog</a>
-        <span class="hidden sm:inline mx-3 text-muted">·</span>
-        <a href="/es/interests/" class="block text-center sm:text-left">Explorar mis intereses</a>
+      <div class="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-start">
+        <a href="/es/blog/" class="inline-block px-5 py-2 text-sm bg-ink text-paper border border-ink rounded no-underline hover:text-[#F05A3A]">Leer mi blog</a>
+        <a href="/es/portfolio/" class="inline-block px-5 py-2 text-sm bg-ink text-paper border border-ink rounded no-underline hover:text-[#F05A3A]">Explorar mis intereses</a>
       </div>
     </div>
   </section>
 
   <style>
+    section {
+      overflow-x: hidden;
+    }
+
+    #hero-image {
+      animation: slideInFromLeft 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    }
+
+    @keyframes slideInFromLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-120vw);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
     .hero-title {
       display: flex;
       flex-direction: column;
-      font-size: clamp(1.1rem, 2.8vw, 2.1rem);
+      font-size: clamp(0.95rem, 2.3vw, 1.75rem);
       font-weight: 600;
     }
+
     .hero-line {
       display: block;
     }
+
     #hero-intro {
       white-space: nowrap;
       font-size: clamp(1rem, 7vw, 4.5rem);
       transition: font-size 11s cubic-bezier(.4,0,.2,1), opacity 1800ms ease, filter 11s cubic-bezier(.4,0,.2,1);
     }
+
     #hero-intro.shrink {
-      font-size: inherit !important;
+      font-size: clamp(1.1rem, 2.8vw, 2.1rem);
     }
+
     #hero-intro .hero-intro-name {
       color: inherit;
       transition: color 1800ms ease;
     }
+
     #hero-intro.is-dimmed {
-      opacity: 0.6;
-      filter: blur(0.7px);
+      opacity: 0.34;
+      filter: blur(1.8px);
     }
+
     #hero-intro.is-dimmed .hero-intro-name {
       color: #a79f8f;
     }
+
+    .hero-underline {
+      position: absolute;
+      left: 0;
+      bottom: -0.08em;
+      width: 0;
+      height: 0.13em;
+      background: #111;
+      border-radius: 2px;
+      transition: width 0.3s;
+      z-index: 1;
+    }
+
     .hero-lines {
       display: grid;
+      grid-template-columns: 100%;
       gap: 0.03em;
       margin-top: 0.18em;
       opacity: 0;
       overflow: hidden;
       transition: opacity 700ms 120ms ease;
     }
+
     .hero-lines.is-visible {
       opacity: 1;
     }
+
     .hero-identity-line {
       display: block;
       min-height: 1.02em;
       white-space: nowrap;
-      font-size: clamp(0.85rem, 4.5vw, 2.1rem);
+      font-size: var(--fit-font-size, clamp(0.85rem, 4.5vw, 2.1rem));
+      transition: font-size 11s cubic-bezier(.4,0,.2,1);
     }
+
+    .hero-lines.shrink-identities .hero-identity-line {
+      --fit-font-size: clamp(0.72rem, 3.8vw, 1.75rem);
+    }
+
+    .hero-abi-line {
+      font-size: var(--fit-font-size, clamp(0.85rem, 3.8vw, 1.9rem));
+      white-space: normal;
+    }
+
+    .hero-lines.shrink-identities .hero-abi-line {
+      --fit-font-size: clamp(0.72rem, 3.2vw, 1.6rem);
+    }
+
+    #abi-note {
+      font-size: 0.75rem;
+    }
+
+    .hero-lines.shrink-identities #abi-note {
+      font-size: 0.75rem;
+      transition: font-size 11s cubic-bezier(.4,0,.2,1);
+    }
+
     #hero-alive {
       font-size: clamp(1rem, 7vw, 4.5rem);
       font-weight: 700;
       display: inline-block;
+      margin-top: 0.6em;
     }
+
+    .hero-abi-line,
+    .hero-added-word {
+      color: #b14623;
+    }
+
+    .hero-edit-cursor {
+      display: inline-block;
+      color: currentColor;
+      animation: blink 1.4s infinite;
+    }
+
     @media (max-width: 420px) {
       .hero-title {
         font-size: clamp(1.25rem, 7vw, 1.75rem);
       }
     }
+
+    @keyframes blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
   </style>
 
   <script>
-    // Animación hero sincronizada (versión española mejorada)
     const introTarget = document.querySelector("#hero-intro");
     const heroLines = document.querySelector("#hero-lines");
     const heroImage = document.querySelector("#hero-image");
-    const abiAsterisk = document.getElementById("abi-asterisk");
-    const abiNote = document.getElementById("abi-note");
     const defaultHeroImage = "/images/profile/juan.png";
     const introStartDelay = 250;
     const afterIntroPause = 1200;
@@ -131,24 +211,28 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     const introName = "JUAN RAMÍREZ";
     const introText = `${introPrefix} ${introName}`;
     const heroImages = [
-      "/images/hero/hello-and-welcome.jpeg",
+      "/images/hero/abi-survivor.jpeg",
       "/images/hero/father-husband.jpeg",
-      "/images/hero/writer.svg",
-      "/images/hero/adaptive-runner.png",
+      "/images/hero/writer.jpeg",
+      "/images/hero/adapted-runner.png",
       "/images/hero/developer.png",
-      "/images/hero/brain-tumor-survivor.jpeg",
-      "/images/hero/abi-affected.png"
     ];
     const typingSpeed = 45;
     const linePause = 1100;
     const timers = [];
-    // Crea un cursor independiente para cada animación paralela
+    let heroAnimationActive = true;
+    let lastScrollTime = 0;
+    let sharedLineSize = null;
+    let cachedMainLines = null;
+    document.documentElement.style.overflowAnchor = 'none';
+
     const createCursor = () => {
       const cursor = document.createElement("span");
       cursor.className = "hero-edit-cursor";
       cursor.textContent = "_";
       return cursor;
     };
+
     const setHeroImage = (indexOrSrc) => {
       if (!heroImage) return;
       const nextImage = typeof indexOrSrc === "string" ? indexOrSrc : (heroImages[indexOrSrc] ?? heroImages[0]);
@@ -159,37 +243,101 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         heroImage.classList.remove("opacity-0");
       }, 120);
     };
+
     setHeroImage(defaultHeroImage);
+
     const delay = (ms) => new Promise((resolve) => { timers.push(window.setTimeout(resolve, ms)); });
+
     const placeCursor = (target, cursor) => { target.append(cursor); };
+
+    const getMainLines = () => {
+      if (cachedMainLines) return cachedMainLines;
+      cachedMainLines = ['hero-husband-prefix', 'hero-writer-prefix', 'hero-runner-prefix', 'hero-developer-prefix']
+        .map(id => document.getElementById(id)?.closest('.hero-identity-line'))
+        .filter(el => el instanceof HTMLElement);
+      return cachedMainLines;
+    };
+
+    const fitLineToContainer = (line) => {
+      const mainLines = getMainLines();
+      if (!mainLines.includes(line)) return;
+      mainLines.forEach(l => { l.style.transition = 'none'; });
+      mainLines[0].getBoundingClientRect();
+      const MAX = 40;
+      let size = sharedLineSize ?? MAX;
+      mainLines.forEach(l => l.style.setProperty('--fit-font-size', size + 'px'));
+      while (size > 10) {
+        mainLines[0].getBoundingClientRect();
+        if (!mainLines.some(l => l.scrollWidth > l.offsetWidth)) break;
+        size -= 0.5;
+        mainLines.forEach(l => l.style.setProperty('--fit-font-size', size + 'px'));
+      }
+      sharedLineSize = size;
+      requestAnimationFrame(() => mainLines.forEach(l => { l.style.transition = ''; }));
+    };
+
+    const revealLine = (el) => {
+      if (!el) return;
+      if (window.innerWidth >= 640) return;
+      const rect = el.getBoundingClientRect();
+      const vh = (window.visualViewport?.height) ?? window.innerHeight;
+      const now = Date.now();
+      if (now - lastScrollTime < 150) return;
+      const neededScroll = rect.bottom - (vh - 20);
+      if (neededScroll > 0) {
+        lastScrollTime = now;
+        window.scrollTo({ top: window.scrollY + neededScroll, behavior: 'smooth' });
+      }
+    };
+
+    const fitIntroToContainer = (maxSize = 72) => {
+      if (!introTarget) return;
+      const container = introTarget.parentElement;
+      if (!container) return;
+      let size = maxSize;
+      introTarget.style.fontSize = size + 'px';
+      while (size > 12) {
+        introTarget.getBoundingClientRect();
+        if (introTarget.offsetWidth <= container.clientWidth) break;
+        size -= 0.5;
+        introTarget.style.fontSize = size + 'px';
+      }
+    };
+
     const typeText = async (target, text, speed = typingSpeed, customCursor) => {
       const cursor = customCursor || createCursor();
       placeCursor(target, cursor);
+      const line = target.closest('.hero-identity-line');
       for (const character of text) {
         target.insertBefore(document.createTextNode(character), cursor);
+        if (line) {
+          fitLineToContainer(line);
+          revealLine(line);
+        }
         await delay(speed);
       }
       cursor.remove();
     };
+
     const startHeroSequence = async () => {
       if (!introTarget || !heroLines) return;
+
       await delay(introStartDelay);
-      // Intro grande y animada (sin clases Tailwind de tamaño)
-      introTarget.classList.add("font-semibold");
       await typeText(introTarget, introText);
-      // Animación progresiva de opacidad y blur mientras se hace pequeño
+      fitIntroToContainer(72);
       await delay(afterIntroPause);
+
       introTarget.classList.add("shrink");
-      // Forzar tamaño pequeño y difuminado antes de restaurar
-      introTarget.style.fontSize = "clamp(1.1rem, 2.8vw, 2.1rem)";
-      introTarget.style.opacity = 0.6;
-      introTarget.style.filter = "blur(0.7px)";
-      introTarget.classList.remove("is-dimmed");
-      introTarget.classList.remove("shrink");
-      introTarget.innerHTML = `<span class="hero-intro-prefix">${introPrefix}</span> <span class="hero-intro-name">${introName}</span>`;
-      const prefixSpan = introTarget.querySelector('.hero-intro-prefix');
-      const nameSpan = introTarget.querySelector('.hero-intro-name');
+      introTarget.classList.add("is-dimmed");
+      introTarget.style.fontSize = "clamp(1rem, 2vw, 1.5rem)";
+      introTarget.style.opacity = 0.34;
+      introTarget.style.filter = "blur(1.8px)";
+      introTarget.innerHTML = `${introPrefix} <span class="hero-intro-name">${introName}</span><span class="hero-underline"></span>`;
+      introTarget.style.fontSize = "clamp(1.2rem, 3vw, 2rem)";
+      introTarget.getBoundingClientRect();
+      sharedLineSize = parseFloat(getComputedStyle(introTarget).fontSize);
       heroLines.classList.add("is-visible");
+
       const husbandPrefix = document.querySelector("#hero-husband-prefix");
       const husbandInsert = document.querySelector("#hero-husband-insert");
       const husbandBase = document.querySelector("#hero-husband-base");
@@ -203,175 +351,151 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       const developerInsert = document.querySelector("#hero-developer-insert");
       const developerBase = document.querySelector("#hero-developer-base");
       const abiTarget = document.querySelector("#hero-abi");
-      // Frases base con efecto typewriter
+      const abiNote = document.getElementById("abi-note");
+
       setHeroImage(1);
-      if (husbandPrefix) husbandPrefix.style.color = "#444";
       await typeText(husbandPrefix, "Soy ");
       await typeText(husbandBase, "marido");
       await delay(linePause);
+
       setHeroImage(2);
-      if (writerPrefix) writerPrefix.style.color = "#444";
       await typeText(writerPrefix, "Soy ");
       await typeText(writerBase, "escritor");
       await delay(linePause);
+
       setHeroImage(3);
-      if (runnerPrefix) runnerPrefix.style.color = "#444";
       await typeText(runnerPrefix, "Soy ");
       await typeText(runnerBase, "corredor");
       await delay(linePause);
+
       setHeroImage(4);
-      if (developerPrefix) developerPrefix.style.color = "#444";
       await typeText(developerPrefix, "Soy ");
       await typeText(developerBase, "desarrollador de software");
       await delay(linePause);
-      // ABI primero, luego añadidos y 'Sigo vivo' en paralelo
-      if (runnerInsert && developerInsert && husbandInsert && writerInsert && runnerBase && abiTarget) {
+
+      if (abiTarget && runnerInsert && developerInsert && husbandInsert && writerInsert) {
         setHeroImage(0);
         runnerInsert.textContent = "";
         developerInsert.textContent = "";
         husbandInsert.textContent = "";
         writerInsert.textContent = "";
         abiTarget.textContent = "";
-        // Escribir ABI primero
-        await typeText(abiTarget, "Soy superviviente de un DCA*");
+
+        const survivorSpan = document.createElement('span');
+        abiTarget.appendChild(survivorSpan);
+        await typeText(survivorSpan, "Soy superviviente de un tumor cerebral");
+        await delay(900);
+
+        setHeroImage("/images/hero/abi-diagnosis.png");
+        const dcaSpan = document.createElement('span');
+        dcaSpan.style.display = 'block';
+        dcaSpan.style.marginTop = '0.5em';
+        abiTarget.appendChild(dcaSpan);
+        await typeText(dcaSpan, "Soy afectado por DCA*");
+
         if (abiNote) {
           abiNote.style.display = "block";
-          const abiTypewriter = document.getElementById("abi-typewriter");
-          const abiParentesis = document.getElementById("abi-parentesis");
-          if (abiTypewriter && abiParentesis) {
-            abiTypewriter.textContent = "";
-            abiParentesis.textContent = "";
-            await typeText(abiTypewriter, "Daño cerebral adquirido");
-            await typeText(abiParentesis, " (o sobrevenido)");
+          const dcaText = '* DCA significa ';
+          abiNote.textContent = '';
+          for (let i = 0; i < dcaText.length; i++) {
+            abiNote.textContent += dcaText[i];
+            await new Promise(res => setTimeout(res, 22));
+          }
+          const link = document.createElement('a');
+          link.href = 'https://fedace.org/que-es-el-dano-cerebral-adquirido.html';
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.className = 'underline text-accent hover:text-[#F05A3A]';
+          const linkText = 'Daño Cerebral Adquirido';
+          link.textContent = '';
+          abiNote.appendChild(link);
+          for (let i = 0; i < linkText.length; i++) {
+            link.textContent += linkText[i];
+            await new Promise(res => setTimeout(res, 22));
           }
         }
-        await delay(900);
-        // Ahora añadidos y 'Sigo vivo' en paralelo
+
+        await delay(300);
         const aliveTarget = document.querySelector("#hero-alive");
         if (aliveTarget) {
           setHeroImage("/images/hero/alive.jpeg");
           await delay(linePause);
-          // Animar tamaño y blur de SOY JUAN RAMÍREZ mientras se escribe 'Sigo vivo'
-          // Escribir añadidos primero
-          // Lanzar animación de restauración y typewriter de añadidos y '... y sigo vivo' en paralelo
-          // const totalDuration = 1200; // Eliminada, ya está declarada arriba
-          // function lerp(a, b, t) { return a + (b - a) * t; } // Eliminada, ya está declarada arriba
-          function animateRestore(now) {
-            const duration = totalDuration;
-            const start = now;
-            function frame(now2) {
-              const elapsed = Math.min(now2 - start, duration);
-              const t = elapsed / duration;
-              // Font size: interpolar entre valores en px
-              const minFont = 22; // px (aprox clamp(1.1rem, 2.8vw, 2.1rem))
-              const maxFont = Math.min(45, Math.round(window.innerWidth * 0.07));
-              const fontSize = lerp(minFont, maxFont, t);
-              introTarget.style.opacity = lerp(0.6, 1, t);
-              introTarget.style.filter = `blur(${lerp(0.7, 0, t)}px)`;
-              introTarget.style.fontSize = fontSize + "px";
-              if (t < 1) {
-                requestAnimationFrame(frame);
-              } else {
-                introTarget.style.opacity = 1;
-                introTarget.style.filter = "blur(0px)";
-                introTarget.style.fontSize = ""; // Limpia el inline para que el CSS tome el control
-                // Forzar color negro puro al final
-                if (prefixSpan) prefixSpan.style.color = "#111";
-                if (nameSpan) nameSpan.style.color = "#111";
-              }
-            }
-            requestAnimationFrame(frame);
-          }
-          // Forzar tamaño pequeño antes de restaurar
-          introTarget.style.fontSize = "clamp(1.1rem, 2.8vw, 2.1rem)";
-          // Lanzar typewriter de añadidos en paralelo, pero animar restauración sincronizada con cada carácter de '... y sigo vivo'
-          const totalDuration = 1200;
-          const aliveText = "... y sigo vivo";
-          let aliveProgress = 0;
-          function lerp(a, b, t) { return a + (b - a) * t; }
-          function animateRestoreSync(progress) {
-            // progress: 0..1
+
+          const introEl = document.querySelector("#hero-intro");
+          if (introEl) {
+            introEl.classList.remove("is-dimmed");
+            introEl.classList.remove("shrink");
+            const duration = 350;
+            const start = performance.now();
+            const initialOpacity = 0.34;
+            const finalOpacity = 1;
+            const initialBlur = 1.8;
+            const finalBlur = 0;
+            const initialColor = [167, 159, 143];
+            const finalColor = [17, 17, 17];
             const minFont = 22;
-            const maxFont = Math.min(45, Math.round(window.innerWidth * 0.07));
-            const fontSize = lerp(minFont, maxFont, progress);
-            introTarget.style.opacity = lerp(0.6, 1, progress);
-            introTarget.style.filter = `blur(${lerp(0.7, 0, progress)}px)`;
-            introTarget.style.fontSize = fontSize + "px";
-            if (progress === 1) {
-              introTarget.style.opacity = 1;
-              introTarget.style.filter = "blur(0px)";
-              introTarget.style.fontSize = "";
-              if (prefixSpan) prefixSpan.style.color = "#111";
-              if (nameSpan) nameSpan.style.color = "#111";
-            }
-          }
-          // Lanzar añadidos en paralelo
-          // Lanzar añadidos en paralelo, pero sincronizar animación y typewriter de '... y sigo vivo' carácter a carácter
-          await Promise.all([
-            typeText(runnerInsert, " adaptado", typingSpeed, createCursor()),
-            typeText(developerInsert, "ex ", typingSpeed, createCursor()),
-            typeText(husbandInsert, "padre y ", typingSpeed, createCursor()),
-            typeText(writerInsert, "aún ", typingSpeed, createCursor()),
-            (async () => {
-              const cursor = createCursor();
-              placeCursor(aliveTarget, cursor);
-              const minFont = 22;
-              const maxFont = Math.min(45, Math.round(window.innerWidth * 0.07));
-              const startColor = [167, 159, 143]; // #a79f8f
-              const endColor = [17, 17, 17]; // #111
-              for (let i = 0; i < aliveText.length; i++) {
-                aliveTarget.insertBefore(document.createTextNode(aliveText[i]), cursor);
-                const progress = (i + 1) / aliveText.length;
-                // Animación sincronizada tamaño, blur, opacidad y color
-                introTarget.style.opacity = 0.6 + 0.4 * progress;
-                introTarget.style.filter = `blur(${0.7 * (1 - progress)}px)`;
-                introTarget.style.fontSize = (minFont + (maxFont - minFont) * progress) + "px";
-                const r = Math.round(startColor[0] + (endColor[0] - startColor[0]) * progress);
-                const g = Math.round(startColor[1] + (endColor[1] - startColor[1]) * progress);
-                const b = Math.round(startColor[2] + (endColor[2] - startColor[2]) * progress);
-                if (prefixSpan) prefixSpan.style.color = `rgb(${r},${g},${b})`;
-                if (nameSpan) nameSpan.style.color = `rgb(${r},${g},${b})`;
-                await delay(typingSpeed);
+            const maxFont = Math.min(34, Math.round(window.innerWidth * 0.07));
+            const nameSpan = introEl.querySelector('.hero-intro-name');
+            const underline = introEl.querySelector('.hero-underline');
+            function lerp(a, b, t) { return a + (b - a) * t; }
+            function animateRestore(now) {
+              const elapsed = Math.min(now - start, duration);
+              const t = elapsed / duration;
+              introEl.style.opacity = lerp(initialOpacity, finalOpacity, t);
+              introEl.style.filter = `blur(${lerp(initialBlur, finalBlur, t)}px)`;
+              introEl.style.fontSize = lerp(minFont, maxFont, t) + "px";
+              const r = Math.round(lerp(initialColor[0], finalColor[0], t));
+              const g = Math.round(lerp(initialColor[1], finalColor[1], t));
+              const b = Math.round(lerp(initialColor[2], finalColor[2], t));
+              if (nameSpan) nameSpan.style.color = `rgb(${r},${g},${b})`;
+              if (underline) {
+                const underlineProgress = Math.pow(Math.max(0, Math.min(t, 1)), 0.2);
+                underline.style.width = `${Math.round(underlineProgress * 100)}%`;
               }
-              cursor.remove();
-              // Estado final
-              introTarget.style.opacity = 1;
-              introTarget.style.filter = "blur(0px)";
-              introTarget.style.fontSize = "";
-              if (prefixSpan) prefixSpan.style.color = "#111";
-              if (nameSpan) nameSpan.style.color = "#111";
-            })()
-          ]);
-        }
-      } else if (abiTarget) {
-        // Fallback: solo la línea ABI si faltan añadidos
-        setHeroImage(0);
-        abiTarget.textContent = "";
-        const abiText = "Soy superviviente de un DCA*";
-        await typeText(abiTarget, abiText);
-        if (abiNote) abiNote.style.display = "block";
-        await delay(900);
-        const aliveTarget = document.querySelector("#hero-alive");
-        if (aliveTarget) {
-          setHeroImage("/images/hero/alive.jpeg");
-          await delay(linePause);
-          await typeText(aliveTarget, "Sigo vivo");
-        }
-      }
-    };
-    startHeroSequence().then(() => {
-      const intro = document.getElementById("intro-hidden");
-      if (intro) {
-        const observer = new IntersectionObserver((entries) => {
-          if (entries[0].isIntersecting) {
-            intro.classList.remove("opacity-0", "pointer-events-none");
-            intro.classList.add("opacity-100");
-            observer.disconnect();
+              if (elapsed < duration) {
+                requestAnimationFrame(animateRestore);
+              } else {
+                introEl.style.opacity = finalOpacity;
+                introEl.style.filter = `blur(${finalBlur}px)`;
+                fitIntroToContainer(maxFont);
+                if (nameSpan) nameSpan.style.color = `rgb(${finalColor[0]},${finalColor[1]},${finalColor[2]})`;
+                if (underline) underline.style.width = "100%";
+                heroLines?.classList.add("shrink-identities");
+              }
+            }
+            requestAnimationFrame(animateRestore);
           }
-        }, { threshold: 0.1 });
-        observer.observe(intro);
+
+          const texts = [
+            { target: runnerInsert, text: " adaptado" },
+            { target: developerInsert, text: "ex-" },
+            { target: husbandInsert, text: "padre y " },
+            { target: writerInsert, text: "aún " },
+            { target: aliveTarget, text: "SIGO VIVO" },
+          ];
+          const totalDuration = 2500;
+          const speeds = texts.map(t => t.text.length ? Math.floor(totalDuration / t.text.length) : typingSpeed);
+          await Promise.all(texts.map((t, i) => typeText(t.target, t.text, speeds[i], createCursor())));
+        }
       }
-    });
+      heroAnimationActive = false;
+    };
+
+    startHeroSequence();
+
+    const introSection = document.getElementById("intro-hidden");
+    if (introSection) {
+      const updateIntroVisibility = () => {
+        if (heroAnimationActive) return;
+        const visible = introSection.getBoundingClientRect().top < window.innerHeight - 40;
+        introSection.classList.toggle("opacity-0", !visible);
+        introSection.classList.toggle("pointer-events-none", !visible);
+        introSection.classList.toggle("opacity-100", visible);
+      };
+      window.addEventListener('scroll', updateIntroVisibility, { passive: true });
+      if (window.scrollY > 50) updateIntroVisibility();
+    }
+
     window.addEventListener("pagehide", () => {
       timers.forEach((timer) => window.clearTimeout(timer));
     });

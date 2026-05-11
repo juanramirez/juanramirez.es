@@ -7,6 +7,7 @@ import { getLocalizedContentSlug, toTagSlug } from "../../lib/i18n";
 import { readingTime } from "../../utils/readingTime";
 
 const locale = "en";
+const hyvorWebsiteId = import.meta.env.PUBLIC_HYVOR_WEBSITE_ID;
 const posts = (await getCollection("blog"))
   .filter((post) => post.data.lang === locale)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -41,6 +42,12 @@ const posts = (await getCollection("blog"))
                   </time>
                   {" "}· by {post.data.author}
                   {" "}· {readingTime(post.body ?? "")}
+                  {hyvorWebsiteId && post.data.comments !== false && (
+                    <>{" "}· <a href={`/blog/${post.slug}/#comments`} class="no-underline">
+                      <hyvor-talk-comment-count website-id={hyvorWebsiteId} page-id={post.slug}></hyvor-talk-comment-count>
+                      {" "}comments
+                    </a></>
+                  )}
                 </p>
                 <h2 class="font-serif text-2xl font-semibold leading-tight">
                   <a href={`/blog/${post.slug}/`} set:html={post.data.title}></a>
@@ -81,4 +88,5 @@ const posts = (await getCollection("blog"))
           })}
         </ul>
         <script type="module" src="/scripts/load-more.client.js" client:load></script>
+        {hyvorWebsiteId && <script is:inline async type="module" src="https://talk.hyvor.com/embed/embed.js"></script>}
 </BaseLayout>
