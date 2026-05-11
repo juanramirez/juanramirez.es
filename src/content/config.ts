@@ -50,7 +50,8 @@ const portfolio = defineCollection({
     image: z.string().optional(),
     stack: z.array(z.string()).default([]),
     tags: z.array(z.string()).optional(),
-    url: z.string().url().optional()
+    url: z.string().url().optional(),
+    url_label: z.string().optional()
   })
 });
 

@@ -9,6 +9,7 @@ hidden: false
 written_date: "1999-2001"
 published_date: "2001"
 url: "https://www.google.es/books/edition/Superstici%C3%B3n/rAsFSQAACAAJ?hl=es"
+url_label: "Ver en Google Books"
 tags:
   - Poesia
 ---

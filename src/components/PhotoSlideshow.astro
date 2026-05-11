@@ -57,6 +57,7 @@ const first = images[0];
       id={`${id}-caption`}
       class="absolute bottom-0 left-1/2 bg-black/50 text-white text-center text-sm py-2 px-2"
       style="transform: translateX(-50%); white-space: normal; z-index: 30; box-sizing: border-box; transition: width 0.7s cubic-bezier(0.4,0,0.2,1) 0s; overflow-wrap: break-word; word-break: break-word; max-width: 95vw; min-width: 80px; will-change: width; overflow: hidden;"
+      aria-live="polite"
     >
       <span id={`${id}-caption-text`} class="relative z-20" style="pointer-events:auto; display: inline-block; width: 100%;">{first.caption}</span>
     </div>
@@ -204,11 +205,15 @@ const first = images[0];
     }, 3000);
   }
 
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   if (imgs.length > 1) {
-    resetInterval();
+    if (!prefersReducedMotion) {
+      resetInterval();
+    }
     window.addEventListener("DOMContentLoaded", () => {
-      document.getElementById(`${id}-arrow-left`).addEventListener("click", prevImage);
-      document.getElementById(`${id}-arrow-right`).addEventListener("click", nextImage);
+      document.getElementById(`${id}-arrow-left`)?.addEventListener("click", prevImage);
+      document.getElementById(`${id}-arrow-right`)?.addEventListener("click", nextImage);
     });
   }
 

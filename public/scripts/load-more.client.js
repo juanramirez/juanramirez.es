@@ -1,5 +1,6 @@
-const list = document.getElementById('blog-list');
-if (list) {
+function initLoadMore() {
+  const list = document.getElementById('blog-list');
+  if (!list) return;
   const items = Array.from(list.children);
   const INITIAL = 5;
   let revealed = INITIAL;
@@ -54,4 +55,10 @@ if (list) {
 
     observer.observe(sentinel);
   }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLoadMore, { once: true });
+} else {
+  initLoadMore();
 }
