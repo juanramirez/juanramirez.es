@@ -14,7 +14,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         id="hero-image"
         src="/images/profile/juan.png"
         alt="Juan Ramírez"
-        class="h-72 w-72 rounded-full border border-ink/15 object-cover transition-opacity duration-300 sm:h-80 sm:w-80"
+        class="w-[min(20rem,50vw)] h-[min(20rem,50vw)] rounded-full border border-ink/15 object-cover transition-opacity duration-300 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96"
         loading="lazy"
       />
       <h1 class="hero-title min-w-0 flex-1 font-serif leading-tight text-center sm:text-left w-full text-3xl md:text-5xl">
@@ -37,7 +37,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             <span id="hero-developer-prefix"></span><span id="hero-developer-insert" class="hero-added-word"></span><span id="hero-developer-base"></span>
           </span>
           <span class="hero-identity-line hero-abi-line">
-            <span id="hero-abi"></span><span id="abi-note" class="block text-sm text-gray-400 mt-2" style="display:none;"></span>
+            <span id="hero-abi"></span><span id="abi-note" class="block text-xs text-gray-400 mt-2" style="display:none;"></span>
           </span>
           <span class="hero-identity-line">
             <span id="hero-alive" class="text-[0.7rem] md:text-sm font-bold mt-6 block" style="color: #111;"></span>
@@ -52,19 +52,37 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       <p class="text-lg leading-relaxed text-muted md:text-xl">
         Esta web no trata de reducir mi identidad a una sola etiqueta. Es el lugar donde conviven mi trabajo técnico, mi escritura personal y mi proceso vital.
       </p>
-      <div class="mt-7 text-base flex flex-col items-center gap-2 sm:flex-row sm:items-center sm:justify-start sm:gap-0">
-        <a href="/es/blog/" class="block text-center sm:text-left">Leer el blog</a>
-        <span class="hidden sm:inline mx-3 text-muted">·</span>
-        <a href="/es/portfolio/" class="block text-center sm:text-left">Explorar mis intereses</a>
+      <div class="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-start">
+        <a href="/es/blog/" class="inline-block px-5 py-2 text-sm bg-ink text-paper border border-ink rounded no-underline hover:text-[#F05A3A]">Leer mi blog</a>
+        <a href="/es/portfolio/" class="inline-block px-5 py-2 text-sm bg-ink text-paper border border-ink rounded no-underline hover:text-[#F05A3A]">Explorar mis intereses</a>
       </div>
     </div>
   </section>
 
   <style>
+    section {
+      overflow-x: hidden;
+    }
+
+    #hero-image {
+      animation: slideInFromLeft 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    }
+
+    @keyframes slideInFromLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-120vw);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
     .hero-title {
       display: flex;
       flex-direction: column;
-      font-size: clamp(1.1rem, 2.8vw, 2.1rem);
+      font-size: clamp(0.95rem, 2.3vw, 1.75rem);
       font-weight: 600;
     }
 
@@ -110,6 +128,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
     .hero-lines {
       display: grid;
+      grid-template-columns: 100%;
       gap: 0.03em;
       margin-top: 0.18em;
       opacity: 0;
@@ -125,20 +144,25 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       display: block;
       min-height: 1.02em;
       white-space: nowrap;
-      font-size: clamp(0.85rem, 4.5vw, 2.1rem);
+      font-size: var(--fit-font-size, clamp(0.85rem, 4.5vw, 2.1rem));
       transition: font-size 11s cubic-bezier(.4,0,.2,1);
     }
 
     .hero-lines.shrink-identities .hero-identity-line {
-      font-size: clamp(0.72rem, 3.8vw, 1.75rem);
+      --fit-font-size: clamp(0.72rem, 3.8vw, 1.75rem);
     }
 
     .hero-abi-line {
-      font-size: clamp(0.85rem, 2.5vw, 1.7rem);
+      font-size: var(--fit-font-size, clamp(0.85rem, 3.8vw, 1.9rem));
+      white-space: normal;
     }
 
     .hero-lines.shrink-identities .hero-abi-line {
-      font-size: clamp(0.72rem, 2.1vw, 1.44rem);
+      --fit-font-size: clamp(0.72rem, 3.2vw, 1.6rem);
+    }
+
+    #abi-note {
+      font-size: 0.75rem;
     }
 
     .hero-lines.shrink-identities #abi-note {
@@ -196,6 +220,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     const typingSpeed = 45;
     const linePause = 1100;
     const timers = [];
+    let heroAnimationActive = true;
+    let lastScrollTime = 0;
+    let sharedLineSize = null;
+    let cachedMainLines = null;
+    document.documentElement.style.overflowAnchor = 'none';
 
     const createCursor = () => {
       const cursor = document.createElement("span");
@@ -221,11 +250,70 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
     const placeCursor = (target, cursor) => { target.append(cursor); };
 
+    const getMainLines = () => {
+      if (cachedMainLines) return cachedMainLines;
+      cachedMainLines = ['hero-husband-prefix', 'hero-writer-prefix', 'hero-runner-prefix', 'hero-developer-prefix']
+        .map(id => document.getElementById(id)?.closest('.hero-identity-line'))
+        .filter(el => el instanceof HTMLElement);
+      return cachedMainLines;
+    };
+
+    const fitLineToContainer = (line) => {
+      const mainLines = getMainLines();
+      if (!mainLines.includes(line)) return;
+      mainLines.forEach(l => { l.style.transition = 'none'; });
+      mainLines[0].getBoundingClientRect();
+      const MAX = 40;
+      let size = sharedLineSize ?? MAX;
+      mainLines.forEach(l => l.style.setProperty('--fit-font-size', size + 'px'));
+      while (size > 10) {
+        mainLines[0].getBoundingClientRect();
+        if (!mainLines.some(l => l.scrollWidth > l.offsetWidth)) break;
+        size -= 0.5;
+        mainLines.forEach(l => l.style.setProperty('--fit-font-size', size + 'px'));
+      }
+      sharedLineSize = size;
+      requestAnimationFrame(() => mainLines.forEach(l => { l.style.transition = ''; }));
+    };
+
+    const revealLine = (el) => {
+      if (!el) return;
+      if (window.innerWidth >= 640) return;
+      const rect = el.getBoundingClientRect();
+      const vh = (window.visualViewport?.height) ?? window.innerHeight;
+      const now = Date.now();
+      if (now - lastScrollTime < 150) return;
+      const neededScroll = rect.bottom - (vh - 20);
+      if (neededScroll > 0) {
+        lastScrollTime = now;
+        window.scrollTo({ top: window.scrollY + neededScroll, behavior: 'smooth' });
+      }
+    };
+
+    const fitIntroToContainer = (maxSize = 72) => {
+      if (!introTarget) return;
+      const container = introTarget.parentElement;
+      if (!container) return;
+      let size = maxSize;
+      introTarget.style.fontSize = size + 'px';
+      while (size > 12) {
+        introTarget.getBoundingClientRect();
+        if (introTarget.offsetWidth <= container.clientWidth) break;
+        size -= 0.5;
+        introTarget.style.fontSize = size + 'px';
+      }
+    };
+
     const typeText = async (target, text, speed = typingSpeed, customCursor) => {
       const cursor = customCursor || createCursor();
       placeCursor(target, cursor);
+      const line = target.closest('.hero-identity-line');
       for (const character of text) {
         target.insertBefore(document.createTextNode(character), cursor);
+        if (line) {
+          fitLineToContainer(line);
+          revealLine(line);
+        }
         await delay(speed);
       }
       cursor.remove();
@@ -236,6 +324,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
       await delay(introStartDelay);
       await typeText(introTarget, introText);
+      fitIntroToContainer(72);
       await delay(afterIntroPause);
 
       introTarget.classList.add("shrink");
@@ -245,6 +334,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       introTarget.style.filter = "blur(1.8px)";
       introTarget.innerHTML = `${introPrefix} <span class="hero-intro-name">${introName}</span><span class="hero-underline"></span>`;
       introTarget.style.fontSize = "clamp(1.2rem, 3vw, 2rem)";
+      introTarget.getBoundingClientRect();
+      sharedLineSize = parseFloat(getComputedStyle(introTarget).fontSize);
       heroLines.classList.add("is-visible");
 
       const husbandPrefix = document.querySelector("#hero-husband-prefix");
@@ -298,6 +389,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         setHeroImage("/images/hero/abi-diagnosis.png");
         const dcaSpan = document.createElement('span');
         dcaSpan.style.display = 'block';
+        dcaSpan.style.marginTop = '0.5em';
         abiTarget.appendChild(dcaSpan);
         await typeText(dcaSpan, "Soy afectado por DCA*");
 
@@ -313,7 +405,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           link.href = 'https://fedace.org/que-es-el-dano-cerebral-adquirido.html';
           link.target = '_blank';
           link.rel = 'noopener';
-          link.className = 'underline text-accent hover:text-accent';
+          link.className = 'underline text-accent hover:text-[#F05A3A]';
           const linkText = 'Daño Cerebral Adquirido';
           link.textContent = '';
           abiNote.appendChild(link);
@@ -365,7 +457,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
               } else {
                 introEl.style.opacity = finalOpacity;
                 introEl.style.filter = `blur(${finalBlur}px)`;
-                introEl.style.fontSize = "clamp(1rem, 7vw, 2.8rem)";
+                fitIntroToContainer(maxFont);
                 if (nameSpan) nameSpan.style.color = `rgb(${finalColor[0]},${finalColor[1]},${finalColor[2]})`;
                 if (underline) underline.style.width = "100%";
                 heroLines?.classList.add("shrink-identities");
@@ -375,7 +467,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           }
 
           const texts = [
-            { target: runnerInsert, text: "corredor adaptado " },
+            { target: runnerInsert, text: " adaptado" },
             { target: developerInsert, text: "ex-" },
             { target: husbandInsert, text: "padre y " },
             { target: writerInsert, text: "aún " },
@@ -386,21 +478,23 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           await Promise.all(texts.map((t, i) => typeText(t.target, t.text, speeds[i], createCursor())));
         }
       }
+      heroAnimationActive = false;
     };
 
-    startHeroSequence().then(() => {
-      const intro = document.getElementById("intro-hidden");
-      if (intro) {
-        const observer = new IntersectionObserver((entries) => {
-          if (entries[0].isIntersecting) {
-            intro.classList.remove("opacity-0", "pointer-events-none");
-            intro.classList.add("opacity-100");
-            observer.disconnect();
-          }
-        }, { threshold: 0.1 });
-        observer.observe(intro);
-      }
-    });
+    startHeroSequence();
+
+    const introSection = document.getElementById("intro-hidden");
+    if (introSection) {
+      const updateIntroVisibility = () => {
+        if (heroAnimationActive) return;
+        const visible = introSection.getBoundingClientRect().top < window.innerHeight - 40;
+        introSection.classList.toggle("opacity-0", !visible);
+        introSection.classList.toggle("pointer-events-none", !visible);
+        introSection.classList.toggle("opacity-100", visible);
+      };
+      window.addEventListener('scroll', updateIntroVisibility, { passive: true });
+      if (window.scrollY > 50) updateIntroVisibility();
+    }
 
     window.addEventListener("pagehide", () => {
       timers.forEach((timer) => window.clearTimeout(timer));
