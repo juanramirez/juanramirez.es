@@ -5,6 +5,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { getLocalizedContentSlug, toTagSlug } from "../../../lib/i18n";
 
 const locale = "es";
+const hyvorWebsiteId = import.meta.env.PUBLIC_HYVOR_WEBSITE_ID;
 const posts = (await getCollection("blog"))
   .filter((post) => post.data.lang === locale)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -37,67 +38,74 @@ const posts = (await getCollection("blog"))
       </h1>
     </header>
 
-    {
-      posts.length === 0 ? (
-        <p class="rounded-md border border-dashed border-ink/25 p-6 text-muted">
-          Aún no hay artículos en español. Añade archivos Markdown con <code>lang: es</code> en <code>src/content/blog/es</code>.
-        </p>
-      ) : (
-        <ul id="blog-list" class="space-y-8">
-          {posts.map((post) => {
-            const postImage =
-              post.data.featured_image ?? post.data["featured-image"] ?? post.data.image;
-            const slug = getLocalizedContentSlug(post.slug, locale);
-            return (
-              <li class="space-y-3 border-b border-ink/10 pb-6">
-                <p class="text-sm text-muted">
-                  <time datetime={post.data.date.toISOString()}>
-                    {post.data.date.toLocaleDateString("es-ES", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric"
-                    })}
-                  </time>
-                  {" "}· por {post.data.author}
-                </p>
-                <h2 class="font-serif text-2xl font-semibold leading-tight">
-                  <a href={`/es/blog/${slug}/`} set:html={post.data.title}></a>
-                </h2>
-                {postImage ? (
-                  <div class="grid gap-4 md:grid-cols-9 md:items-start">
-                    <div class="md:col-span-4">
-                      <img
-                        src={postImage}
-                        alt={`Imagen destacada de ${post.data.title}`}
-                        class="h-full w-full rounded-md border border-ink/15 object-cover"
-                        loading="lazy"
-                      />
-                    </div>
-                    <p class="text-muted md:col-span-5" set:html={marked.parseInline(post.data.excerpt)} />
+    {posts.length === 0 && (
+      <p class="rounded-md border border-dashed border-ink/25 p-6 text-muted">
+        Aún no hay artículos en español. Añade archivos Markdown con <code>lang: es</code> en <code>src/content/blog/es</code>.
+      </p>
+    )}
+    {posts.length > 0 && (
+      <ul id="blog-list" class="space-y-8">
+        {posts.map((post) => {
+          const postImage =
+            post.data.featured_image ?? post.data["featured-image"] ?? post.data.image;
+          const slug = getLocalizedContentSlug(post.slug, locale);
+          const hyvorPageId = "es-" + post.slug;
+          return (
+            <li class="space-y-3 border-b border-ink/10 pb-6">
+              <p class="text-sm text-muted">
+                <time datetime={post.data.date.toISOString()}>
+                  {post.data.date.toLocaleDateString("es-ES", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                  })}
+                </time>
+                {" "}· por {post.data.author}
+                {hyvorWebsiteId && post.data.comments !== false && (
+                  <>{" "}· <a href={`/es/blog/${slug}/#comments`} class="no-underline">
+                    <hyvor-talk-comment-count website-id={hyvorWebsiteId} page-id={hyvorPageId}></hyvor-talk-comment-count>
+                    {" "}comentarios
+                  </a></>
+                )}
+              </p>
+              <h2 class="font-serif text-2xl font-semibold leading-tight">
+                <a href={`/es/blog/${slug}/`} set:html={post.data.title}></a>
+              </h2>
+              {postImage ? (
+                <div class="grid gap-4 md:grid-cols-9 md:items-start">
+                  <div class="md:col-span-4">
+                    <img
+                      src={postImage}
+                      alt={`Imagen destacada de ${post.data.title}`}
+                      class="h-full w-full rounded-md border border-ink/15 object-cover"
+                      loading="lazy"
+                    />
                   </div>
-                ) : (
-                  <p class="text-muted" set:html={marked.parseInline(post.data.excerpt)} />
-                )}
-                {post.data.tags.length > 0 && (
-                  <ul class="flex flex-wrap gap-2 pt-1 text-sm text-muted">
-                    {post.data.tags.map((tag) => (
-                      <li>
-                        <a
-                          href={`/es/blog/tag/${toTagSlug(tag)}/`}
-                          class="inline-block rounded-full border border-ink/20 px-3 py-1 no-underline decoration-transparent"
-                        >
-                          {tag}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-        <script type="module" src="/scripts/load-more-es.client.js" client:load></script>
-      )
-    }
+                  <p class="text-muted md:col-span-5" set:html={marked.parseInline(post.data.excerpt)} />
+                </div>
+              ) : (
+                <p class="text-muted" set:html={marked.parseInline(post.data.excerpt)} />
+              )}
+              {post.data.tags.length > 0 && (
+                <ul class="flex flex-wrap gap-2 pt-1 text-sm text-muted">
+                  {post.data.tags.map((tag) => (
+                    <li>
+                      <a
+                        href={`/es/blog/tag/${toTagSlug(tag)}/`}
+                        class="inline-block rounded-full border border-ink/20 px-3 py-1 no-underline decoration-transparent"
+                      >
+                        {tag}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    )}
+    {posts.length > 0 && <script type="module" src="/scripts/load-more-es.client.js" client:load></script>}
+    {posts.length > 0 && hyvorWebsiteId && <script is:inline async type="module" src="https://talk.hyvor.com/embed/embed.js"></script>}
   </section>
 </BaseLayout>
