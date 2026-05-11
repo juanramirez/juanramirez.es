@@ -294,7 +294,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       if (!introTarget) return;
       const container = introTarget.parentElement;
       if (!container) return;
-      let size = maxSize;
+      const currentPx = parseFloat(introTarget.style.fontSize);
+      let size = (currentPx > 0 && currentPx <= maxSize) ? currentPx : maxSize;
       introTarget.style.fontSize = size + 'px';
       while (size > 12) {
         introTarget.getBoundingClientRect();
@@ -308,11 +309,14 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       const cursor = customCursor || createCursor();
       placeCursor(target, cursor);
       const line = target.closest('.hero-identity-line');
+      const isIntro = target === introTarget || introTarget?.contains(target);
       for (const character of text) {
         target.insertBefore(document.createTextNode(character), cursor);
         if (line) {
           fitLineToContainer(line);
           revealLine(line);
+        } else if (isIntro) {
+          fitIntroToContainer(72);
         }
         await delay(speed);
       }
