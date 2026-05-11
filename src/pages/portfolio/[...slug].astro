@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import HyvorComments from "../../components/HyvorComments.astro";
+import CusdisComments from "../../components/CusdisComments.astro";
 
 export async function getStaticPaths() {
   const projects = (await getCollection("portfolio")).filter((project) => !project.data.hidden);
@@ -15,7 +15,8 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
-const hyvorWebsiteId = import.meta.env.PUBLIC_HYVOR_WEBSITE_ID;
+const cusdisAppId = import.meta.env.PUBLIC_CUSDIS_APP_ID;
+const pageUrl = new URL(`/portfolio/${project.slug}/`, Astro.site).href;
 const showComments = project.data.comments;
 const isLiterary = project.data.category === "literary";
 const statusLabel =
@@ -155,21 +156,15 @@ const homeLabel = isLiterary ? "Portada" : "Home";
       <Content />
     </div>
 
-    {hyvorWebsiteId && showComments && (
-      <HyvorComments
-        websiteId={hyvorWebsiteId}
+    {cusdisAppId && showComments && (
+      <CusdisComments
+        appId={cusdisAppId}
         pageId={`portfolio-${project.slug}`}
+        pageUrl={pageUrl}
+        pageTitle={project.data.name}
         heading={commentsHeading}
-        language={commentsLanguage}
+        lang={commentsLanguage}
       />
-    )}
-
-    {import.meta.env.DEV && showComments && !hyvorWebsiteId && (
-      <p class="rounded-md border border-dashed border-ink/25 p-4 text-sm text-muted">
-        {isLiterary ? "Los comentarios están activados para este proyecto, pero Hyvor no está configurado. Define " : "Comments are enabled for this project, but Hyvor is not configured. Set "}
-        <code>PUBLIC_HYVOR_WEBSITE_ID</code>
-        {isLiterary ? " y reinicia el servidor de desarrollo." : " and restart the dev server."}
-      </p>
     )}
 
     <p class="text-sm">

@@ -70,7 +70,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     const defaultHeroImage = "/images/profile/juan.png";
     const introStartDelay = 250;
     const afterIntroPause = 1200; // Pausa tras 'I am Juan Ramírez'
-    const introPrefix = "I'M";
+    const introPrefix = "I AM";
     const introName = "JUAN RAMÍREZ";
     const introText = `${introPrefix} ${introName}`;
 
@@ -245,8 +245,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       await delay(linePause);
 
       setHeroImage(3);
-      await typeText(runnerPrefix, "I'm a ");
-      await typeText(runnerBase, "runner");
+      await typeText(runnerPrefix, "I'm a");
+      await typeText(runnerBase, " runner");
       await delay(linePause);
 
       setHeroImage(4);
@@ -355,7 +355,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             requestAnimationFrame(animateRestore);
           }
           const texts = [
-            { target: runnerInsert, text: "adaptive " },
+            { target: runnerInsert, text: "n adaptive" },
             { target: developerInsert, text: "former " },
             { target: husbandInsert, text: "father and " },
             { target: writerInsert, text: "still " },

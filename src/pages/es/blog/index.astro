@@ -5,7 +5,6 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { getLocalizedContentSlug, toTagSlug } from "../../../lib/i18n";
 
 const locale = "es";
-const hyvorWebsiteId = import.meta.env.PUBLIC_HYVOR_WEBSITE_ID;
 const posts = (await getCollection("blog"))
   .filter((post) => post.data.lang === locale)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -49,7 +48,6 @@ const posts = (await getCollection("blog"))
           const postImage =
             post.data.featured_image ?? post.data["featured-image"] ?? post.data.image;
           const slug = getLocalizedContentSlug(post.slug, locale);
-          const hyvorPageId = "es-" + post.slug;
           return (
             <li class="space-y-3 border-b border-ink/10 pb-6">
               <p class="text-sm text-muted">
@@ -61,12 +59,6 @@ const posts = (await getCollection("blog"))
                   })}
                 </time>
                 {" "}· por {post.data.author}
-                {hyvorWebsiteId && post.data.comments !== false && (
-                  <>{" "}· <a href={`/es/blog/${slug}/#comments`} class="no-underline">
-                    <hyvor-talk-comment-count website-id={hyvorWebsiteId} page-id={hyvorPageId}></hyvor-talk-comment-count>
-                    {" "}comentarios
-                  </a></>
-                )}
               </p>
               <h2 class="font-serif text-2xl font-semibold leading-tight">
                 <a href={`/es/blog/${slug}/`} set:html={post.data.title}></a>
@@ -106,6 +98,5 @@ const posts = (await getCollection("blog"))
       </ul>
     )}
     {posts.length > 0 && <script type="module" src="/scripts/load-more-es.client.js" client:load></script>}
-    {posts.length > 0 && hyvorWebsiteId && <script is:inline async type="module" src="https://talk.hyvor.com/embed/embed.js"></script>}
   </section>
 </BaseLayout>
