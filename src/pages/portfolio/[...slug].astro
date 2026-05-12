@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import CusdisComments from "../../components/CusdisComments.astro";
+import Remark42Comments from "../../components/Remark42Comments.astro";
 
 export async function getStaticPaths() {
   const projects = (await getCollection("portfolio")).filter((project) => !project.data.hidden);
@@ -15,7 +15,8 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
-const cusdisAppId = import.meta.env.PUBLIC_CUSDIS_APP_ID;
+const remark42Host = import.meta.env.PUBLIC_REMARK42_HOST;
+const remark42SiteId = import.meta.env.PUBLIC_REMARK42_SITE_ID;
 const pageUrl = new URL(`/portfolio/${project.slug}/`, Astro.site).href;
 const showComments = project.data.comments;
 const isLiterary = project.data.category === "literary";
@@ -156,14 +157,13 @@ const homeLabel = isLiterary ? "Portada" : "Home";
       <Content />
     </div>
 
-    {cusdisAppId && showComments && (
-      <CusdisComments
-        appId={cusdisAppId}
+    {remark42Host && showComments && (
+      <Remark42Comments
+        host={remark42Host}
+        siteId={remark42SiteId}
         pageId={`portfolio-${project.slug}`}
-        pageUrl={pageUrl}
-        pageTitle={project.data.name}
+        locale={commentsLanguage}
         heading={commentsHeading}
-        lang={commentsLanguage}
       />
     )}
 

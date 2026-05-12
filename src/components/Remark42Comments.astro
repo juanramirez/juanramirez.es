@@ -1,0 +1,34 @@
+---
+interface Props {
+  host: string;
+  siteId: string;
+  pageId: string;
+  locale?: string;
+  heading?: string;
+}
+
+const { host, siteId, pageId, locale = "en", heading = "Comments" } = Astro.props;
+---
+
+<section class="mt-10 border-t border-ink/15 pt-8" id="comments">
+  <h2 class="mb-4 font-serif text-2xl">{heading}</h2>
+  <div id="remark42"></div>
+</section>
+
+<script is:inline define:vars={{ host, siteId, pageId, locale }}>
+  var remark_config = {
+    host: host,
+    site_id: siteId,
+    page_id: pageId,
+    locale: locale,
+    components: ['embed'],
+  };
+  (function(c) {
+    for (var i = 0; i < c.length; i++) {
+      var d = document, s = d.createElement('script');
+      s.src = remark_config.host + '/web/' + c[i] + '.js';
+      s.defer = true;
+      (d.head || d.body).appendChild(s);
+    }
+  })(remark_config.components);
+</script>
