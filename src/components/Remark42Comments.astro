@@ -15,6 +15,14 @@ const { host, siteId, pageId, locale = "en", heading = "Comments" } = Astro.prop
   <div id="remark42"></div>
 </section>
 
+<style is:global>
+  #remark42 input,
+  #remark42 textarea {
+    background-color: #e8e3d8 !important;
+    border: 1px solid rgba(27, 31, 35, 0.2) !important;
+  }
+</style>
+
 <script is:inline define:vars={{ host, siteId, pageId, locale }}>
   var remark_config = {
     host: host,
