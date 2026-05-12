@@ -1,7 +1,7 @@
 ---
 import { getCollection, getEntryBySlug, render } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import CusdisComments from "../../../components/CusdisComments.astro";
+import Remark42Comments from "../../../components/Remark42Comments.astro";
 
 
 export async function getStaticPaths() {
@@ -23,8 +23,8 @@ if (!project) {
   return Astro.redirect('/404', 302);
 }
 const { Content } = await render(project);
-const cusdisAppId = import.meta.env.PUBLIC_CUSDIS_APP_ID;
-const pageUrl = new URL(`/es/portfolio/${slug}/`, Astro.site).href;
+const remark42Host = import.meta.env.PUBLIC_REMARK42_HOST;
+const remark42SiteId = import.meta.env.PUBLIC_REMARK42_SITE_ID;
 const showComments = project.data.comments;
 const isLiterary = project.data.category === "literary";
 const statusLabel = {
@@ -110,14 +110,13 @@ const sectionHref = isLiterary ? "/es/literary-portfolio/" : "/es/coding/";
       <Content />
     </div>
 
-    {cusdisAppId && showComments && (
-      <CusdisComments
-        appId={cusdisAppId}
+    {remark42Host && showComments && (
+      <Remark42Comments
+        host={remark42Host}
+        siteId={remark42SiteId}
         pageId={`es-portfolio-${project.slug}`}
-        pageUrl={pageUrl}
-        pageTitle={project.data.name}
+        locale="es"
         heading="Comentarios"
-        lang="es"
       />
     )}
 

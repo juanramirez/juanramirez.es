@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import CusdisComments from "../../../components/CusdisComments.astro";
+import Remark42Comments from "../../../components/Remark42Comments.astro";
 import { getLocalizedContentSlug, toTagSlug } from "../../../lib/i18n";
 
 export async function getStaticPaths() {
@@ -16,10 +16,9 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-const cusdisAppId = import.meta.env.PUBLIC_CUSDIS_APP_ID;
+const remark42Host = import.meta.env.PUBLIC_REMARK42_HOST;
+const remark42SiteId = import.meta.env.PUBLIC_REMARK42_SITE_ID;
 const showComments = post.data.comments;
-const slug = getLocalizedContentSlug(post.slug, "es");
-const pageUrl = new URL(`/es/blog/${slug}/`, Astro.site).href;
 ---
 
 <BaseLayout title={`${post.data.title} | Juan Ramírez`} description={post.data.excerpt} ogType="article" locale="es">
@@ -75,14 +74,13 @@ const pageUrl = new URL(`/es/blog/${slug}/`, Astro.site).href;
       <Content />
     </div>
 
-    {cusdisAppId && showComments && (
-      <CusdisComments
-        appId={cusdisAppId}
+    {remark42Host && showComments && (
+      <Remark42Comments
+        host={remark42Host}
+        siteId={remark42SiteId}
         pageId={`es-${post.slug}`}
-        pageUrl={pageUrl}
-        pageTitle={post.data.title}
+        locale="es"
         heading="Comentarios"
-        lang="es"
       />
     )}
   </article>
