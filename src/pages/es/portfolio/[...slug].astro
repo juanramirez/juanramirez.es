@@ -23,8 +23,8 @@ if (!project) {
   return Astro.redirect('/404', 302);
 }
 const { Content } = await render(project);
-const remark42Host = import.meta.env.PUBLIC_REMARK42_HOST;
-const remark42SiteId = import.meta.env.PUBLIC_REMARK42_SITE_ID;
+const remark42Host = import.meta.env.PUBLIC_REMARK42_HOST ?? "https://remark42-production-7145.up.railway.app";
+const remark42SiteId = import.meta.env.PUBLIC_REMARK42_SITE_ID ?? "juan-ramirez.es";
 const showComments = project.data.comments;
 const isLiterary = project.data.category === "literary";
 const statusLabel = {
@@ -110,7 +110,7 @@ const sectionHref = isLiterary ? "/es/literary-portfolio/" : "/es/coding/";
       <Content />
     </div>
 
-    {remark42Host && showComments && (
+    {showComments && (
       <Remark42Comments
         host={remark42Host}
         siteId={remark42SiteId}

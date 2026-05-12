@@ -16,8 +16,8 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-const remark42Host = import.meta.env.PUBLIC_REMARK42_HOST;
-const remark42SiteId = import.meta.env.PUBLIC_REMARK42_SITE_ID;
+const remark42Host = import.meta.env.PUBLIC_REMARK42_HOST ?? "https://remark42-production-7145.up.railway.app";
+const remark42SiteId = import.meta.env.PUBLIC_REMARK42_SITE_ID ?? "juan-ramirez.es";
 const showComments = post.data.comments;
 ---
 
@@ -74,7 +74,7 @@ const showComments = post.data.comments;
       <Content />
     </div>
 
-    {remark42Host && showComments && (
+    {showComments && (
       <Remark42Comments
         host={remark42Host}
         siteId={remark42SiteId}
