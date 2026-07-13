@@ -77,7 +77,7 @@ const homeLabel = isLiterary ? "Portada" : "Home";
         <img
           src={project.data.image}
           alt={`${project.data.name} logo`}
-          class="h-14 w-auto object-contain"
+          class:list={["h-14 w-auto object-contain", project.data.image_class]}
           width={56}
           height={56}
           loading="lazy"
