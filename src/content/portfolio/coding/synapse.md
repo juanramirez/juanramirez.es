@@ -4,6 +4,7 @@ description: "A social-network project born during rehabilitation, designed to c
 status: "in-alpha"
 category: "technical"
 image: "/images/projects/synapse/logo.png"
+image_class: "rotate-[10deg]"
 stack:
   - JavaScript
   - Node.js
@@ -23,4 +24,6 @@ The project aims to bridge a gap that often appears between medical discharge an
 
 The long-term vision is a social platform for people directly or indirectly affected by acquired brain injury and neurological disorders.
 
-From the technical side, Synapse is organized as a client-server project. The server is currently the most advanced part and is available in the linked GitHub repository.
+For years, Synapse remained on hold — the cognitive and physical sequelae from my surgeries made it impossible to carry forward on my own. The arrival of AI changed that. With its help, I've been able to begin implementing (at least partially) what had long felt out of reach.
+
+From the technical side, Synapse is organized as a client-server project.

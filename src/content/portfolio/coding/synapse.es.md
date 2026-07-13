@@ -5,6 +5,7 @@ status: "in-alpha"
 category: "technical"
 lang: "es"
 image: "/images/projects/synapse/logo.png"
+image_class: "rotate-[10deg]"
 stack:
   - JavaScript
   - Node.js
@@ -24,4 +25,6 @@ El proyecto busca cerrar la brecha que suele aparecer entre el alta médica y la
 
 La visión a largo plazo es una plataforma social para personas afectadas directa o indirectamente por daño cerebral adquirido y trastornos neurológicos.
 
-Desde el punto de vista técnico, Synapse está organizado como un proyecto cliente-servidor. El servidor es actualmente la parte más avanzada y está disponible en el repositorio de GitHub enlazado.
+Durante años, Synapse estuvo aparcado — las secuelas cognitivas y físicas de mis cirugías me impedían llevarlo a cabo por mis propios medios. La llegada de la IA lo cambió. Con su ayuda, he podido empezar a implementar (al menos en parte) lo que durante tanto tiempo había parecido inalcanzable.
+
+Desde el punto de vista técnico, Synapse está organizado como un proyecto cliente-servidor.
