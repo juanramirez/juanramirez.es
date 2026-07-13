@@ -29,12 +29,14 @@ const showComments = project.data.comments;
 const isLiterary = project.data.category === "literary";
 const statusLabel = {
   planned: "Planeado",
-  "in-development": "En desarrollo (muy lento y muy temprano)",
+  "in-development": "En desarrollo",
+  "in-alpha": "En fase alfa",
   published: "Publicado"
 }[project.data.status];
 const statusColorClass = {
   planned: "text-gray-600",
   "in-development": "text-yellow-600",
+  "in-alpha": "text-blue-600",
   published: "text-green-600"
 }[project.data.status];
 const sectionLabel = isLiterary ? "Literatura" : "Porfolio técnico";

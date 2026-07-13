@@ -12,24 +12,17 @@ const isSpanish = project.data.lang === "es" || isLiterary;
 
 const statusLabel =
   project.data.status === "in-development"
-    ? (project.data.name === "NeuroLink"
-        ? (isSpanish
-            ? "🐌 En desarrollo (muy lento y muy temprano aún)"
-            : "🐌 In (veeery slow and early) development")
-        : (isSpanish
-            ? "En desarrollo"
-            : "In development"))
-    : project.data.status === "published"
-      ? isSpanish
-        ? "Publicado"
-        : "Published"
-      : isSpanish
-        ? "Planeado"
-        : "Planned";
+    ? (isSpanish ? "En desarrollo" : "In development")
+    : project.data.status === "in-alpha"
+      ? (isSpanish ? "En fase alfa" : "Now in alpha!")
+      : project.data.status === "published"
+        ? (isSpanish ? "Publicado" : "Published")
+        : (isSpanish ? "Planeado" : "Planned");
 
 const statusColorClass = {
   "planned": "text-gray-600",
   "in-development": "text-yellow-600",
+  "in-alpha": "text-blue-600",
   "published": "text-green-600"
 }[project.data.status];
 

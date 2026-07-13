@@ -22,19 +22,16 @@ const showComments = project.data.comments;
 const isLiterary = project.data.category === "literary";
 const statusLabel =
   project.data.status === "in-development"
-    ? isLiterary
-      ? "🐌 En desarrollo"
-      : "🐌 In (veeery slow and early) development"
-    : project.data.status === "published"
-      ? isLiterary
-        ? "Publicado"
-        : "Published"
-      : isLiterary
-        ? "Planeado"
-        : "Planned";
+    ? (isLiterary ? "En desarrollo" : "In development")
+    : project.data.status === "in-alpha"
+      ? (isLiterary ? "En fase alfa" : "Now in alpha!")
+      : project.data.status === "published"
+        ? (isLiterary ? "Publicado" : "Published")
+        : (isLiterary ? "Planeado" : "Planned");
 const statusColorClass = {
   "planned": "text-gray-600",
   "in-development": "text-yellow-600",
+  "in-alpha": "text-blue-600",
   "published": "text-green-600"
 }[project.data.status];
 const repositoryLabel = isLiterary ? "Visitar proyecto" : "Visit project repository";
@@ -66,7 +63,7 @@ const homeLabel = isLiterary ? "Portada" : "Home";
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-1 opacity-80"><path d="M8.5 17a4.5 4.5 0 1 1 0-9h.25a.75.75 0 0 1 0 1.5H8.5a3 3 0 1 0 0 6h7a3 3 0 0 0 2.995-2.824l.005-.176V14a.75.75 0 0 1 1.5 0 4.5 4.5 0 0 1-4.5 4.5h-7Zm10-7.25a.75.75 0 0 1 .75.75v3a4.75 4.75 0 0 1-4.75 4.75h-7A4.75 4.75 0 0 1 2.75 13V10a.75.75 0 0 1 1.5 0v3a3.25 3.25 0 0 0 3.25 3.25h7A3.25 3.25 0 0 0 17.75 13v-3a.75.75 0 0 1 .75-.75Z"/></svg>
               </span>
             )}
-            {statusLabel.replace(/^🐌 /, "")}
+            {statusLabel}
           </p>
         <li aria-hidden="true">/</li>
         <li class="text-ink/80">{project.data.name}</li>
@@ -104,7 +101,7 @@ const homeLabel = isLiterary ? "Portada" : "Home";
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-1 opacity-80"><path d="M8.5 17a4.5 4.5 0 1 1 0-9h.25a.75.75 0 0 1 0 1.5H8.5a3 3 0 1 0 0 6h7a3 3 0 0 0 2.995-2.824l.005-.176V14a.75.75 0 0 1 1.5 0 4.5 4.5 0 0 1-4.5 4.5h-7Zm10-7.25a.75.75 0 0 1 .75.75v3a4.75 4.75 0 0 1-4.75 4.75h-7A4.75 4.75 0 0 1 2.75 13V10a.75.75 0 0 1 1.5 0v3a3.25 3.25 0 0 0 3.25 3.25h7A3.25 3.25 0 0 0 17.75 13v-3a.75.75 0 0 1 .75-.75Z"/></svg>
               </span>
             )}
-            {statusLabel.replace(/^🐌 /, "")}
+            {statusLabel}
           </p>
           {(project.data.written_date || project.data.published_date) && (
             <ul class="space-y-1 text-sm text-muted">
@@ -134,7 +131,7 @@ const homeLabel = isLiterary ? "Portada" : "Home";
           {project.data.url && (
             <p class="text-sm">
               <a href={project.data.url} rel="noreferrer" target="_blank">
-                {repositoryLabel}
+                {project.data.url_label ?? repositoryLabel}
               </a>
             </p>
           )}
